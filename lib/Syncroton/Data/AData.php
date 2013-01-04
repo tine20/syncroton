@@ -17,17 +17,12 @@
  */
 abstract class Syncroton_Data_AData implements Syncroton_Data_IData
 {
-    const LONGID_DELIMITER = "\xe2\x87\x94"; # UTF8 ⇔
+    const LONGID_DELIMITER = "\xe2\x87\x94"; # UTF-8 character ⇔
     
     /**
-     * used by unit tests only to simulated added folders
+     * @var DateTime
      */
-    public static $changedEntries = array();
-    
-    /**
-     * used by unit tests only to simulated exhausted memory
-     */
-    public static $exhaustedEntries = array();
+    protected $_timeStamp;
     
     /**
      * the constructor
@@ -38,7 +33,7 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
     public function __construct(Syncroton_Model_IDevice $_device, DateTime $_timeStamp)
     {
         $this->_device      = $_device;
-        $this->_timestamp   = $_timeStamp;
+        $this->_timeStamp   = $_timeStamp;
         $this->_db          = Syncroton_Registry::getDatabase();
         $this->_tablePrefix = 'Syncroton_';
         $this->_ownerId     = '1234';
@@ -92,7 +87,7 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
             'name'          => $folder->displayName,
             'owner_id'      => $this->_ownerId,
             'parent_id'     => $folder->parentId,
-            'creation_time' => $this->_timestamp->format('Y-m-d H:i:s')
+            'creation_time' => $this->_timeStamp->format("Y-m-d H:i:s")
         ));
         
         return $this->getFolder($id);
@@ -107,10 +102,11 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
         $id = sha1(mt_rand(). microtime());
     
         $this->_db->insert($this->_tablePrefix . 'data', array(
-            'id'        => $id,
-            'class'     => get_class($_entry),
-            'folder_id' => $_folderId,
-            'data'      => serialize($_entry)
+            'id'            => $id,
+            'class'         => get_class($_entry),
+            'folder_id'     => $_folderId,
+            'creation_time' => $this->_timeStamp->format("Y-m-d H:i:s"),
+            'data'          => serialize($_entry)
         ));
     
         return $id;
@@ -187,11 +183,25 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
      */
     public function getChangedEntries($_folderId, DateTime $_startTimeStamp, DateTime $_endTimeStamp = NULL, $filterType = NULL)
     {
-        if (!isset(Syncroton_Data_AData::$changedEntries[get_class($this)])) {
-            return array();
-        } else {
-            return Syncroton_Data_AData::$changedEntries[get_class($this)];
+        $folderId = $_folderId instanceof Syncroton_Model_IFolder ? $_folderId->id : $_folderId;
+    
+        $select = $this->_db->select()
+            ->from($this->_tablePrefix . 'data', array('id'))
+            ->where('folder_id = ?', $_folderId)
+            ->where('last_modified_time > ?', $_startTimeStamp->format("Y-m-d H:i:s"));
+        
+        if ($_endTimeStamp instanceof DateTime) {
+            $select->where('last_modified_time < ?', $_endTimeStamp->format("Y-m-d H:i:s"));
         }
+        
+        $ids = array();
+        
+        $stmt = $this->_db->query($select);
+        while ($id = $stmt->fetchColumn()) {
+            $ids[] = $id;
+        }
+        
+        return $ids;
     }
     
     /**
@@ -230,7 +240,7 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
     
     /**
      * @param  Syncroton_Model_IFolder|string  $_folderId
-     * @param  string                        $_filter
+     * @param  string                          $_filter
      * @return array
      */
     public function getServerEntries($_folderId, $_filter)
@@ -282,14 +292,11 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
      */
     public function getEntry(Syncroton_Model_SyncCollection $collection, $serverId)
     {
-        if (isset(self::$exhaustedEntries[get_class($this)]) && is_array(self::$exhaustedEntries[get_class($this)]) && in_array($serverId, self::$exhaustedEntries[get_class($this)])) {
-            throw new Syncroton_Exception_MemoryExhausted('memory exchausted for ' . $serverId);
-        } 
         $select = $this->_db->select()
             ->from($this->_tablePrefix . 'data', array('data'))
             ->where('id = ?', $serverId);
         
-        $stmt = $this->_db->query($select);
+        $stmt  = $this->_db->query($select);
         $entry = $stmt->fetchColumn();
 
         if ($entry === false) {
@@ -330,8 +337,9 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
     public function updateEntry($_folderId, $_serverId, Syncroton_Model_IEntry $_entry)
     {
         $this->_db->update($this->_tablePrefix . 'data', array(
-            'folder_id' => $_folderId,
-            'data'      => serialize($_entry)
+            'folder_id'          => $_folderId,
+            'last_modified_time' => $this->_timeStamp->format("Y-m-d H:i:s"),
+            'data'               => serialize($_entry)
         ), array(
             'id = ?' => $_serverId
         ));
@@ -346,7 +354,7 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
         $this->_db->update($this->_tablePrefix . 'data_folder', array(
             'name'               => $folder->displayName,
             'parent_id'          => $folder->parentId,
-            'last_modified_time' => $this->_timestamp->format('Y-m-d H:i:s')
+            'last_modified_time' => $this->_timeStamp->format("Y-m-d H:i:s"),
         ), array(
             'id = ?'       => $folder->serverId,
             'owner_id = ?' => $this->_ownerId

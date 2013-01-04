@@ -82,6 +82,8 @@ CREATE TABLE IF NOT EXISTS `Syncroton_data` (
     `id` varchar(40) NOT NULL,
     `class` varchar(40) NOT NULL,
     `folder_id` varchar(40) NOT NULL,
+    `creation_time` datetime NOT NULL,
+    `last_modified_time` datetime DEFAULT NULL,
     `data` longblob,
     PRIMARY KEY (`id`)
 );

@@ -96,10 +96,32 @@ class Syncroton_Command_PingTests extends Syncroton_Command_ATestCase
         $syncDoc = $sync->getResponse();
         #$syncDoc->formatOutput = true; echo $syncDoc->saveXML();
 
-        // sleep one second; otherwise we are to fast
-        sleep(1);
+        $folder    = Syncroton_Registry::getFolderBackend()->getFolder($this->_device, 'addressbookFolderId');
         
-        Syncroton_Data_Contacts::$changedEntries['Syncroton_Data_Contacts'][] = 'contact1';
+        $oneSecondAgo = new DateTime(null, new DateTimeZone('utc'));
+        $oneSecondAgo->modify('-1 second');
+        $tenSecondsAgo = new DateTime(null, new DateTimeZone('utc'));
+        $tenSecondsAgo->modify('-10 second');
+        
+        // update modify timeStamp of contact
+        $dataController = Syncroton_Data_Factory::factory(
+            Syncroton_Data_Factory::CLASS_CONTACTS,
+            $this->_device,
+            $oneSecondAgo
+        );
+        $contact = $dataController->getEntry(
+            new Syncroton_Model_SyncCollection(array('folder' => 'addressbookFolderId')), 
+            'contact1'
+        );
+        $dataController->updateEntry('addressbookFolderId', 'contact1', $contact);
+        
+        // turn back last sync time
+        $syncState = Syncroton_Registry::getSyncStateBackend()->getSyncState($this->_device, $folder);
+        $syncState->lastsync = $tenSecondsAgo;
+        $syncState = Syncroton_Registry::getSyncStateBackend()->update($syncState);
+        
+        
+        
         
         // and now we can start the ping request
         $doc = new DOMDocument();
@@ -114,8 +136,6 @@ class Syncroton_Command_PingTests extends Syncroton_Command_ATestCase
         
         $responseDoc = $search->getResponse();
         #$responseDoc->formatOutput = true; echo $responseDoc->saveXML();
-        
-        Syncroton_Data_Contacts::$changedEntries['Syncroton_Data_Contacts'] = array();
         
         $xpath = new DomXPath($responseDoc);
         $xpath->registerNamespace('Ping', 'uri:Ping');

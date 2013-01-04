@@ -59,7 +59,7 @@ function getTestDatabase()
         }
     }
     
-    $creationTime = new DateTime(null, new DateTimeZone('utc'));
+    $now = new DateTime(null, new DateTimeZone('UTC'));
     
     // create test folders
     $folders = array(
@@ -69,7 +69,7 @@ function getTestDatabase()
             'name'          => 'Default Contacts Folder',
             'owner_id'      => '1234',
             'parent_id'     => '0',
-            'creation_time' => $creationTime->format('Y-m-d H:i:s')
+            'creation_time' => $now->format('Y-m-d H:i:s')
         ),
         array(
             'id'        => 'anotherAddressbookFolderId',
@@ -77,7 +77,7 @@ function getTestDatabase()
             'name'      => 'Another Contacts Folder',
             'owner_id'  => '1234',
             'parent_id' => '0',
-            'creation_time' => $creationTime->format('Y-m-d H:i:s')
+            'creation_time' => $now->format('Y-m-d H:i:s')
         ),
         array(
             'id'        => 'calendarFolderId',
@@ -85,7 +85,7 @@ function getTestDatabase()
             'name'      => 'Default Contacts Folder',
             'owner_id'  => '1234',
             'parent_id' => '0',
-            'creation_time' => $creationTime->format('Y-m-d H:i:s')
+            'creation_time' => $now->format('Y-m-d H:i:s')
         ),
         array(
             'id'        => 'tasksFolderId',
@@ -93,7 +93,7 @@ function getTestDatabase()
             'name'      => 'Default Tasks Folder',
             'owner_id'  => '1234',
             'parent_id' => '0',
-            'creation_time' => $creationTime->format('Y-m-d H:i:s')
+            'creation_time' => $now->format('Y-m-d H:i:s')
         ),
         array(
             'id'        => 'emailInboxFolderId',
@@ -101,7 +101,7 @@ function getTestDatabase()
             'name'      => 'Inbox',
             'owner_id'  => '1234',
             'parent_id' => '0',
-            'creation_time' => $creationTime->format('Y-m-d H:i:s')
+            'creation_time' => $now->format('Y-m-d H:i:s')
         ),
         array(
             'id'        => 'emailSentFolderId',
@@ -109,7 +109,7 @@ function getTestDatabase()
             'name'      => 'Sent',
             'owner_id'  => '1234',
             'parent_id' => '0',
-            'creation_time' => $creationTime->format('Y-m-d H:i:s')
+            'creation_time' => $now->format('Y-m-d H:i:s')
         )
     );
     
@@ -122,6 +122,7 @@ function getTestDatabase()
             'id'        => 'contact1',
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'addressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Lars', 
                 'lastName'  => 'Kneschke'
@@ -131,6 +132,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'addressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Cornelius', 
                 'lastName'  => 'Weiß'
@@ -140,6 +142,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'addressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Lars', 
                 'lastName'  => 'Kneschke'
@@ -149,6 +152,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'addressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Cornelius', 
                 'lastName'  => 'Weiß'
@@ -158,6 +162,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'addressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Lars', 
                 'lastName'  => 'Kneschke'
@@ -167,6 +172,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'addressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Cornelius', 
                 'lastName'  => 'Weiß'
@@ -176,6 +182,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'addressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Lars', 
                 'lastName'  => 'Kneschke'
@@ -185,6 +192,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'addressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Cornelius', 
                 'lastName'  => 'Weiß'
@@ -194,6 +202,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'addressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Lars', 
                 'lastName'  => 'Kneschke'
@@ -203,6 +212,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'addressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Cornelius', 
                 'lastName'  => 'Weiß'
@@ -212,6 +222,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'anotherAddressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Lars', 
                 'lastName'  => 'Kneschke'
@@ -221,6 +232,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'anotherAddressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Cornelius', 
                 'lastName'  => 'Weiß'
@@ -230,6 +242,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'anotherAddressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Lars', 
                 'lastName'  => 'Kneschke'
@@ -239,6 +252,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'anotherAddressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Cornelius', 
                 'lastName'  => 'Weiß'
@@ -248,6 +262,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'anotherAddressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Lars', 
                 'lastName'  => 'Kneschke'
@@ -257,6 +272,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'anotherAddressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Cornelius', 
                 'lastName'  => 'Weiß'
@@ -266,6 +282,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'anotherAddressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Lars', 
                 'lastName'  => 'Kneschke'
@@ -275,6 +292,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'anotherAddressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Cornelius', 
                 'lastName'  => 'Weiß'
@@ -284,6 +302,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'anotherAddressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Lars', 
                 'lastName'  => 'Kneschke'
@@ -293,6 +312,7 @@ function getTestDatabase()
             'id'        => sha1(mt_rand(). microtime()),
             'class'     => 'Syncroton_Model_Contact',
             'folder_id' => 'anotherAddressbookFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Contact(array(
                 'firstName' => 'Cornelius', 
                 'lastName'  => 'Weiß'
@@ -302,6 +322,7 @@ function getTestDatabase()
             'id'        => 'email1',
             'class'     => 'Syncroton_Model_Email',
             'folder_id' => 'emailInboxFolderId',
+            'creation_time' => $now->format("Y-m-d H:i:s"),
             'data'      => serialize(new Syncroton_Model_Email(array(
                 'accountId'    => 'FooBar',
                 'attachments'  => array(

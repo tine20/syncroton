@@ -99,7 +99,5 @@ abstract class Syncroton_Command_ATestCase extends PHPUnit_Framework_TestCase
         
         Syncroton_Registry::getTransactionManager()->rollBack();
         Syncroton_Registry::getDatabase()->query('delete from syncroton_device');
-        
-        Syncroton_Data_Contacts::$changedEntries['Syncroton_Data_Contacts'] = array();
     }
 }

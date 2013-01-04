@@ -255,11 +255,33 @@ class Syncroton_Data_ContactsTests extends Syncroton_Command_ATestCase
         $device = Syncroton_Registry::getDeviceBackend()->create(
             Syncroton_Backend_DeviceTests::getTestDevice(Syncroton_Model_Device::TYPE_IPHONE)
         );
-        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $device, new DateTime(null, new DateTimeZone('UTC')));
         
-        Syncroton_Data_AData::$changedEntries['Syncroton_Data_Contacts'][] = 'contact1';
+        // update modify timeStamp of contact
+        $oneSecondAgo = new DateTime(null, new DateTimeZone('utc'));
+        $oneSecondAgo->modify('-1 second');
         
-        $entries = $dataController->getChangedEntries('addressbook-root', new DateTime(null, new DateTimeZone('UTC')));
+        $dataController = Syncroton_Data_Factory::factory(
+            Syncroton_Data_Factory::CLASS_CONTACTS,
+            $this->_device,
+            $oneSecondAgo
+        );
+        $contact = $dataController->getEntry(
+            new Syncroton_Model_SyncCollection(array('folder' => 'addressbookFolderId')), 
+            'contact1'
+        );
+        $dataController->updateEntry('addressbookFolderId', 'contact1', $contact);
+        
+        // get changed entries between "now" and "ten seconds ago"
+        $dataController = Syncroton_Data_Factory::factory(
+            Syncroton_Data_Factory::CLASS_CONTACTS, 
+            $device, 
+            new DateTime(null, new DateTimeZone('UTC'))
+        );
+        
+        $tenSecondsAgo = new DateTime(null, new DateTimeZone('utc'));
+        $tenSecondsAgo->modify('-10 second');
+        
+        $entries = $dataController->getChangedEntries('addressbookFolderId', $tenSecondsAgo);
         
         $this->assertContains('contact1', $entries);
         $this->assertNotContains('contact2', $entries);

@@ -5,12 +5,12 @@
  * @package     Syncroton
  * @subpackage  Tests
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
- * @copyright   Copyright (c) 2009-2012 Metaways Infosystems GmbH (http://www.metaways.de)
+ * @copyright   Copyright (c) 2009-2013 Metaways Infosystems GmbH (http://www.metaways.de)
  * @author      Lars Kneschke <l.kneschke@metaways.de>
  */
 
 /**
- * class to test <...>
+ * class to test Syncroton_Command_Sync
  *
  * @package     Syncroton
  * @subpackage  Tests
@@ -18,18 +18,6 @@
 class Syncroton_Command_SyncTests extends Syncroton_Command_ATestCase
 {
     #protected $_logPriority = Zend_Log::DEBUG;
-    
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite  = new PHPUnit_Framework_TestSuite('Syncroton Sync command tests');
-        PHPUnit_TextUI_TestRunner::run($suite);
-    }
     
     /**
      * test sync with non existing collection id and synckey > 0
@@ -605,8 +593,8 @@ class Syncroton_Command_SyncTests extends Syncroton_Command_ATestCase
         $folderSync->handle();
         $responseDoc = $folderSync->getResponse();
         #$responseDoc->formatOutput = true; echo $responseDoc->saveXML();
-    
-    
+        
+        
         // request initial synckey
         $doc = new DOMDocument();
         $doc->loadXML('<?xml version="1.0" encoding="utf-8"?>
@@ -624,33 +612,41 @@ class Syncroton_Command_SyncTests extends Syncroton_Command_ATestCase
                 </Collections>
             </Sync>'
         );
-    
+        
         $sync = new Syncroton_Command_Sync($doc, $this->_device, $this->_device->policykey);
-    
+        
         $sync->handle();
-    
+        
         $syncDoc = $sync->getResponse();
         #$syncDoc->formatOutput = true; echo $syncDoc->saveXML();
-    
+        
         $xpath = new DomXPath($syncDoc);
         $xpath->registerNamespace('AirSync', 'uri:AirSync');
-    
+        
         $nodes = $xpath->query('//AirSync:Sync/AirSync:Collections/AirSync:Collection/AirSync:Class');
         $this->assertEquals(1, $nodes->length, $syncDoc->saveXML());
         $this->assertEquals('Contacts', $nodes->item(0)->nodeValue, $syncDoc->saveXML());
-    
+        
         $nodes = $xpath->query('//AirSync:Sync/AirSync:Collections/AirSync:Collection/AirSync:SyncKey');
         $this->assertEquals(1, $nodes->length, $syncDoc->saveXML());
         $this->assertEquals(1, $nodes->item(0)->nodeValue, $syncDoc->saveXML());
-    
+        
         $nodes = $xpath->query('//AirSync:Sync/AirSync:Collections/AirSync:Collection/AirSync:Status');
         $this->assertEquals(1, $nodes->length, $syncDoc->saveXML());
         $this->assertEquals(Syncroton_Command_Sync::STATUS_SUCCESS, $nodes->item(0)->nodeValue, $syncDoc->saveXML());
-    
-        //we have to sleep on second here
-        sleep(1);
-    
-        // now do the first sync windowsize of collection = 2
+        
+        
+        // turn back last sync time
+        $tenSecondsAgo = new DateTime(null, new DateTimeZone('utc'));
+        $tenSecondsAgo->modify('-10 second');
+        
+        $folder    = Syncroton_Registry::getFolderBackend()->getFolder($this->_device, 'addressbookFolderId');
+        $syncState = Syncroton_Registry::getSyncStateBackend()->getSyncState($this->_device, $folder);
+        $syncState->lastsync = $tenSecondsAgo;
+        $syncState = Syncroton_Registry::getSyncStateBackend()->update($syncState);
+
+        
+        // now do the first sync windowsize of collection addressbookFolderId
         $doc = new DOMDocument();
         $doc->loadXML('<?xml version="1.0" encoding="utf-8"?>
             <!DOCTYPE AirSync PUBLIC "-//AIRSYNC//DTD AirSync//EN" "http://www.microsoft.com/">
@@ -870,20 +866,53 @@ class Syncroton_Command_SyncTests extends Syncroton_Command_ATestCase
         $this->assertEquals($serverId, $nodes->item(0)->nodeValue, $syncDoc->saveXML());
     }
     
+    /**
+     * test if modified contact will be returned
+     */
     public function testUpdatingContactOnClient()
     {
-        $serverId = $this->testAddingContactToServer();
+        $this->testSyncOfContacts();
         
-        Syncroton_Data_Contacts::$changedEntries['Syncroton_Data_Contacts'][] = $serverId;
+        $folder   = Syncroton_Registry::getFolderBackend()->getFolder($this->_device, 'addressbookFolderId');
         
-        // lets add one contact
+        $oneSecondAgo = new DateTime(null, new DateTimeZone('utc'));
+        $oneSecondAgo->modify('-1 second');
+        $tenSecondsAgo = new DateTime(null, new DateTimeZone('utc'));
+        $tenSecondsAgo->modify('-10 second');
+        
+        // update modify timeStamp of contact
+        $dataController = Syncroton_Data_Factory::factory(
+            Syncroton_Data_Factory::CLASS_CONTACTS,
+            $this->_device,
+            $oneSecondAgo
+        );
+        $contact = $dataController->getEntry(
+            new Syncroton_Model_SyncCollection(array('folder' => 'addressbookFolderId')), 
+            'contact1'
+        );
+        $dataController->updateEntry('addressbookFolderId', 'contact1', $contact);
+        
+        // turn back last sync time
+        $syncState = Syncroton_Registry::getSyncStateBackend()->getSyncState($this->_device, $folder);
+        $syncState->lastsync = $tenSecondsAgo;
+        $syncState = Syncroton_Registry::getSyncStateBackend()->update($syncState);
+        
+        // retrieve modified contacts
         $doc = new DOMDocument();
         $doc->loadXML('<?xml version="1.0" encoding="utf-8"?>
             <!DOCTYPE AirSync PUBLIC "-//AIRSYNC//DTD AirSync//EN" "http://www.microsoft.com/">
             <Sync xmlns="uri:AirSync" xmlns:AirSyncBase="uri:AirSyncBase"><Collections>
                 <Collection>
-                    <Class>Contacts</Class><SyncKey>5</SyncKey><CollectionId>addressbookFolderId</CollectionId><DeletesAsMoves/><GetChanges/><WindowSize>100</WindowSize>
-                    <Options><AirSyncBase:BodyPreference><AirSyncBase:Type>1</AirSyncBase:Type><AirSyncBase:TruncationSize>5120</AirSyncBase:TruncationSize></AirSyncBase:BodyPreference><Conflict>1</Conflict></Options>
+                    <Class>Contacts</Class>
+                    <SyncKey>4</SyncKey>
+                    <CollectionId>addressbookFolderId</CollectionId>
+                    <DeletesAsMoves/>
+                    <GetChanges/>
+                    <WindowSize>100</WindowSize>
+                    <Options>
+                        <AirSyncBase:BodyPreference><AirSyncBase:Type>1</AirSyncBase:Type><AirSyncBase:TruncationSize>5120</AirSyncBase:TruncationSize></AirSyncBase:BodyPreference>
+                        <Conflict>1</Conflict>
+                    </Options>
                 </Collection>
             </Collections></Sync>'
         );
@@ -895,8 +924,6 @@ class Syncroton_Command_SyncTests extends Syncroton_Command_ATestCase
         $syncDoc = $sync->getResponse();
         #$syncDoc->formatOutput = true; echo $syncDoc->saveXML();
 
-        Syncroton_Data_Contacts::$changedEntries['Syncroton_Data_Contacts'] = array();
-        
         $xpath = new DomXPath($syncDoc);
         $xpath->registerNamespace('AirSync', 'uri:AirSync');
         $xpath->registerNamespace('Contacts', 'uri:Contacts');
@@ -907,7 +934,7 @@ class Syncroton_Command_SyncTests extends Syncroton_Command_ATestCase
         
         $nodes = $xpath->query('//AirSync:Sync/AirSync:Collections/AirSync:Collection/AirSync:SyncKey');
         $this->assertEquals(1, $nodes->length, $syncDoc->saveXML());
-        $this->assertEquals(6, $nodes->item(0)->nodeValue, $syncDoc->saveXML());
+        $this->assertEquals(5, $nodes->item(0)->nodeValue, $syncDoc->saveXML());
         
         $nodes = $xpath->query('//AirSync:Sync/AirSync:Collections/AirSync:Collection/AirSync:Status');
         $this->assertEquals(1, $nodes->length, $syncDoc->saveXML());
@@ -915,7 +942,7 @@ class Syncroton_Command_SyncTests extends Syncroton_Command_ATestCase
         
         $nodes = $xpath->query('//AirSync:Sync/AirSync:Collections/AirSync:Collection/AirSync:Commands/AirSync:Change/AirSync:ServerId');
         $this->assertEquals(1, $nodes->length, $syncDoc->saveXML());
-        $this->assertEquals($serverId, $nodes->item(0)->nodeValue, $syncDoc->saveXML());
+        $this->assertEquals('contact1', $nodes->item(0)->nodeValue, $syncDoc->saveXML());
         
         $nodes = $xpath->query('//AirSync:Sync/AirSync:Collections/AirSync:Collection/AirSync:Commands/AirSync:Change/AirSync:ApplicationData/Contacts:FirstName');
         $this->assertEquals(1, $nodes->length, $syncDoc->saveXML());
@@ -927,6 +954,8 @@ class Syncroton_Command_SyncTests extends Syncroton_Command_ATestCase
      */
     public function testMemoryExhausted()
     {
+        $this->markTestSkipped('need to implement better memory tracking');
+        
         $serverId = $this->testAddingContactToServer();
         
         Syncroton_Data_Contacts::$changedEntries['Syncroton_Data_Contacts'][] = $serverId;
@@ -1013,18 +1042,44 @@ class Syncroton_Command_SyncTests extends Syncroton_Command_ATestCase
         
         $nodes = $xpath->query('//AirSync:Sync/AirSync:Collections/AirSync:Collection/AirSync:Commands/AirSync:Change/AirSync:ServerId');
         $this->assertEquals(1, $nodes->length, $syncDoc->saveXML());
-        $this->assertEquals($serverId, $nodes->item(0)->nodeValue, $syncDoc->saveXML());
+        $this->assertEquals('contact1', $nodes->item(0)->nodeValue, $syncDoc->saveXML());
         
         $nodes = $xpath->query('//AirSync:Sync/AirSync:Collections/AirSync:Collection/AirSync:Commands/AirSync:Change/AirSync:ApplicationData/Contacts:FirstName');
         $this->assertEquals(1, $nodes->length, $syncDoc->saveXML());
         $this->assertEquals('Lars', $nodes->item(0)->nodeValue, $syncDoc->saveXML());
     }
     
+    /**
+     * test if modified contact will be returned with partial request
+     */
     public function testUpdatingContactOnClientWithPartial()
     {
         $serverId = $this->testAddingContactToServer();
         
-        Syncroton_Data_Contacts::$changedEntries['Syncroton_Data_Contacts'][] = $serverId;
+        $folder    = Syncroton_Registry::getFolderBackend()->getFolder($this->_device, 'addressbookFolderId');
+        
+        $oneSecondAgo = new DateTime(null, new DateTimeZone('utc'));
+        $oneSecondAgo->modify('-1 second');
+        $tenSecondsAgo = new DateTime(null, new DateTimeZone('utc'));
+        $tenSecondsAgo->modify('-10 second');
+        
+        // update modify timeStamp of contact
+        $dataController = Syncroton_Data_Factory::factory(
+            Syncroton_Data_Factory::CLASS_CONTACTS,
+            $this->_device,
+            $oneSecondAgo
+        );
+        $contact = $dataController->getEntry(
+            new Syncroton_Model_SyncCollection(array('folder' => 'addressbookFolderId')), 
+            $serverId
+        );
+        $dataController->updateEntry('addressbookFolderId', $serverId, $contact);
+        
+        // turn back last sync time
+        $syncState = Syncroton_Registry::getSyncStateBackend()->getSyncState($this->_device, $folder);
+        $syncState->lastsync = $tenSecondsAgo;
+        $syncState = Syncroton_Registry::getSyncStateBackend()->update($syncState);
+        
         
         // lets add one contact
         $doc = new DOMDocument();
@@ -1048,8 +1103,6 @@ class Syncroton_Command_SyncTests extends Syncroton_Command_ATestCase
         $syncDoc = $sync->getResponse();
         #$syncDoc->formatOutput = true; echo $syncDoc->saveXML();
 
-        Syncroton_Data_Contacts::$changedEntries['Syncroton_Data_Contacts'] = array();
-        
         $xpath = new DomXPath($syncDoc);
         $xpath->registerNamespace('AirSync', 'uri:AirSync');
         $xpath->registerNamespace('Contacts', 'uri:Contacts');
