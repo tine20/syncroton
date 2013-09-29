@@ -8,14 +8,52 @@
 <!-- ==================================================  -->
 <project name="syncroton" description="Syncroton build file" default="test">
 
+    <property name="builddir" value="${project.basedir}/build" override="true" />
+    
     <!-- ============================================  -->
-    <!-- Target: test                                  -->
+    <!-- Target: phpunit                               -->
     <!-- ============================================  -->
-    <target name="test" depends="compose-dev">
-        <echo msg="Starting Tests" />
-        <exec command="../vendor/bin/phpunit --config phpunit.xml --log-junit junit_log_syncroton.xml" dir="tests" passthru="true" />
+    <target name="phpunit">
+        <phpunit configuration="tests/phpunit.xml" haltonfailure="true" haltonerror="true" printsummary="true">
+            <formatter type="plain" usefile="false"/>
+            <batchtest>
+                <fileset dir="tests/Syncroton/">
+                    <include name="**/*Tests.php"/>
+                    <exclude name="**/AllTests.php"/>
+                    <exclude name="ServerTests.php"/>
+                </fileset>
+            </batchtest>
+        </phpunit>
     </target>
-
+    
+    <!-- ============================================  -->
+    <!-- Target: report                                -->
+    <!-- ============================================  -->
+    <target name="report">
+        <delete dir="${builddir}/reports"/>
+        <mkdir dir="${builddir}/reports/tests"/>
+        <mkdir dir="${builddir}/reports/coverage"/>
+        <coverage-setup database="${builddir}/reports/coverage.db">
+            <fileset dir="lib/Syncroton">
+                <include name="**/*.php"/>
+            </fileset>
+        </coverage-setup>
+        <phpunit codecoverage="true" configuration="tests/phpunit.xml" haltonfailure="true" haltonerror="true" printsummary="true">
+            <formatter type="xml" todir="${builddir}/reports"/>
+            <batchtest>
+                <fileset dir="tests/Syncroton/">
+                    <include name="**/*Tests.php"/>
+                    <exclude name="**/AllTests.php"/>
+                    <exclude name="ServerTests.php"/>
+                </fileset>
+            </batchtest>
+        </phpunit>
+        <phpunitreport infile="${builddir}/reports/testsuites.xml" format="frames" todir="${builddir}/reports/tests"/>
+        <coverage-report outfile="${builddir}/reports/coverage.xml">
+            <report todir="${builddir}/reports/coverage" title="Syncroton"/>
+        </coverage-report>  
+    </target>
+    
     <!-- ============================================  -->
     <!-- Target: compose                               -->
     <!-- ============================================  -->

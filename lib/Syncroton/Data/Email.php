@@ -12,7 +12,8 @@
 /**
  * class to handle ActiveSync Sync command
  *
- * @package     Model
+ * @package     Syncroton
+ * @subpackage  Data
  */
 class Syncroton_Data_Email extends Syncroton_Data_AData implements Syncroton_Data_IDataEmail
 {

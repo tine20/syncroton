@@ -2,7 +2,8 @@
 /**
  * Syncroton
  *
- * @package     Model
+ * @package     Syncroton
+ * @subpackage  Model
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
  * @copyright   Copyright (c) 2012-2012 Metaways Infosystems GmbH (http://www.metaways.de)
  * @copyright   Copyright (c) 2012-2012 KolabSYstems AG (http://www.kolabsys.com)
