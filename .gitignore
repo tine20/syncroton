@@ -1,5 +1,6 @@
 .settings
 .project
 .buildpath
+/build
 /vendor
 /tests/junit_log_syncroton.xml
