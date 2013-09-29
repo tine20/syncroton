@@ -2,7 +2,8 @@
 /**
  * Syncroton
  *
- * @package     Model
+ * @package     Syncroton
+ * @subpackage  Model
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
  * @copyright   Copyright (c) 2012-2012 Metaways Infosystems GmbH (http://www.metaways.de)
  * @copyright   Copyright (c) 2012 Kolab Systems AG (http://kolabsys.com)
@@ -13,7 +14,8 @@
 /**
  * class to handle ActiveSync Search Store request
  *
- * @package     Model
+ * @package     Syncroton
+ * @subpackage  Model
  * @property    string  name
  * @property    array   options
  * @property    array   query

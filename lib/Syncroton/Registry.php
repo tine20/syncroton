@@ -12,8 +12,7 @@
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
  *
- * @category   Syncroton
- * @package    Syncroton_Registry
+ * @package    Syncroton
  * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Registry.php 10020 2009-08-18 14:34:09Z j.fischer@metaways.de $
@@ -22,8 +21,7 @@
 /**
  * Generic storage class helps to manage global data.
  *
- * @category   Syncroton
- * @package    Syncroton_Registry
+ * @package    Syncroton
  * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
