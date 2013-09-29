@@ -11,6 +11,23 @@
     <property name="builddir" value="${project.basedir}/build" override="true" />
     
     <!-- ============================================  -->
+    <!-- Target: phpdoc                                -->
+    <!-- ============================================  -->
+    <target name="phpdoc">
+        <echo msg="Building Syncroton API Documentation..." />
+        
+        <includepath classpath="${project.basedir}/vendor/phpdocumentor" />
+        
+        <mkdir dir="${builddir}/apidocs" />
+        
+        <phpdoc2 title="Syncroton API Documentation" destdir="${builddir}/apidocs" template="responsive-twig">
+            <fileset dir="lib/Syncroton">
+                <include name="**/*.php" />
+            </fileset>
+        </phpdoc2>
+    </target>
+
+    <!-- ============================================  -->
     <!-- Target: phpunit                               -->
     <!-- ============================================  -->
     <target name="phpunit">
