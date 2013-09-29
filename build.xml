@@ -31,8 +31,14 @@
     <!-- Target: phpunit                               -->
     <!-- ============================================  -->
     <target name="phpunit">
+        <echo msg="Starting Tests..." />
+        
+        <delete dir="${builddir}/reports"/>
+        <mkdir dir="${builddir}/reports/tests"/>
+        
         <phpunit configuration="tests/phpunit.xml" haltonfailure="true" haltonerror="true" printsummary="true">
             <formatter type="plain" usefile="false"/>
+            <formatter type="xml" todir="${builddir}/reports"/>
             <batchtest>
                 <fileset dir="tests/Syncroton/">
                     <include name="**/*Tests.php"/>
@@ -41,12 +47,16 @@
                 </fileset>
             </batchtest>
         </phpunit>
+        
+        <phpunitreport infile="${builddir}/reports/testsuites.xml" format="frames" todir="${builddir}/reports/tests"/>
     </target>
     
     <!-- ============================================  -->
     <!-- Target: report                                -->
     <!-- ============================================  -->
     <target name="report">
+        <echo msg="Starting Tests..." />
+        
         <delete dir="${builddir}/reports"/>
         <mkdir dir="${builddir}/reports/tests"/>
         <mkdir dir="${builddir}/reports/coverage"/>
