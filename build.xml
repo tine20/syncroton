@@ -12,7 +12,7 @@
         <include name="**/*.php" />
     </fileset>
     
-    <fileset dir="tests/Syncroton/" id="testFiles">
+    <fileset dir="tests/Syncroton" id="testFiles">
         <include name="**/*Tests.php" />
         <exclude name="**/AllTests.php" />
         <exclude name="ServerTests.php" />

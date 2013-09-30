@@ -7,10 +7,6 @@ $paths = array(
 );
 set_include_path(implode(PATH_SEPARATOR, $paths));
 
-require_once 'Zend/Loader/Autoloader.php';
-$autoloader = Zend_Loader_Autoloader::getInstance();
-$autoloader->setFallbackAutoloader(true);
-
 function getTestDatabase()
 {
     if (file_exists('/tmp/Syncroton_test.sq3')) {
