@@ -1,56 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- ==================================================  -->
-<!-- Build Definition for OpenDocument                   -->
+<!-- Build Definition for Syncroton                      -->
 <!--                                                     -->
-<!-- http://git.syncroton.org/?p=Syncroton;a=summary     -->
-<!-- http://www.phing.info                               -->
+<!-- http://www.syncroton.org                            -->
 <!-- ==================================================  -->
-<project name="syncroton" description="Syncroton build file" default="test">
+<project name="syncroton" description="Syncroton build file" default="phpunit">
 
     <property name="builddir" value="${project.basedir}/build" override="true" />
     
+    <fileset dir="lib/Syncroton" id="sourceFiles">
+        <include name="**/*.php" />
+    </fileset>
+    
+    <fileset dir="tests/Syncroton" id="testFiles">
+        <include name="**/*Tests.php" />
+        <exclude name="**/AllTests.php" />
+        <exclude name="ServerTests.php" />
+    </fileset>
+    
+    <!-- ============================================  -->
+    <!-- Target: clean                                 -->
+    <!-- ============================================  -->
+    <target name="clean">
+        <echo msg="Cleaning up ${builddir}..." />
+        
+        <delete dir="${builddir}" quiet="true" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: phpdoc                                -->
+    <!-- ============================================  -->
+    <target name="phpdoc">
+        <echo msg="Building Syncroton API Documentation..." />
+        
+        <includepath classpath="${project.basedir}/vendor/phpdocumentor" />
+        
+        <mkdir dir="${builddir}/apidocs" />
+        
+        <phpdoc2 title="Syncroton API Documentation" destdir="${builddir}/apidocs" template="responsive-twig">
+            <fileset refid="sourceFiles" />
+        </phpdoc2>
+    </target>
+
     <!-- ============================================  -->
     <!-- Target: phpunit                               -->
     <!-- ============================================  -->
     <target name="phpunit">
+        <echo msg="Starting Tests..." />
+        
+        <delete dir="${builddir}/reports" quiet="true" />
+        <mkdir dir="${builddir}/reports/tests" />
+        
         <phpunit configuration="tests/phpunit.xml" haltonfailure="true" haltonerror="true" printsummary="true">
-            <formatter type="plain" usefile="false"/>
+            <formatter type="plain" usefile="false" />
+            <formatter type="xml" todir="${builddir}/reports" />
             <batchtest>
-                <fileset dir="tests/Syncroton/">
-                    <include name="**/*Tests.php"/>
-                    <exclude name="**/AllTests.php"/>
-                    <exclude name="ServerTests.php"/>
-                </fileset>
+                <fileset refid="testFiles" />
             </batchtest>
         </phpunit>
+        
+        <phpunitreport infile="${builddir}/reports/testsuites.xml" format="frames" todir="${builddir}/reports/tests" />
     </target>
     
     <!-- ============================================  -->
     <!-- Target: report                                -->
     <!-- ============================================  -->
     <target name="report">
-        <delete dir="${builddir}/reports"/>
-        <mkdir dir="${builddir}/reports/tests"/>
-        <mkdir dir="${builddir}/reports/coverage"/>
+        <echo msg="Starting Tests..." />
+        
+        <delete dir="${builddir}/reports" quiet="true" />
+        
+        <mkdir dir="${builddir}/reports/tests" />
+        <mkdir dir="${builddir}/reports/coverage" />
+        
         <coverage-setup database="${builddir}/reports/coverage.db">
-            <fileset dir="lib/Syncroton">
-                <include name="**/*.php"/>
-            </fileset>
+            <fileset refid="sourceFiles" />
         </coverage-setup>
+        
         <phpunit codecoverage="true" configuration="tests/phpunit.xml" haltonfailure="true" haltonerror="true" printsummary="true">
-            <formatter type="xml" todir="${builddir}/reports"/>
+            <formatter type="xml" todir="${builddir}/reports" />
             <batchtest>
-                <fileset dir="tests/Syncroton/">
-                    <include name="**/*Tests.php"/>
-                    <exclude name="**/AllTests.php"/>
-                    <exclude name="ServerTests.php"/>
-                </fileset>
+                <fileset refid="testFiles" />
             </batchtest>
         </phpunit>
-        <phpunitreport infile="${builddir}/reports/testsuites.xml" format="frames" todir="${builddir}/reports/tests"/>
+        
+        <phpunitreport infile="${builddir}/reports/testsuites.xml" format="frames" todir="${builddir}/reports/tests" />
+        
         <coverage-report outfile="${builddir}/reports/coverage.xml">
-            <report todir="${builddir}/reports/coverage" title="Syncroton"/>
+            <report todir="${builddir}/reports/coverage" title="Syncroton" />
         </coverage-report>  
     </target>
     
@@ -69,5 +106,4 @@
         <echo msg="Fetching dependencies for development" />
         <exec command="composer --dev install" passthru="true" />
     </target>
-    
 </project>
