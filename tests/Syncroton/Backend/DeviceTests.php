@@ -148,6 +148,19 @@ class Syncroton_Backend_DeviceTests extends PHPUnit_Framework_TestCase
                 )); 
                 break;
             
+            case Syncroton_Model_Device::TYPE_BLACKBERRY:
+                $device = new Syncroton_Model_Device(array(
+                    'deviceid'   => 'BB2B2449CA',
+                    'devicetype' => Syncroton_Model_Device::TYPE_BLACKBERRY,
+                    'policykey'  => null,
+                    'policyId'   => null,
+                    'ownerId'    => '1234',
+                    'useragent'  => 'RIM-Q10-SQN100-3/10.2.0.1443',
+                    'acsversion' => '14.1',
+                    'remotewipe' => 0
+                )); 
+                break;
+            
             case Syncroton_Model_Device::TYPE_WEBOS:
                 $device = new Syncroton_Model_Device(array(
                     'deviceid'   => 'webos-abcd',
@@ -169,7 +182,7 @@ class Syncroton_Backend_DeviceTests extends PHPUnit_Framework_TestCase
                     'policykey'  => null,
                     'policyId'   => null,
                     'ownerId'    => '1234',
-                    'useragent'  => 'blabla',
+                    'useragent'  => 'Apple-iPhone3C1/1101.465',
                     'acsversion' => '12.1',
                     'remotewipe' => 0
                 )); 

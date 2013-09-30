@@ -22,6 +22,7 @@ class Syncroton_Model_Device extends Syncroton_Model_AEntry implements Syncroton
     const TYPE_ANDROID         = 'android';
     const TYPE_ANDROID_40      = 'android40';
     const TYPE_SMASUNGGALAXYS2 = 'samsunggti9100'; // Samsung Galaxy S-3
+    const TYPE_BLACKBERRY      = 'blackberry';
     
     /**
      * Returns major firmware version of this device
@@ -30,14 +31,19 @@ class Syncroton_Model_Device extends Syncroton_Model_AEntry implements Syncroton
      */
     public function getMajorVersion()
     {
-        switch ($this->devicetype) {
+        switch (strtolower($this->devicetype)) {
+            case Syncroton_Model_Device::TYPE_BLACKBERRY:
+                if (preg_match('/(.+)\/(.+)/', $this->useragent, $matches)) {
+                    list(, $name, $version) = $matches;
+                    return $version;
+                }
+                break;
+                
             case Syncroton_Model_Device::TYPE_IPHONE:
                 if (preg_match('/(.+)\/(\d+)\.(\d+)/', $this->useragent, $matches)) {
                     list(, $name, $majorVersion, $minorVersion) = $matches;
                     return $majorVersion;
                 }
-                break;
-            default:
                 break;
         }
         
