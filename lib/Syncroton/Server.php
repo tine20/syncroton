@@ -246,9 +246,9 @@ class Syncroton_Server
      * @param unknown     $priority
      * @param DOMDocument $dom
      * @param string      $method
-     * @param string      $method
+     * @param int         $line
      */
-    protected function _logDomDocument($priority, DOMDocument $dom, $method, $method)
+    protected function _logDomDocument($priority, DOMDocument $dom, $method, $line)
     {
         $loops = 0;
         
@@ -262,7 +262,7 @@ class Syncroton_Server
         
         // log data in 1MByte chunks
         while (!feof($tempStream)) {
-            $this->_logger->log($method . '::' . $method . " xml response($loops):\n" . fread($tempStream, 1048576), $priority);
+            $this->_logger->log($method . '::' . $line . " xml response($loops):\n" . fread($tempStream, 1048576), $priority);
             
             $loops++;
         }
