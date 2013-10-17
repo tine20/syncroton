@@ -19,6 +19,15 @@
     </fileset>
     
     <!-- ============================================  -->
+    <!-- Target: autodiscover                          -->
+    <!-- ============================================  -->
+    <target name="autodiscover">
+        <echo msg="(Re)Creating autodiscover.php..." />
+        
+        <!-- @todo implement  -->
+    </target>
+
+    <!-- ============================================  -->
     <!-- Target: clean                                 -->
     <!-- ============================================  -->
     <target name="clean">
