@@ -61,14 +61,14 @@ abstract class Syncroton_Command_Wbxml implements Syncroton_Command_ICommand
      * @var DOMDocument
      */
     protected $_outputDom;
-
+    
     /**
      * the domDocucment containing the xml request from the client
      *
      * @var DOMDocument
      */
     protected $_requestBody;
-        
+    
     /**
      * the default namespace
      *
