@@ -102,15 +102,27 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
             $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " Folders to monitor($lifeTime / $intervalStart / $intervalEnd / $status): " . print_r($folders, true));
         
         if ($status === self::STATUS_NO_CHANGES_FOUND) {
-
-            $folderWithChanges = array();
-            
             do {
                 // take a break to save battery lifetime
                 sleep(Syncroton_Registry::getPingTimeout());
 
+                try {
+                    $device = $this->_deviceBackend->get($this->_device->id);
+                } catch (Syncroton_Exception_NotFound $e) {
+                    if ($this->_logger instanceof Zend_Log)
+                        $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " " . $e->getMessage());
+
+                    $status = self::STATUS_FOLDER_NOT_FOUND;
+                    break;
+                } catch (Exception $e) {
+                    if ($this->_logger instanceof Zend_Log)
+                        $this->_logger->err(__METHOD__ . '::' . __LINE__ . " " . $e->getMessage());
+
+                    // do nothing, maybe temporal issue, should we stop?
+                    continue;
+                }
+
                 // if another Ping command updated lastping property, we can stop processing this Ping command request
-                $device = $this->_deviceBackend->get($this->_device->id);
                 if ((isset($device->lastping) && $device->lastping instanceof DateTime) &&
                     $device->pingfolder === $this->_device->pingfolder &&
                     $device->lastping->getTimestamp() > $this->_device->lastping->getTimestamp() ) {
