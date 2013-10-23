@@ -19,7 +19,7 @@ class Syncroton_Command_Options
 {
     /**
      * this function generates the response for the client
-     * 
+     *
      * @return void
      */
     public function getHeaders()
@@ -28,7 +28,7 @@ class Syncroton_Command_Options
         return array(
             'MS-Server-ActiveSync'  => '14.00.0536.000',
             'MS-ASProtocolVersions' => '2.5,12.0,12.1,14.0,14.1',
-            'MS-ASProtocolCommands' => 'CreateCollection,DeleteCollection,FolderCreate,FolderDelete,FolderSync,FolderUpdate,GetAttachment,GetHierarchy,GetItemEstimate,ItemOperations,MeetingResponse,MoveCollection,MoveItems,Provision,ResolveRecipients,Ping,SendMail,Search,Settings,SmartForward,SmartReply,Sync,ValidateCert'
+            'MS-ASProtocolCommands' => 'FolderCreate,FolderDelete,FolderSync,FolderUpdate,GetAttachment,GetItemEstimate,ItemOperations,MeetingResponse,MoveItems,Provision,ResolveRecipients,Ping,SendMail,Search,Settings,SmartForward,SmartReply,Sync,ValidateCert'
         );
-    }    
+    }
 }
