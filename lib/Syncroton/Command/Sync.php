@@ -415,6 +415,9 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
         $collections = $this->_outputDom->createElementNS('uri:AirSync', 'Collections');
 
         $totalChanges = 0;
+
+        // Detect devices that do not support empty Sync reponse
+        $emptySyncSupported = !preg_match('/(meego|nokian800)/i', $this->_device->useragent);
         
         // continue only if there are changes or no time is left
         if ($this->_heartbeatInterval > 0) {
@@ -890,7 +893,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                 if ($this->_logger instanceof Zend_Log)
                     $this->_logger->info(__METHOD__ . '::' . __LINE__ . " current synckey is ". $collectionData->syncState->counter);
                 
-                if ($collection->childNodes->length > 4 || $collectionData->syncState->counter != $collectionData->syncKey) {
+                if (!$emptySyncSupported || $collection->childNodes->length > 4 || $collectionData->syncState->counter != $collectionData->syncKey) {
                      $collections->appendChild($collection);
                 }
             }
