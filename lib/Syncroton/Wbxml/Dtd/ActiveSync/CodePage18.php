@@ -49,7 +49,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage18 extends Syncroton_Wbxml_Dtd_Acti
         'PhoneNumber'               => 0x1c,
         'UserInformation'           => 0x1d,
         'EmailAddresses'            => 0x1e,
-        'SmtpAddress'               => 0x1f,
+        'SMTPAddress'               => 0x1f,
         'UserAgent'                 => 0x20,
         'EnableOutboundSMS'         => 0x21,
         'MobileOperator'            => 0x22,

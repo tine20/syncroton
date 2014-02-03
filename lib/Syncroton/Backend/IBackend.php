@@ -47,5 +47,14 @@ interface Syncroton_Backend_IBackend
      * @param  Syncroton_Model_IDevice $_device
      * @return Syncroton_Model_IDevice
      */
-    public function update($model);    
+    public function update($model);
+
+    /**
+     * Returns list of user accounts
+     *
+     * @param Syncroton_Model_Device $device The device
+     *
+     * @return array List of Syncroton_Model_Account objects
+     */
+    public function userAccounts($device);
 }

@@ -166,6 +166,18 @@ abstract class Syncroton_Backend_ABackend implements Syncroton_Backend_IBackend
     }
 
     /**
+     * Returns list of user accounts
+     *
+     * @param Syncroton_Model_Device $device The device
+     *
+     * @return array List of Syncroton_Model_Account objects
+     */
+    public function userAccounts($device)
+    {
+        return array();
+    }
+
+    /**
      * convert from camelCase to camel_case
      * @param  string  $string
      * @return string

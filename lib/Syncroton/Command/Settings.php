@@ -82,16 +82,26 @@ class Syncroton_Command_Settings extends Syncroton_Command_Wbxml
             $set->appendChild($this->_outputDom->createElementNS('uri:Settings', 'Status', self::STATUS_SUCCESS));
         }
         
-        if($this->_userInformationRequested === true) {
-            $smtpAddresses = array();
-            
+        if ($this->_userInformationRequested === true) {
             $userInformation = $settings->appendChild($this->_outputDom->createElementNS('uri:Settings', 'UserInformation'));
             $userInformation->appendChild($this->_outputDom->createElementNS('uri:Settings', 'Status', self::STATUS_SUCCESS));
+
             $get = $userInformation->appendChild($this->_outputDom->createElementNS('uri:Settings', 'Get'));
-            if(!empty($smtpAddresses)) {
+/*
+            $smtpAddresses = array();
+            if (!empty($smtpAddresses)) {
                 $emailAddresses = $get->appendChild($this->_outputDom->createElementNS('uri:Settings', 'EmailAddresses'));
                 foreach($smtpAddresses as $smtpAddress) {
                     $emailAddresses->appendChild($this->_outputDom->createElementNS('uri:Settings', 'SMTPAddress', $smtpAddress));
+                }
+            }
+*/
+            $userAccounts = $this->_deviceBackend->userAccounts($this->_device);
+            if (!empty($userAccounts)) {
+                $accounts = $get->appendChild($this->_outputDom->createElementNS('uri:Settings', 'Accounts'));
+                foreach ((array) $userAccounts as $account) {
+                    $element = $accounts->appendChild($this->_outputDom->createElementNS('uri:Settings', 'Account'));
+                    $account->appendXML($element, $this->_device);
                 }
             }
         }
