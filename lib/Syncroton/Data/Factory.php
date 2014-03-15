@@ -21,6 +21,7 @@ class Syncroton_Data_Factory
     const CLASS_CALENDAR = 'Calendar';
     const CLASS_CONTACTS = 'Contacts';
     const CLASS_EMAIL    = 'Email';
+    const CLASS_NOTES    = 'Notes';
     const CLASS_TASKS    = 'Tasks';
     const STORE_EMAIL    = 'Mailbox';
     const STORE_GAL      = 'GAL';
@@ -50,6 +51,10 @@ class Syncroton_Data_Factory
                 $className = Syncroton_Registry::get(Syncroton_Registry::EMAIL_DATA_CLASS);
                 break;
                 
+            case self::CLASS_NOTES:
+                $className = Syncroton_Registry::get(Syncroton_Registry::NOTES_DATA_CLASS);
+                break;
+
             case self::CLASS_TASKS:
                 $className = Syncroton_Registry::get(Syncroton_Registry::TASKS_DATA_CLASS);
                 break;

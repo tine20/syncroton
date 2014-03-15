@@ -30,6 +30,7 @@ class Syncroton_Registry extends ArrayObject
     const CALENDAR_DATA_CLASS = 'calendar_data_class';
     const CONTACTS_DATA_CLASS = 'contacts_data_class';
     const EMAIL_DATA_CLASS    = 'email_data_class';
+    const NOTES_DATA_CLASS    = 'notes_data_class';
     const TASKS_DATA_CLASS    = 'tasks_data_class';
     const GAL_DATA_CLASS      = 'gal_data_class';
     
@@ -356,6 +357,15 @@ class Syncroton_Registry extends ArrayObject
         self::set(self::EMAIL_DATA_CLASS, $className);
     }
     
+    public static function setNotesDataClass($className)
+    {
+        if (!class_exists($className)) {
+            throw new InvalidArgumentException('invalid $_className provided');
+        }
+
+        self::set(self::NOTES_DATA_CLASS, $className);
+    }
+
     public static function setTasksDataClass($className)
     {
         if (!class_exists($className)) {

@@ -60,6 +60,10 @@ class Syncroton_Command_FolderCreate extends Syncroton_Command_Wbxml
             case Syncroton_Command_FolderSync::FOLDERTYPE_MAIL_USER_CREATED:
                 $folder->class = Syncroton_Data_Factory::CLASS_EMAIL;
                 break;
+
+            case Syncroton_Command_FolderSync::FOLDERTYPE_NOTE_USER_CREATED:
+                $folder->class = Syncroton_Data_Factory::CLASS_NOTES;
+                break;
                 
             case Syncroton_Command_FolderSync::FOLDERTYPE_TASK_USER_CREATED:
                 $folder->class = Syncroton_Data_Factory::CLASS_TASKS;

@@ -48,7 +48,7 @@ class Syncroton_Command_FolderSync extends Syncroton_Command_Wbxml
     const FOLDERTYPE_CONTACT_USER_CREATED   = 14;
     const FOLDERTYPE_TASK_USER_CREATED      = 15;
     const FOLDERTYPE_JOURNAL_USER_CREATED   = 16;
-    const FOLDERTYPE_NOTES_USER_CREATED     = 17;
+    const FOLDERTYPE_NOTE_USER_CREATED      = 17;
     const FOLDERTYPE_UNKOWN                 = 18;
     
     protected $_defaultNameSpace    = 'uri:FolderHierarchy';
@@ -58,6 +58,7 @@ class Syncroton_Command_FolderSync extends Syncroton_Command_Wbxml
         Syncroton_Data_Factory::CLASS_CALENDAR,
         Syncroton_Data_Factory::CLASS_CONTACTS,
         Syncroton_Data_Factory::CLASS_EMAIL,
+        Syncroton_Data_Factory::CLASS_NOTES,
         Syncroton_Data_Factory::CLASS_TASKS
     );
 

@@ -235,27 +235,26 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
             switch($collectionData->folder->class) {
                 case Syncroton_Data_Factory::CLASS_CALENDAR:
                     $dataClass = 'Syncroton_Model_Event';
-                    
                     break;
                     
                 case Syncroton_Data_Factory::CLASS_CONTACTS:
                     $dataClass = 'Syncroton_Model_Contact';
-                    
                     break;
                     
                 case Syncroton_Data_Factory::CLASS_EMAIL:
                     $dataClass = 'Syncroton_Model_Email';
-                    
                     break;
                     
+                case Syncroton_Data_Factory::CLASS_NOTES:
+                    $dataClass = 'Syncroton_Model_Note';
+                    break;
+
                 case Syncroton_Data_Factory::CLASS_TASKS:
                     $dataClass = 'Syncroton_Model_Task';
-                    
                     break;
                     
                 default:
                     throw new Syncroton_Exception_UnexpectedValue('invalid class provided');
-                    
                     break;
             }
             
