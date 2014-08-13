@@ -523,7 +523,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
             } while (Syncroton_Server::validateSession() && time() - $intervalStart < $this->_heartbeatInterval - (Syncroton_Registry::getPingTimeout() + 10));
         }
         
-        foreach($this->_collections as $collectionData) {
+        foreach ($this->_collections as $collectionData) {
             $collectionChanges = 0;
             
             /**
@@ -542,6 +542,9 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                 $collection->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'SyncKey', 0));
                 $collection->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'CollectionId', $collectionData->collectionId));
                 $collection->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'Status', self::STATUS_FOLDER_HIERARCHY_HAS_CHANGED));
+
+                // break the loop if folder is empty / invalid
+                continue;
 
             // invalid synckey provided
             } elseif (! ($collectionData->syncState instanceof Syncroton_Model_ISyncState)) {
@@ -680,7 +683,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                 
                 $responses = $this->_outputDom->createElementNS('uri:AirSync', 'Responses');
                 
-                // send reponse for newly added entries
+                // send response for newly added entries
                 if(!empty($clientModifications['added'])) {
                     foreach($clientModifications['added'] as $entryData) {
                         $add = $responses->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'Add'));
@@ -693,7 +696,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                     }
                 }
                 
-                // send reponse for changed entries
+                // send response for changed entries
                 if(!empty($clientModifications['changed'])) {
                     foreach($clientModifications['changed'] as $serverId => $status) {
                         if ($status !== Syncroton_Command_Sync::STATUS_SUCCESS) {
@@ -979,7 +982,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                     throw $zdse;
                 }
             }
-            
+
             // store current filter type
             try {
                 $folderState = $this->_folderBackend->get($collectionData->folder);
