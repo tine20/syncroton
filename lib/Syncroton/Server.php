@@ -135,7 +135,7 @@ class Syncroton_Server
         header("MS-Server-ActiveSync: 14.00.0536.000");
 
         // avoid sending HTTP header "Content-Type: text/html" for empty sync responses
-        ini_set('default_mimetype', null);
+        ini_set('default_mimetype', 'application/vnd.ms-sync.wbxml');
         
         try {
             $command = new $className($requestBody, $device, $requestParameters);
