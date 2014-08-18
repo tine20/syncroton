@@ -131,6 +131,10 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
         }
         
         $this->_globalWindowSize = isset($requestXML->WindowSize) ? (int)$requestXML->WindowSize : 100;
+
+        if (!$this->_globalWindowSize || $this->_globalWindowSize > 512) {
+            $this->_globalWindowSize = 512;
+        }
         
         if ($this->_globalWindowSize > $this->_maxWindowSize) {
             $this->_globalWindowSize = $this->_maxWindowSize;
