@@ -36,6 +36,7 @@ class Syncroton_Registry extends ArrayObject
     
     const DEFAULT_POLICY      = 'default_policy';
     const PING_TIMEOUT        = 'ping_timeout';
+    const MAX_PING_INTERVAL   = 'max_ping_interval';
     const QUIET_TIME          = 'quiet_time';
     
     const DATABASE            = 'database';
@@ -239,6 +240,20 @@ class Syncroton_Registry extends ArrayObject
         }
         
         return self::get(self::FOLDERBACKEND);
+    }
+
+    /**
+     * Return maximum ping interval (HeartbeatInterval) value (in seconds)
+     *
+     * @return int
+     */
+    public static function getMaxPingInterval()
+    {
+        if (!self::isRegistered(self::MAX_PING_INTERVAL)) {
+            return Syncroton_Command_Ping::MAX_PING_INTERVAL;
+        }
+
+        return self::get(self::MAX_PING_INTERVAL);
     }
 
     /**
