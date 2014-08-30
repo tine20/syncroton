@@ -47,5 +47,5 @@ interface Syncroton_Backend_IBackend
      * @param  Syncroton_Model_IDevice $_device
      * @return Syncroton_Model_IDevice
      */
-    public function update($model);    
+    public function update($model);
 }

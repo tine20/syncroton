@@ -17,15 +17,7 @@
  */
 class Syncroton_Command_Settings extends Syncroton_Command_Wbxml 
 {
-    const STATUS_SUCCESS                = 1;
-    const STATUS_PROTOCOL_ERROR         = 2;
-    const STATUS_ACCESS_DENIED          = 3;
-    const STATUS_SERVICE_UNAVAILABLE    = 4;
-    const STATUS_INVALID_ARGUMENTS      = 5;
-    const STATUS_CONFLICTING_ARGUMENTS  = 6;
-    
-    const STATUS_DEVICEPASSWORD_TO_LONG = 5;
-    const STATUS_DEVICEPASSWORD_PASSWORD_RECOVERY_DISABLED = 7;
+    const STATUS_SUCCESS = 1;
     
     protected $_defaultNameSpace = 'uri:Settings';
     protected $_documentElement  = 'Settings';
@@ -34,7 +26,10 @@ class Syncroton_Command_Settings extends Syncroton_Command_Wbxml
      * @var Syncroton_Model_DeviceInformation
      */
     protected $_deviceInformation;
+
     protected $_userInformationRequested = false;
+    protected $_OofGet;
+    protected $_OofSet;
     
     
     /**
@@ -63,12 +58,19 @@ class Syncroton_Command_Settings extends Syncroton_Command_Wbxml
         if(isset($xml->UserInformation->Get)) {
             $this->_userInformationRequested = true;
         }
-        
-    }    
+
+        if (isset($xml->Oof)) {
+            if (isset($xml->Oof->Get)) {
+                $this->_OofGet = array('bodyType' => $xml->Oof->Get->BodyType);
+            } else if (isset($xml->Oof->Set)) {
+                $this->_OofSet = new Syncroton_Model_Oof($xml->Oof->Set);
+            }
+        }
+    }
     
     /**
      * this function generates the response for the client
-     * 
+     *
      */
     public function getResponse()
     {
@@ -94,6 +96,49 @@ class Syncroton_Command_Settings extends Syncroton_Command_Wbxml
                     $emailAddresses->appendChild($this->_outputDom->createElementNS('uri:Settings', 'SMTPAddress', $smtpAddress));
                 }
             }
+        }
+
+        // Out-of-Office
+        if (!empty($this->_OofGet)) {
+            try {
+                $OofGet = $this->_deviceBackend->getOOF($this->_OofGet);
+            } catch (Exception $e) {
+                if ($e instanceof Syncroton_Exception_Status) {
+                    $OofStatus = $e->getCode();
+                } else {
+                    $OofStatus = Syncroton_Exception_Status::SERVER_ERROR;
+                }
+
+                if ($this->_logger instanceof Zend_Log) {
+                    $this->_logger->warn(__METHOD__ . '::' . __LINE__ . " Setting OOF failed: " . $e->getMessage());
+                }
+            }
+
+            // expected empty result if OOF is not supported by the server
+            if ($OofGet instanceof Syncroton_Model_Oof) {
+                $Oof = $settings->appendChild($this->_outputDom->createElementNS('uri:Settings', 'Oof'));
+                $Oof->appendChild($this->_outputDom->createElementNS('uri:Settings', 'Status', $OofStatus));
+                $Get = $Oof->appendChild($this->_outputDom->createElementNS('uri:Settings', 'Get'));
+                $OofGet->appendXML($Get, $this->_device);
+            }
+        } else if (!empty($this->_OofSet)) {
+            try {
+                $this->_deviceBackend->setOOF($this->_OofSet);
+                $OofStatus = self::STATUS_SUCCESS;
+            } catch (Exception $e) {
+                if ($e instanceof Syncroton_Exception_Status) {
+                    $OofStatus = $e->getCode();
+                } else {
+                    $OofStatus = Syncroton_Exception_Status::SERVER_ERROR;
+                }
+
+                if ($this->_logger instanceof Zend_Log) {
+                    $this->_logger->warn(__METHOD__ . '::' . __LINE__ . " Setting OOF failed: " . $e->getMessage());
+                }
+            }
+
+            $Oof = $settings->appendChild($this->_outputDom->createElementNS('uri:Settings', 'Oof'));
+            $Oof->appendChild($this->_outputDom->createElementNS('uri:Settings', 'Status', $OofStatus));
         }
 
         return $this->_outputDom;

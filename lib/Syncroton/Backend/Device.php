@@ -52,6 +52,43 @@ class Syncroton_Backend_Device extends Syncroton_Backend_ABackend implements Syn
         
         $model = new $this->_modelClassName($data);
         
-        return $model;    
+        return $model;
+    }
+
+    /**
+     * Returns list of user accounts
+     *
+     * @param Syncroton_Model_Device $device The device
+     *
+     * @return array List of Syncroton_Model_Account objects
+     */
+    public function userAccounts($device)
+    {
+        return array();
+    }
+
+    /**
+     * Returns OOF information
+     *
+     * @param array $request Oof/Get request data
+     *
+     * @return Syncroton_Model_Oof Response object or NULL if OOF is not supported
+     * @throws Syncroton_Exception_Status
+     */
+    public function getOOF($request)
+    {
+        return null; // not implemented
+    }
+
+    /**
+     * Sets OOF information
+     *
+     * @param Syncroton_Model_Oof $request Request object
+     *
+     * @throws Syncroton_Exception_Status
+     */
+    public function setOOF($request)
+    {
+        // not implemented
     }
 }
