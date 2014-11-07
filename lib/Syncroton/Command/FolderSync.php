@@ -139,7 +139,10 @@ class Syncroton_Command_FolderSync extends Syncroton_Command_Wbxml
             try {
                 // retrieve all folders available in data backend
                 $serverFolders = $dataController->getAllFolders();
-
+                
+                // retrieve all folders sent to client
+                $clientFolders = $this->_folderBackend->getFolderState($this->_device, $class);
+                
                 if ($this->_syncState->counter > 0) {
                     // retrieve all folders changed since last sync
                     $changedFolders = $dataController->getChangedFolders($this->_syncState->lastsync, $this->_syncTimeStamp);
@@ -147,8 +150,8 @@ class Syncroton_Command_FolderSync extends Syncroton_Command_Wbxml
                     $changedFolders = array();
                 }
                 
-                // retrieve all folders sent to client
-                $clientFolders = $this->_folderBackend->getFolderState($this->_device, $class);
+                // only folders which were sent to the client already are allowed to be in $changedFolders
+                $changedFolders = array_intersect_key($changedFolders, $clientFolders);
                 
             } catch (Exception $e) {
                 if ($this->_logger instanceof Zend_Log)

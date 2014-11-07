@@ -81,13 +81,18 @@ class Syncroton_Command_FolderSyncTests extends Syncroton_Command_ATestCase
         $syncState->lastsync = new DateTime('2013-02-09 10:40:36', new DateTimeZone('utc'));
         $syncState = Syncroton_Registry::getSyncStateBackend()->update($syncState);
         
-        Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime(null, new DateTimeZone('utc')))->createFolder(
+        $createdFolder = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime(null, new DateTimeZone('utc')))->createFolder(
             new Syncroton_Model_Folder(array(
                 'serverId'    => 'addressbookFolderId2',
                 'parentId'    => null,
                 'displayName' => 'User created Contacts Folder',
                 'type'        => Syncroton_Command_FolderSync::FOLDERTYPE_CONTACT_USER_CREATED
             ))
+        );
+        
+        // update created folder to validate that created folders are not returned as changes folders
+        Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime(null, new DateTimeZone('utc')))->updateFolder(
+            $createdFolder
         );
         
         Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime(null, new DateTimeZone('utc')))->updateFolder(
