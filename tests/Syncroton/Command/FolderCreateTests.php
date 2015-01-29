@@ -212,8 +212,16 @@ class Syncroton_Command_FolderCreateTests extends Syncroton_Command_ATestCase
         
         $folderCreate = new Syncroton_Command_FolderCreate($doc, $this->_device, null);
         
-        $this->setExpectedException('Syncroton_Exception_UnexpectedValue');
-        
         $folderCreate->handle();
+        
+        $responseDoc = $folderCreate->getResponse();
+        #$responseDoc->formatOutput = true; echo $responseDoc->saveXML();
+        
+        $xpath = new DomXPath($responseDoc);
+        $xpath->registerNamespace('FolderHierarchy', 'uri:FolderHierarchy');
+        
+        $nodes = $xpath->query('//FolderHierarchy:FolderCreate/FolderHierarchy:Status');
+        $this->assertEquals(1, $nodes->length, $responseDoc->saveXML());
+        $this->assertEquals(Syncroton_Command_FolderSync::STATUS_UNKNOWN_ERROR, $nodes->item(0)->nodeValue, $responseDoc->saveXML());
     }
 }
