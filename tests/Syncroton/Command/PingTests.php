@@ -39,7 +39,7 @@ class Syncroton_Command_PingTests extends Syncroton_Command_ATestCase
         $doc = new DOMDocument();
         $doc->loadXML('<?xml version="1.0" encoding="utf-8"?>
             <!DOCTYPE AirSync PUBLIC "-//AIRSYNC//DTD AirSync//EN" "http://www.microsoft.com/">
-            <Ping xmlns="uri:Ping"><HeartBeatInterval>10</HeartBeatInterval><Folders><Folder><Id>14</Id><Class>Contacts</Class></Folder></Folders></Ping>'
+            <Ping xmlns="uri:Ping"><HeartbeatInterval>10</HeartbeatInterval><Folders><Folder><Id>14</Id><Class>Contacts</Class></Folder></Folders></Ping>'
         );
         
         $search = new Syncroton_Command_Ping($doc, $this->_device, null);
@@ -127,7 +127,7 @@ class Syncroton_Command_PingTests extends Syncroton_Command_ATestCase
         $doc = new DOMDocument();
         $doc->loadXML('<?xml version="1.0" encoding="utf-8"?>
             <!DOCTYPE AirSync PUBLIC "-//AIRSYNC//DTD AirSync//EN" "http://www.microsoft.com/">
-            <Ping xmlns="uri:Ping"><HeartBeatInterval>10</HeartBeatInterval><Folders><Folder><Id>addressbookFolderId</Id><Class>Contacts</Class></Folder></Folders></Ping>'
+            <Ping xmlns="uri:Ping"><HeartbeatInterval>10</HeartbeatInterval><Folders><Folder><Id>addressbookFolderId</Id><Class>Contacts</Class></Folder></Folders></Ping>'
         );
         
         $search = new Syncroton_Command_Ping($doc, $this->_device, null);
@@ -182,7 +182,7 @@ class Syncroton_Command_PingTests extends Syncroton_Command_ATestCase
         $doc = new DOMDocument();
         $doc->loadXML('<?xml version="1.0" encoding="utf-8"?>
             <!DOCTYPE AirSync PUBLIC "-//AIRSYNC//DTD AirSync//EN" "http://www.microsoft.com/">
-            <Ping xmlns="uri:Ping"><HeartBeatInterval>10</HeartBeatInterval></Ping>'
+            <Ping xmlns="uri:Ping"><HeartbeatInterval>10</HeartbeatInterval></Ping>'
         );
         $ping = new Syncroton_Command_Ping($doc, $this->_device, null);
         $ping->handle();
