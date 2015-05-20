@@ -97,6 +97,10 @@ abstract class Syncroton_Backend_ABackend implements Syncroton_Backend_IBackend
     {
         $id = $id instanceof $this->_modelInterfaceName ? $id->id : $id;
         
+        if (empty($id)) {
+            throw new Syncroton_Exception_NotFound('id can not be empty');
+        }
+        
         $select = $this->_db->select()
             ->from($this->_tablePrefix . $this->_tableName)
             ->where('id = ?', $id);
