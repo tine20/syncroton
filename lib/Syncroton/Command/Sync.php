@@ -56,7 +56,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
     const TRUNCATE_51200                                = 6;
     const TRUNCATE_102400                               = 7;
     const TRUNCATE_NOTHING                              = 8;
-
+    
     /**
      * filter types
      */
@@ -70,7 +70,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
     const FILTER_6_MONTHS_BACK  = 7;
     const FILTER_INCOMPLETE     = 8;
     
-
+    
     protected $_defaultNameSpace    = 'uri:AirSync';
     protected $_documentElement     = 'Sync';
     
@@ -82,7 +82,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
     protected $_collections = array();
     
     protected $_modifications = array();
-
+    
     /**
      * the global WindowSize
      *
@@ -123,11 +123,24 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
             return $this->_outputDom;
         }
         
-        
         if (isset($requestXML->HeartbeatInterval)) {
+            $intervalDiv = 1;
             $this->_heartbeatInterval = (int)$requestXML->HeartbeatInterval;
-        } elseif (isset($requestXML->Wait)) {
-            $this->_heartbeatInterval = (int)$requestXML->Wait * 60;
+        } else if (isset($requestXML->Wait)) {
+            $intervalDiv = 60;
+            $this->_heartbeatInterval = (int)$requestXML->Wait * $intervalDiv;
+        }
+        
+        $maxInterval = Syncroton_Registry::getPingInterval();
+        if ($maxInterval <= 0 || $maxInterval > Syncroton_Server::MAX_HEARTBEAT_INTERVAL) {
+            $maxInterval = Syncroton_Server::MAX_HEARTBEAT_INTERVAL;
+        }
+        
+        if ($this->_heartbeatInterval && $this->_heartbeatInterval > $maxInterval) {
+            $sync = $this->_outputDom->documentElement;
+            $sync->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'Status', self::STATUS_WAIT_INTERVAL_OUT_OF_RANGE));
+            $sync->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'Limit', floor($maxInterval/$intervalDiv)));
+            $this->_heartbeatInterval = null;
         }
         
         $this->_globalWindowSize = isset($requestXML->WindowSize) ? (int)$requestXML->WindowSize : 100;
@@ -139,7 +152,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
         if ($this->_globalWindowSize > $this->_maxWindowSize) {
             $this->_globalWindowSize = $this->_maxWindowSize;
         }
-
+        
         // load options from lastsynccollection
         $lastSyncCollection = array('options' => array());
         if (!empty($this->_device->lastsynccollection)) {

@@ -19,6 +19,7 @@ class Syncroton_Server
     const PARAMETER_COLLECTIONID   = 1;
     const PARAMETER_ITEMID         = 3;
     const PARAMETER_OPTIONS        = 7;
+    const MAX_HEARTBEAT_INTERVAL   = 3540; // 59 minutes
     
     protected $_body;
     

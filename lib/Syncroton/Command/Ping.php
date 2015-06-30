@@ -26,6 +26,8 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
     const STATUS_FOLDER_NOT_FOUND           = 7;
     const STATUS_GENERAL_ERROR              = 8;
     
+    const MAX_PING_INTERVAL                 = 3540; // 59 minutes limit defined in Activesync protocol spec. 
+    
     protected $_skipValidatePolicyKey = true;
     
     protected $_changesDetected = false;
@@ -57,8 +59,8 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
             $xml = simplexml_import_dom($this->_requestBody);
             $xml->registerXPathNamespace('Ping', 'Ping');
 
-            if(isset($xml->HeartBeatInterval)) {
-                $this->_device->pinglifetime = (int)$xml->HeartBeatInterval;
+            if(isset($xml->HeartbeatInterval)) {
+                $this->_device->pinglifetime = (int)$xml->HeartbeatInterval;
             }
             
             if (isset($xml->Folders->Folder)) {
@@ -79,15 +81,26 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
                 $this->_device->pingfolder = serialize(array_keys($folders));
             }
         }
-
+        
         $this->_device->lastping = new DateTime('now', new DateTimeZone('utc'));
 
         if ($status == self::STATUS_NO_CHANGES_FOUND) {
             $this->_device = $this->_deviceBackend->update($this->_device);
         }
         
-        $lifeTime = $this->_device->pinglifetime;
-        #Tinebase_Core::setExecutionLifeTime($lifeTime);
+        $lifeTime    = $this->_device->pinglifetime;
+        $maxInterval = Syncroton_Registry::getPingInterval();
+
+        if ($maxInterval <= 0 || $maxInterval > Syncroton_Server::MAX_HEARTBEAT_INTERVAL) {
+            $maxInterval = Syncroton_Server::MAX_HEARTBEAT_INTERVAL;
+        }
+
+        if ($lifeTime > $maxInterval) {
+            $ping = $this->_outputDom->documentElement;
+            $ping->appendChild($this->_outputDom->createElementNS('uri:Ping', 'Status', self::STATUS_INTERVAL_TO_GREAT_OR_SMALL));
+            $ping->appendChild($this->_outputDom->createElementNS('uri:Ping', 'HeartbeatInterval', $maxInterval));
+            return;
+        }
         
         $intervalEnd = $intervalStart + $lifeTime;
         $secondsLeft = $intervalEnd;

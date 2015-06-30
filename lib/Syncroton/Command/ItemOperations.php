@@ -134,6 +134,24 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
                         $this->_parts[] = $partStream;
                         
                         $fileReference->part = count($this->_parts);
+                    } 
+                    
+                    /**
+                     * the client requested a range. But we return the whole file.
+                     * 
+                     * That's not correct, but allowed. The server is allowed to overwrite the range.
+                     * 
+                     * @todo implement cutting $fileReference->data into pieces
+                     */
+                    if (isset($fetch['options']['range'])) {
+                        $dataSize = $this->_getDataSize($fileReference->data);
+                        
+                        $total = $this->_outputDom->createElementNS('uri:ItemOperations', 'Total', $dataSize);
+                        $properties->appendChild($total);
+                        
+                        $rangeEnd = $dataSize > 0 ?  $dataSize - 1 : 0;
+                        $range = $this->_outputDom->createElementNS('uri:ItemOperations', 'Range', '0-' . $rangeEnd);
+                        $properties->appendChild($range);
                     }
                     
                     $fileReference->appendXML($properties, $this->_device);
@@ -176,10 +194,16 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
         return $this->_outputDom;
     }
     
+    /**
+     * parse fetch request
+     * 
+     * @param SimpleXMLElement $fetch
+     * @return array
+     */
     protected function _handleFetch(SimpleXMLElement $fetch)
     {
         $fetchArray = array(
-            'store' => (string)$fetch->Store,
+            'store'   => (string)$fetch->Store,
             'options' => array()
         );
         
@@ -215,7 +239,7 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
                     $fetchArray['options']['bodyPreferences'][$type] = array(
                         'type' => $type
                     );
-            
+                    
                     // optional
                     if (isset($bodyPreference->TruncationSize)) {
                         $fetchArray['options']['bodyPreferences'][$type]['truncationSize'] = (int) $bodyPreference->TruncationSize;
@@ -227,11 +251,21 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
                     }
                 }
             }
+            
+            if (isset($airSyncBase->Range)) {
+                $fetchArray['options']['range'] = (string) $airSyncBase->Range;
+            }
         }
         
         return $fetchArray;
     }
     
+    /**
+     * handle empty folder request
+     * 
+     * @param SimpleXMLElement $emptyFolderContent
+     * @return array
+     */
     protected function _handleEmptyFolderContents(SimpleXMLElement $emptyFolderContent)
     {
         $folderArray = array(
@@ -249,5 +283,23 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
         }
         
         return $folderArray;
+    }
+
+    /**
+     * return length of data
+     * 
+     * @param string|resource $data
+     * @return number
+     */
+    protected function _getDataSize($data)
+    {
+        if (is_resource($data)) {
+            rewind($data);
+            fseek($data, 0, SEEK_END);
+            return ftell($data);
+
+        } else {
+            return strlen($data);
+        }
     }
 }
