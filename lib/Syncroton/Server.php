@@ -443,4 +443,10 @@ class Syncroton_Server
 
         return $device;
     }
+
+    public static function validateSession()
+    {
+        $validatorFunction = Syncroton_Registry::getSessionValidator();
+        return $validatorFunction();
+    }
 }

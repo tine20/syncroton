@@ -209,7 +209,7 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
             // break if there are less than PingTimeout + 10 seconds left for the next loop
             // otherwise the response will be returned after the client has finished his Ping
             // request already maybe
-            } while ($secondsLeft > (Syncroton_Registry::getPingTimeout() + 10));
+            } while (Syncroton_Server::validateSession() && $secondsLeft > (Syncroton_Registry::getPingTimeout() + 10));
         }
         
         if ($this->_logger instanceof Zend_Log) 
