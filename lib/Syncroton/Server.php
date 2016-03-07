@@ -141,10 +141,11 @@ class Syncroton_Server
         try {
             $command = new $className($requestBody, $device, $requestParameters);
         
-            $command->handle();
-        
-            $response = $command->getResponse();
-            
+            $response = $command->handle();
+
+            if (!$response) {
+                $response = $command->getResponse();
+            }
         } catch (Syncroton_Exception_ProvisioningNeeded $sepn) {
             if ($this->_logger instanceof Zend_Log) 
                 $this->_logger->info(__METHOD__ . '::' . __LINE__ . " provisioning needed");
