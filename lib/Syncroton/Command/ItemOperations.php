@@ -251,9 +251,13 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
                     }
                 }
             }
-            
+
             if (isset($airSyncBase->Range)) {
-                $fetchArray['options']['range'] = (string) $airSyncBase->Range;
+                $fetchArray['options']['range'] = (string)$airSyncBase->Range;
+            }
+
+            if (isset($fetch->Options->MIMESupport)) {
+                $fetchArray['options']['mimeSupport'] = (int) $fetch->Options->MIMESupport;
             }
         }
         
