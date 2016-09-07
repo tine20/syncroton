@@ -189,7 +189,7 @@ class Syncroton_Server
             } catch (Syncroton_Wbxml_Exception $swe) {
                 if ($this->_logger instanceof Zend_Log) {
                     $this->_logger->err(__METHOD__ . '::' . __LINE__ . " Could not encode output: " . $swe);
-                    $this->_logDomDocument(Zend_Log::ERR, $response, __METHOD__, __LINE__);
+                    $this->_logDomDocument(Zend_Log::WARN, $response, __METHOD__, __LINE__);
                 }
                 
                 header("HTTP/1.1 500 Internal server error");
@@ -442,5 +442,11 @@ class Syncroton_Server
         }
 
         return $device;
+    }
+
+    public static function validateSession()
+    {
+        $validatorFunction = Syncroton_Registry::getSessionValidator();
+        return $validatorFunction();
     }
 }
