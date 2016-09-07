@@ -131,7 +131,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
             $this->_heartbeatInterval = (int)$requestXML->Wait * $intervalDiv;
         }
         
-        $maxInterval = Syncroton_Registry::getPingInterval();
+        $maxInterval = Syncroton_Registry::getMaxPingInterval();
         if ($maxInterval <= 0 || $maxInterval > Syncroton_Server::MAX_HEARTBEAT_INTERVAL) {
             $maxInterval = Syncroton_Server::MAX_HEARTBEAT_INTERVAL;
         }
