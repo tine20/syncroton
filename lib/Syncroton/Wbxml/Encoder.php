@@ -150,11 +150,9 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
     public function encode(DOMDocument $_dom)
     {
         $_dom->formatOutput = false;
-        
-        $tempStream = fopen('php://temp/maxmemory:5242880', 'r+');
-        fwrite($tempStream, $_dom->saveXML());
-        rewind($tempStream);
-        
+
+        $xmlString =  preg_replace('/[^\x09\x0A\x0D\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u', '', $_dom->saveXML());
+
         $this->_initialize($_dom);
         
         $parser = xml_parser_create_ns($this->_charSet, ';');
@@ -162,23 +160,20 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
         xml_set_element_handler($parser, '_handleStartTag', '_handleEndTag');
         xml_set_character_data_handler($parser, '_handleCharacters');
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
-        
-        while (!feof($tempStream)) {
-            if (!xml_parse($parser, fread($tempStream, 1048576), feof($tempStream))) {
-                // uncomment to write xml document to file
-                #rewind($tempStream);
-                #$xmlStream = fopen(tempnam(sys_get_temp_dir(), "xmlerrors"), 'r+');
-                #stream_copy_to_stream($tempStream, $xmlStream);
-                #fclose($xmlStream);
-                
-                throw new Syncroton_Wbxml_Exception(sprintf('XML error: %s at line %d',
-                    xml_error_string(xml_get_error_code($parser)),
-                    xml_get_current_line_number($parser)
-                ));
-            }
-        }
 
-        fclose($tempStream);
+        if (!xml_parse($parser, $xmlString, true)) {
+            // uncomment to write xml document to file
+            #rewind($tempStream);
+            #$xmlStream = fopen(tempnam(sys_get_temp_dir(), "xmlerrors"), 'r+');
+            #stream_copy_to_stream($tempStream, $xmlStream);
+            #fclose($xmlStream);
+
+            throw new Syncroton_Wbxml_Exception(sprintf('XML error: %s at line %d',
+                xml_error_string(xml_get_error_code($parser)),
+                xml_get_current_line_number($parser)
+            ));
+        }
+        
         xml_parser_free($parser);
     }
 
