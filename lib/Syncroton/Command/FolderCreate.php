@@ -15,13 +15,13 @@
  * @package     Syncroton
  * @subpackage  Command
  */
-class Syncroton_Command_FolderCreate extends Syncroton_Command_Wbxml 
-{        
+class Syncroton_Command_FolderCreate extends Syncroton_Command_Wbxml
+{
     protected $_defaultNameSpace    = 'uri:FolderHierarchy';
     protected $_documentElement     = 'FolderCreate';
     
     /**
-     * 
+     *
      * @var Syncroton_Model_Folder
      */
     protected $_folder;
@@ -70,10 +70,9 @@ class Syncroton_Command_FolderCreate extends Syncroton_Command_Wbxml
                 break;
                 
             default:
-                throw new Syncroton_Exception_UnexpectedValue('invalid type defined');
-                break;
+                // unsupported type
+                return;
         }
-        
         
         $dataController = Syncroton_Data_Factory::factory($folder->class, $this->_device, $this->_syncTimeStamp);
         
@@ -96,6 +95,9 @@ class Syncroton_Command_FolderCreate extends Syncroton_Command_Wbxml
             if ($this->_logger instanceof Zend_Log) 
                 $this->_logger->info(__METHOD__ . '::' . __LINE__ . " invalid synckey provided. FolderSync 0 needed.");
             $folderCreate->appendChild($this->_outputDom->createElementNS('uri:FolderHierarchy', 'Status', Syncroton_Command_FolderSync::STATUS_INVALID_SYNC_KEY));
+            
+        } else if (!$this->_folder instanceof Syncroton_Model_Folder) {
+            $folderCreate->appendChild($this->_outputDom->createElementNS('uri:FolderHierarchy', 'Status', Syncroton_Command_FolderSync::STATUS_UNKNOWN_ERROR));
             
         } else {
             $this->_syncState->counter++;

@@ -71,21 +71,26 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
                 $element = $domParrent->ownerDocument->createElementNS($nameSpace, ucfirst($elementName));
                 foreach($value as $subValue) {
                     $subElement = $domParrent->ownerDocument->createElementNS($nameSpace, ucfirst($elementProperties['childElement']));
-                    
                     $this->_appendXMLElement($device, $subElement, $elementProperties, $subValue);
-                    
                     $element->appendChild($subElement);
-                    
                 }
                 $domParrent->appendChild($element);
+            } else if ($elementProperties['type'] == 'container' && !empty($elementProperties['multiple'])) {
+                foreach ($value as $element) {
+                    $container = $domParrent->ownerDocument->createElementNS($nameSpace, ucfirst($elementName));
+                    $element->appendXML($container, $device);
+                    $domParrent->appendChild($container);
+                }
+            } else if ($elementProperties['type'] == 'none') {
+                if ($value) {
+                    $element = $domParrent->ownerDocument->createElementNS($nameSpace, ucfirst($elementName));
+                    $domParrent->appendChild($element);
+                }
             } else {
                 $element = $domParrent->ownerDocument->createElementNS($nameSpace, ucfirst($elementName));
-                
                 $this->_appendXMLElement($device, $element, $elementProperties, $value);
-                
                 $domParrent->appendChild($element);
             }
-            
         }
     }
     
@@ -173,7 +178,7 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
                     $value = $this->_removeControlChars($value);
                 }
                 
-                $element->appendChild($element->ownerDocument->createTextNode($this->_enforeUTF8($value)));
+                $element->appendChild($element->ownerDocument->createTextNode($this->_enforceUTF8($value)));
             }
         }
     }
@@ -195,7 +200,7 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
      * @param  string  $dirty  the string with maybe invalid utf-8 data
      * @return string  string with valid utf-8
      */
-    protected function _enforeUTF8($dirty)
+    protected function _enforceUTF8($dirty)
     {
         if (function_exists('iconv')) {
             if (($clean = @iconv('UTF-8', 'UTF-8//IGNORE', $dirty)) !== false) {
@@ -245,7 +250,15 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
             
             switch ($elementProperties['type']) {
                 case 'container':
-                    if (isset($elementProperties['childElement'])) {
+                    if (!empty($elementProperties['multiple'])) {
+                        $property = (array) $this->$elementName;
+                        
+                        if (isset($elementProperties['class'])) {
+                            $property[] = new $elementProperties['class']($xmlElement);
+                        } else {
+                            $property[] = (string) $xmlElement;
+                        }
+                    } else if (isset($elementProperties['childElement'])) {
                         $property = array();
                         
                         $childElement = ucfirst($elementProperties['childElement']);
@@ -267,20 +280,17 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
                     
                 case 'datetime':
                     $property = new DateTime((string) $xmlElement, new DateTimeZone('UTC'));
-    
                     break;
-    
+
                 case 'number':
                     $property = (int) $xmlElement;
-    
                     break;
-                    
+
                 default:
                     $property = (string) $xmlElement;
-    
                     break;
             }
-            
+
             if (isset($elementProperties['encoding']) && $elementProperties['encoding'] == 'base64') {
                 $property = base64_decode($property);
             }

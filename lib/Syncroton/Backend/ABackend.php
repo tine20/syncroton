@@ -47,19 +47,19 @@ abstract class Syncroton_Backend_ABackend implements Syncroton_Backend_IBackend
     /**
      * create new device
      * 
-     * @param Syncroton_Model_IDevice $_device
-     * @return Syncroton_Model_IDevice
+     * @param Syncroton_Model_AEntry $model
+     * @return Syncroton_Model_AEntry
      */
     public function create($model)
     {
         if (! $model instanceof $this->_modelInterfaceName) {
-            throw new InvalidArgumentException('$model must be instanace of ' . $this->_modelInterfaceName);
+            throw new InvalidArgumentException('$model must be instance of ' . $this->_modelInterfaceName);
         }
         
         $data = $this->_convertModelToArray($model);
         
         $data['id'] = sha1(mt_rand(). microtime());
-        
+
         $this->_db->insert($this->_tablePrefix . $this->_tableName, $data);
         
         return $this->get($data['id']);
@@ -68,7 +68,7 @@ abstract class Syncroton_Backend_ABackend implements Syncroton_Backend_IBackend
     /**
      * convert iteratable object to array
      * 
-     * @param  unknown   $model
+     * @param  Syncroton_Model_AEntry   $model
      * @return array
      */
     protected function _convertModelToArray($model)
@@ -96,6 +96,10 @@ abstract class Syncroton_Backend_ABackend implements Syncroton_Backend_IBackend
     public function get($id)
     {
         $id = $id instanceof $this->_modelInterfaceName ? $id->id : $id;
+        
+        if (empty($id)) {
+            throw new Syncroton_Exception_NotFound('id can not be empty');
+        }
         
         $select = $this->_db->select()
             ->from($this->_tablePrefix . $this->_tableName)

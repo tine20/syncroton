@@ -33,7 +33,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage18 extends Syncroton_Wbxml_Dtd_Acti
         'EndTime'                   => 0x0c,
         'OofMessage'                => 0x0d,
         'AppliesToInternal'         => 0x0e,
-        'AppliesToExternalKnow'     => 0x0f,
+        'AppliesToExternalKnown'    => 0x0f,
         'AppliesToExternalUnknown'  => 0x10,
         'Enabled'                   => 0x11,
         'ReplyMessage'              => 0x12,

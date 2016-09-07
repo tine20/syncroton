@@ -38,6 +38,7 @@ class Syncroton_Registry extends ArrayObject
     const PING_TIMEOUT        = 'ping_timeout';
     const MAX_PING_INTERVAL   = 'max_ping_interval';
     const QUIET_TIME          = 'quiet_time';
+    const SESSION_VALIDATOR   = 'session_validator';
     
     const DATABASE            = 'database';
     const TRANSACTIONMANAGER  = 'transactionmanager';
@@ -47,6 +48,7 @@ class Syncroton_Registry extends ArrayObject
     const FOLDERBACKEND       = 'folderbackend';
     const POLICYBACKEND       = 'policybackend';
     const SYNCSTATEBACKEND    = 'syncstatebackend';
+    const LOGGERBACKEND       = 'loggerBackend';
     
     /**
      * Class name of the singleton registry object.
@@ -241,7 +243,8 @@ class Syncroton_Registry extends ArrayObject
         
         return self::get(self::FOLDERBACKEND);
     }
-
+    
+    /**
     /**
      * Return maximum ping interval (HeartbeatInterval) value (in seconds)
      *
@@ -304,7 +307,26 @@ class Syncroton_Registry extends ArrayObject
         
         return self::get(self::QUIET_TIME);
     }
-    
+
+    /**
+     * return session validation function
+     *
+     * This function is used in long running requests like ping & sync to
+     * validate user session. Returns false if session is not valid any longer
+     *
+     * @return callable
+     */
+    public static function getSessionValidator()
+    {
+        if (!self::isRegistered(self::SESSION_VALIDATOR)) {
+            self::set(self::SESSION_VALIDATOR, function() {
+                return true;
+            });
+        }
+
+        return self::get(self::SESSION_VALIDATOR);
+    }
+
     /**
      * returns syncstate backend
      * 
