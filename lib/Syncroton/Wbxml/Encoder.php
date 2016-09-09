@@ -82,6 +82,18 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
         $this->_version = $_version;
     }
 
+    protected function _reset()
+    {
+        rewind($this->_stream);
+
+        $this->_dtdStack = array();
+        $this->_streamStack = array();
+        $this->_popStack = array();
+        $this->_level = 0;
+        $this->_nextStackPop = NULL;
+        $this->_currentTagData = NULL;
+        $this->_currentTag = NULL;
+    }
     /**
      * initialize internal variables and write wbxml header to stream
      *
@@ -151,7 +163,7 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
     {
         $_dom->formatOutput = false;
 
-        $xmlString =  preg_replace('/[^\x09\x0A\x0D\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u', '', $_dom->saveXML());
+        $xmlString =  $_dom->saveXML();
 
         $this->_initialize($_dom);
         
@@ -168,10 +180,28 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
             #stream_copy_to_stream($tempStream, $xmlStream);
             #fclose($xmlStream);
 
-            throw new Syncroton_Wbxml_Exception(sprintf('XML error: %s at line %d',
-                xml_error_string(xml_get_error_code($parser)),
-                xml_get_current_line_number($parser)
-            ));
+            if (!xml_parse($parser, $xmlString, true)) {
+
+                xml_parser_free($parser);
+
+                $this->_reset();
+
+                $this->_initialize($_dom);
+
+                $parser = xml_parser_create_ns($this->_charSet, ';');
+                xml_set_object($parser, $this);
+                xml_set_element_handler($parser, '_handleStartTag', '_handleEndTag');
+                xml_set_character_data_handler($parser, '_handleCharacters');
+                xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
+
+
+                if (!xml_parse($parser, preg_replace('/[^\x09\x0A\x0D\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u', '', $xmlString), true)) {
+                    throw new Syncroton_Wbxml_Exception(sprintf('XML error: %s at line %d',
+                        xml_error_string(xml_get_error_code($parser)),
+                        xml_get_current_line_number($parser)
+                    ));
+                }
+            }
         }
         
         xml_parser_free($parser);
