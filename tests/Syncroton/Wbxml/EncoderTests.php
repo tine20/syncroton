@@ -71,4 +71,29 @@ class Syncroton_Wbxml_EncoderTests extends PHPUnit_Framework_TestCase
         
         $this->assertEquals(183, ftell($outputStream));
     }
+
+    public function testEncodeBrokenXML()
+    {
+        // Creates an instance of the DOMImplementation class
+        $imp = new DOMImplementation();
+
+        // Creates a DOMDocumentType instance
+        $dtd = $imp->createDocumentType('AirSync', "-//AIRSYNC//DTD AirSync//EN", "http://www.microsoft.com/");
+
+        // Creates a DOMDocument instance
+        $testDoc = $imp->createDocument('uri:AirSync', 'Sync', $dtd);
+        $testDoc->documentElement->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:Syncroton', 'uri:Syncroton');
+        $testDoc->formatOutput = false;
+        $testDoc->encoding     = 'utf-8';
+
+        // chr(0x1F) is not a valid XML char!
+        $testDoc->getElementsByTagName('Sync')->item(0)->appendChild($testDoc->createTextNode('foo'.chr(0x20).chr(0x1F).'a'));
+
+        $testDoc->formatOutput = true;
+
+        $outputStream = fopen("php://temp", 'r+');
+
+        $encoder = new Syncroton_Wbxml_Encoder($outputStream, 'UTF-8', 3);
+        $encoder->encode($testDoc);
+    }
 }
