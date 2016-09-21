@@ -49,6 +49,9 @@ class Syncroton_Registry extends ArrayObject
     const POLICYBACKEND       = 'policybackend';
     const SYNCSTATEBACKEND    = 'syncstatebackend';
     const LOGGERBACKEND       = 'loggerBackend';
+
+    const SLEEP_CALLBACK      = 'sleep_callback';
+    const WAKEUP_CALLBACK     = 'wakeup_callback';
     
     /**
      * Class name of the singleton registry object.
@@ -306,6 +309,43 @@ class Syncroton_Registry extends ArrayObject
         }
         
         return self::get(self::QUIET_TIME);
+    }
+
+    /**
+     * Returns sleep callback function
+     *
+     * This function is used in long running requests like ping & sync to
+     * close connections to external sources (e.g. database) before we
+     * call sleep() to wait some time for next iteration.
+     * Callback should throw exceptions on errors.
+     *
+     * @return callable
+     */
+    public static function getSleepCallback()
+    {
+        if (!self::isRegistered(self::SLEEP_CALLBACK)) {
+            self::set(self::SLEEP_CALLBACK, function() {});
+        }
+
+        return self::get(self::SLEEP_CALLBACK);
+    }
+
+    /**
+     * Returns wakeup callback function
+     *
+     * This function is used in long running requests like ping & sync to
+     * re-connect to external sources (e.g. database) closed by sleep callback.
+     * Callback should throw exceptions on errors.
+     *
+     * @return callable
+     */
+    public static function getWakeupCallback()
+    {
+        if (!self::isRegistered(self::WAKEUP_CALLBACK)) {
+            self::set(self::WAKEUP_CALLBACK, function() {});
+        }
+
+        return self::get(self::WAKEUP_CALLBACK);
     }
 
     /**

@@ -437,11 +437,23 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
         
         // continue only if there are changes or no time is left
         if ($this->_heartbeatInterval > 0) {
-            $intervalStart = time();
+            $intervalStart  = time();
+            $sleepCallback  = Syncroton_Registry::getSleepCallback();
+            $wakeupCallback = Syncroton_Registry::getWakeupCallback();
             
             do {
                 // take a break to save battery lifetime
+                $sleepCallback();
                 sleep(Syncroton_Registry::getPingTimeout());
+
+                // make sure the connection is still alive, abort otherwise
+                if (connection_aborted()) {
+                    if ($this->_logger instanceof Zend_Log)
+                        $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " Exiting on aborted connection");
+                    exit;
+                }
+
+                $wakeupCallback();
                 
                 $now = new DateTime(null, new DateTimeZone('utc'));
 

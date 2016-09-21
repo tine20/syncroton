@@ -111,9 +111,23 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
             $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " Folders to monitor($lifeTime / $intervalStart / $intervalEnd / $status): " . print_r($folders, true));
         
         if ($status === self::STATUS_NO_CHANGES_FOUND) {
+            $sleepCallback  = Syncroton_Registry::getSleepCallback();
+            $wakeupCallback = Syncroton_Registry::getWakeupCallback();
+
             do {
                 // take a break to save battery lifetime
+                call_user_func($sleepCallback);
                 sleep(Syncroton_Registry::getPingTimeout());
+
+                // make sure the connection is still alive, abort otherwise
+                if (connection_aborted()) {
+                    if ($this->_logger instanceof Zend_Log)
+                        $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " Exiting on aborted connection");
+                    exit;
+                }
+
+                // reconnect external connections, etc.
+                call_user_func($wakeupCallback);
 
                 try {
                     $device = $this->_deviceBackend->get($this->_device->id);
