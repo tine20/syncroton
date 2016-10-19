@@ -184,14 +184,19 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
     }
     
     /**
-     * removed control chars from string which are not allowd in XML values
+     * remove control chars from a string which are not allowed in XML values
      *
-     * @param  string|array $_dirty
-     * @return string
+     * @param string $dirty An input string
+     * @return string Cleaned up string
      */
     protected function _removeControlChars($dirty)
     {
-        return preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F]/', null, $dirty);
+        // Replace non-character UTF-8 sequences that cause XML Parser to fail
+        // https://git.kolab.org/T1311
+        $dirty = str_replace(array("\xEF\xBF\xBE", "\xEF\xBF\xBF"), '', $dirty);
+
+        // Replace ASCII control-characters
+        return preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F]/', '', $dirty);
     }
     
     /**
