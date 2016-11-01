@@ -86,8 +86,16 @@ class Syncroton_Wbxml_EncoderTests extends PHPUnit_Framework_TestCase
         $testDoc->formatOutput = false;
         $testDoc->encoding     = 'utf-8';
 
-        // chr(0x1F) is not a valid XML char!
-        $testDoc->getElementsByTagName('Sync')->item(0)->appendChild($testDoc->createTextNode('foo'.chr(0x20).chr(0x1F).'a'));
+        // creates a syncroton record
+        $record = new Syncroton_Model_Contact(array(
+            'Contacts' => array(
+                // chr(0x1F) is not a valid XML char!
+                'firstName' => 'foo' . chr(0x20).chr(0x1F) . 'a',
+            )
+        ));
+
+        $device = $this->_getDevice();
+        $record->appendXML($testDoc->getElementsByTagName('Sync')->item(0), $device);
 
         $testDoc->formatOutput = true;
 
@@ -95,5 +103,25 @@ class Syncroton_Wbxml_EncoderTests extends PHPUnit_Framework_TestCase
 
         $encoder = new Syncroton_Wbxml_Encoder($outputStream, 'UTF-8', 3);
         $encoder->encode($testDoc);
+    }
+
+    /**
+     * TODO move to a generic place (see \Syncroton_Command_ATestCase::setUp)
+     *
+     * @return Syncroton_Model_IDevice
+     */
+    protected function _getDevice()
+    {
+        try {
+            $device = Syncroton_Registry::getDeviceBackend()->getUserDevice('1234', 'iphone-abcd');
+            Syncroton_Registry::getDeviceBackend()->delete($device);
+        } catch (Syncroton_Exception_NotFound $e) {
+            // do nothing => it's ok
+        }
+        $device = Syncroton_Registry::getDeviceBackend()->create(
+            Syncroton_Backend_DeviceTests::getTestDevice()
+        );
+
+        return $device;
     }
 }
