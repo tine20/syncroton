@@ -345,21 +345,15 @@ class Syncroton_Server
 
                 switch ($tag) {
                     case self::PARAMETER_ATTACHMENTNAME:
-                        $unpacked = unpack('A' . $length . 'string', fread($stream, $length));
-                        
-                        $attachmentName = $unpacked['string'];
+                        $attachmentName = $this->_unpackParam($stream, $length);
                         break;
                         
                     case self::PARAMETER_COLLECTIONID:
-                        $unpacked = unpack('A' . $length . 'string', fread($stream, $length));
-                        
-                        $collectionId = $unpacked['string'];
+                        $collectionId = $this->_unpackParam($stream, $length);
                         break;
                         
                     case self::PARAMETER_ITEMID:
-                        $unpacked = unpack('A' . $length . 'string', fread($stream, $length));
-                        
-                        $itemId = $unpacked['string'];
+                        $itemId = $this->_unpackParam($stream, $length);
                         break;
                         
                     case self::PARAMETER_OPTIONS:
@@ -371,7 +365,7 @@ class Syncroton_Server
                         
                     default:
                         if ($this->_logger instanceof Zend_Log)
-                            $this->_logger->crit(__METHOD__ . '::' . __LINE__ . " found unhandled command parameters");
+                            $this->_logger->crit(__METHOD__ . '::' . __LINE__ . " Found unhandled command parameters");
                         
                 }
             }
@@ -406,6 +400,27 @@ class Syncroton_Server
         $result['userAgent']   = $request->getServer('HTTP_USER_AGENT', $result['deviceType']);
         $result['contentType'] = $request->getServer('CONTENT_TYPE');
         
+        return $result;
+    }
+
+    /**
+     * unpack tag parameter
+     *
+     * @param $stream
+     * @param $length
+     * @return string
+     */
+    protected function _unpackParam($stream, $length)
+    {
+        if ($length > 0) {
+            $unpacked = unpack('A' . $length . 'string', fread($stream, $length));
+            $result = $unpacked['string'];
+        } else {
+            if ($this->_logger instanceof Zend_Log)
+                $this->_logger->info(__METHOD__ . '::' . __LINE__ . " Got zero length tag param");
+            $result = '';
+        }
+
         return $result;
     }
     
