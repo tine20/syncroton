@@ -10,7 +10,7 @@
  */
 
 /**
- * class to handle ActiveSync Sync command
+ * class to handle ActiveSync Policy element
  *
  * @package     Syncroton
  * @subpackage  Model
@@ -18,7 +18,7 @@
 class Syncroton_Model_Policy extends Syncroton_Model_AXMLEntry implements Syncroton_Model_IPolicy
 {
     protected $_xmlBaseElement = 'EASProvisionDoc';
-    
+
     protected $_properties = array(
         'Internal' => array(
             'id'                                   => array('type' => 'string'),
@@ -28,7 +28,6 @@ class Syncroton_Model_Policy extends Syncroton_Model_AXMLEntry implements Syncro
         ),
         'Provision' => array(
             'allowBluetooth'                       => array('type' => 'number'),
-            'allowSMIMEEncryptionAlgorithmNegotiation' => array('type' => 'number'),
             'allowBrowser'                         => array('type' => 'number'),
             'allowCamera'                          => array('type' => 'number'),
             'allowConsumerEmail'                   => array('type' => 'number'),
@@ -73,4 +72,3 @@ class Syncroton_Model_Policy extends Syncroton_Model_AXMLEntry implements Syncro
         )
     );
 }
-
