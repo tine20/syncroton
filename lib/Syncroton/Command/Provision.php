@@ -95,19 +95,19 @@ class Syncroton_Command_Provision extends Syncroton_Command_Wbxml
             if ($this->_logger instanceof Zend_Log) 
                 $this->_logger->debug(__METHOD__ . '::' . __LINE__ . ' PolicyType: ' . $this->_policyType . ' PolicyKey: ' . $this->_sendPolicyKey);
             
-            if($this->_sendPolicyKey === NULL) {
+            if (!$this->_sendPolicyKey) {
                 $this->_sendPolicy();
             } elseif ($this->_sendPolicyKey == $this->_device->policykey) {
                 $this->_acknowledgePolicy();
-            }       
-        } 
+            }
+        }
             
         return $this->_outputDom;
     }
     
     /**
      * function the send policy to client
-     * 
+     *
      * 4131 (Enforce password on device) 0: enabled 1: disabled
      * 4133 (Unlock from computer) 0: disabled 1: enabled
      * AEFrequencyType 0: no inactivity time 1: inactivity time is set
@@ -120,7 +120,7 @@ class Syncroton_Command_Provision extends Syncroton_Command_Wbxml
      */
     protected function _sendPolicy()
     {
-        if ($this->_logger instanceof Zend_Log) 
+        if ($this->_logger instanceof Zend_Log)
             $this->_logger->info(__METHOD__ . '::' . __LINE__ . ' send policy to device');
         
         $provision = $sync = $this->_outputDom->documentElement;
