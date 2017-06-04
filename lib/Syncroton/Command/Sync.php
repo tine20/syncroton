@@ -590,28 +590,57 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                     'changed' => array(),
                     'deleted' => array(),
                 );
-                
+
+                $status = self::STATUS_SUCCESS;
+                $hasChanges = 0;
+
                 if($collectionData->getChanges === true) {
                     // continue sync session?
                     if(is_array($collectionData->syncState->pendingdata)) {
                         if ($this->_logger instanceof Zend_Log)
                             $this->_logger->info(__METHOD__ . '::' . __LINE__ . " restored from sync state ");
-                        
+
                         $serverModifications = $collectionData->syncState->pendingdata;
-                        
-                    } elseif ($dataController->hasChanges($this->_contentStateBackend, $collectionData->folder, $collectionData->syncState)) {
-                        
+                    } else {
+                        try {
+                            $hasChanges = $dataController->hasChanges($this->_contentStateBackend, $collectionData->folder, $collectionData->syncState);
+                        } catch (Syncroton_Exception_NotFound $e) {
+                            if ($this->_logger instanceof Zend_Log)
+                                $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " Folder changes checking failed (not found): " . $e->getTraceAsString());
+
+                            $status = self::STATUS_FOLDER_HIERARCHY_HAS_CHANGED;
+                        } catch (Exception $e) {
+                            if ($this->_logger instanceof Zend_Log)
+                                $this->_logger->crit(__METHOD__ . '::' . __LINE__ . " Folder changes checking failed: " . $e->getMessage());
+
+                            // Prevent from removing client entries when getServerEntries() fails
+                            // @todo: should we break the loop here?
+                            $status = self::STATUS_SERVER_ERROR;
+                        }
+                    }
+
+                    if ($hasChanges) {
                         // update _syncTimeStamp as $dataController->hasChanges might have spent some time
                         $this->_syncTimeStamp = new DateTime(null, new DateTimeZone('utc'));
-                        
+
                         try {
                             // fetch entries added since last sync
                             $allClientEntries = $this->_contentStateBackend->getFolderState(
-                                $this->_device, 
+                                $this->_device,
                                 $collectionData->folder
                             );
+
+                            // fetch entries changed since last sync
+                            $allChangedEntries = $dataController->getChangedEntries(
+                                $collectionData->collectionId,
+                                $collectionData->syncState->lastsync,
+                                $this->_syncTimeStamp,
+                                $collectionData->options['filterType']
+                            );
+
+                            // fetch all entries
                             $allServerEntries = $dataController->getServerEntries(
-                                $collectionData->collectionId, 
+                                $collectionData->collectionId,
                                 $collectionData->options['filterType']
                             );
 
@@ -629,26 +658,20 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                                     if ($this->_logger instanceof Zend_Log)
                                         $this->_logger->info(__METHOD__ . '::' . __LINE__ . " skipped added entry: " . $serverId);
                                     unset($serverModifications['added'][$id]);
+                                    }
                                 }
-                            }
 
                             // entries to be deleted
                             $serverModifications['deleted'] = array_diff($allClientEntries, $allServerEntries);
-                            
-                            // fetch entries changed since last sync
-                            $serverModifications['changed'] = $dataController->getChangedEntries(
-                                $collectionData->collectionId, 
-                                $collectionData->syncState->lastsync, 
-                                $this->_syncTimeStamp, 
-                                $collectionData->options['filterType']
-                            );
-                            $serverModifications['changed'] = array_merge($serverModifications['changed'], $clientModifications['forceChange']);
+
+                            // entries changed since last sync
+                            $serverModifications['changed'] = array_merge($allChangedEntries, $clientModifications['forceChange']);
 
                             foreach($serverModifications['changed'] as $id => $serverId) {
                                 // skip entry, if it got changed by client during current sync
                                 if(isset($clientModifications['changed'][$serverId]) && !isset($clientModifications['forceChange'][$serverId])) {
-                                    if ($this->_logger instanceof Zend_Log)
-                                        $this->_logger->info(__METHOD__ . '::' . __LINE__ . " skipped changed entry: " . $serverId);
+                                     if ($this->_logger instanceof Zend_Log)
+                                         $this->_logger->info(__METHOD__ . '::' . __LINE__ . " skipped changed entry: " . $serverId);
                                     unset($serverModifications['changed'][$id]);
                                 }
                                 // skip entry, make sure we don't sent entries already added by client in this request
@@ -667,19 +690,15 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                                 $this->_logger->crit(__METHOD__ . '::' . __LINE__ . " Folder state checking failed: " . $e->getMessage());
                             if ($this->_logger instanceof Zend_Log)
                                 $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " Folder state checking failed: " . $e->getTraceAsString());
-                            
-                            // Prevent from removing client entries when getServerEntries() fails
-                            // @todo: should we set Status and break the loop here?
-                            $serverModifications = array(
-                                'added'   => array(),
-                                'changed' => array(),
-                                'deleted' => array(),
-                            );
-                        }
-                    }
 
-                    if ($this->_logger instanceof Zend_Log)
-                        $this->_logger->info(__METHOD__ . '::' . __LINE__ . " found (added/changed/deleted) " . count($serverModifications['added']) . '/' . count($serverModifications['changed']) . '/' . count($serverModifications['deleted'])  . ' entries for sync from server to client');
+                            // Prevent from removing client entries when getServerEntries() fails
+                            // @todo: should we break the loop here?
+                            $status = self::STATUS_SERVER_ERROR;
+                        }
+
+                        if ($this->_logger instanceof Zend_Log)
+                            $this->_logger->info(__METHOD__ . '::' . __LINE__ . " found (added/changed/deleted) " . count($serverModifications['added']) . '/' . count($serverModifications['changed']) . '/' . count($serverModifications['deleted'])  . ' entries for sync from server to client');
+                    }
                 }
 
                 // collection header
@@ -691,7 +710,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                 $syncKeyElement = $collection->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'SyncKey'));
                 
                 $collection->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'CollectionId', $collectionData->collectionId));
-                $collection->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'Status', self::STATUS_SUCCESS));
+                $collection->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'Status', $status));
                 
                 $responses = $this->_outputDom->createElementNS('uri:AirSync', 'Responses');
                 
