@@ -7,7 +7,7 @@
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
  * @author      Lars Kneschke <l.kneschke@metaways.de>
  * @copyright   Copyright (c) 2009-2012 Metaways Infosystems GmbH (http://www.metaways.de)
- * 
+ *
  */
 
 /**
@@ -26,7 +26,7 @@ interface Syncroton_Backend_IFolder extends Syncroton_Backend_IBackend
      * @return Syncroton_Model_IFolder
      */
     public function getFolder($deviceId, $folderId);
-    
+
     /**
      * get array of ids which got send to the client for a given class
      *
@@ -35,11 +35,20 @@ interface Syncroton_Backend_IFolder extends Syncroton_Backend_IBackend
      * @return array
      */
     public function getFolderState($deviceId, $class);
-    
+
     /**
      * delete all stored folderId's for given device
      *
      * @param  Syncroton_Model_Device|string  $deviceId
      */
     public function resetState($deviceId);
+
+    /**
+     * Find out if the folder hierarchy changed since the last FolderSync
+     *
+     * @param Syncroton_Model_Device $device Device object
+     *
+     * @return bool True if folders hierarchy changed, False otherwise
+     */
+    public function hasHierarchyChanges($device);
 }

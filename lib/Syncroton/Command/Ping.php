@@ -152,6 +152,23 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
                     break;
                 }
 
+                // If folders hierarchy changed, break the loop and ask the client for FolderSync
+                try {
+                    if ($this->_folderBackend->hasHierarchyChanges($this->_device)) {
+                        if ($this->_logger instanceof Zend_Log)
+                            $this->_logger->debug(__METHOD__ . '::' . __LINE__ . ' Detected changes in folders hierarchy');
+
+                        $status = self::STATUS_FOLDER_NOT_FOUND;
+                        break;
+                    }
+                } catch (Exception $e) {
+                    if ($this->_logger instanceof Zend_Log)
+                        $this->_logger->err(__METHOD__ . '::' . __LINE__ . " " . $e->getMessage());
+
+                    // do nothing, maybe temporal issue, should we stop?
+                    continue;
+                }
+
                 $now = new DateTime('now', new DateTimeZone('utc'));
                 
                 foreach ($folders as $folderId) {

@@ -39,7 +39,7 @@ class Syncroton_Backend_Folder extends Syncroton_Backend_ABackend implements Syn
         
         $stmt = $this->_db->query($select);
         $data = $stmt->fetch();
-        
+
         if ($data === false) {
             throw new Syncroton_Exception_NotFound('id not found');
         }
@@ -84,7 +84,16 @@ class Syncroton_Backend_Folder extends Syncroton_Backend_ABackend implements Syn
         
         $this->_db->delete($this->_tablePrefix . $this->_tableName, $where);
     }
-    
+
+    /**
+     * (non-PHPdoc)
+     * @see Syncroton_Backend_IFolder::hasHierarchyChanges()
+     */
+    public function hasHierarchyChanges($device)
+    {
+        return false; // not implemented
+    }
+
     /**
      * (non-PHPdoc)
      * @see Syncroton_Backend_ABackend::_fromCamelCase()
