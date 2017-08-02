@@ -137,6 +137,14 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
 
                     $status = self::STATUS_FOLDER_NOT_FOUND;
                     break;
+                } catch (Zend_Db_Exception $e) {
+                    if ($this->_logger instanceof Zend_Log) {
+                        $this->_logger->err(__METHOD__ . '::' . __LINE__ . " " . $e->getMessage());
+                    }
+
+                    // stop here, sql server might have gone away
+                    $status = self::STATUS_GENERAL_ERROR;
+                    break;
                 } catch (Exception $e) {
                     if ($this->_logger instanceof Zend_Log)
                         $this->_logger->err(__METHOD__ . '::' . __LINE__ . " " . $e->getMessage());
