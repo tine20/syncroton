@@ -18,7 +18,7 @@
 class Syncroton_Command_AutoDiscoverTests extends PHPUnit_Framework_TestCase
 {
     /**
-     * test creation of claendar folder
+     * test creation of calendar folder
      */
     public function testCreateCalendarFolder()
     {
@@ -37,25 +37,25 @@ class Syncroton_Command_AutoDiscoverTests extends PHPUnit_Framework_TestCase
         $autoDiscover = new Syncroton_Command_AutoDiscover($doc);
         $autoDiscover->mobileSyncUrl = 'https://sync.example.com/Microsoft-Server-ActiveSync';
         $autoDiscover->certEnrollUrl = 'https://sync.example.com/CertEnroll';
-        
+
         $autoDiscover->handle();
         
         $responseDoc = $autoDiscover->getResponse();
         #$responseDoc->formatOutput = true; echo $responseDoc->saveXML();
         
         $xpath = new DomXPath($responseDoc);
-        $xpath->registerNamespace('2006', 'http://schemas.microsoft.com/exchange/autodiscover/mobilesync/requestschema/2006');
+        $xpath->registerNamespace('ms2006', 'http://schemas.microsoft.com/exchange/autodiscover/mobilesync/requestschema/2006');
         
-        $nodes = $xpath->query('//2006:Autodiscover/Response/User');
+        $nodes = $xpath->query('//ms2006:Autodiscover/Response/User');
         $this->assertEquals(1, $nodes->length, $responseDoc->saveXML());
         
-        $nodes = $xpath->query('//2006:Autodiscover/Response/Action');
+        $nodes = $xpath->query('//ms2006:Autodiscover/Response/Action');
         $this->assertEquals(1, $nodes->length, $responseDoc->saveXML());
         
-        $nodes = $xpath->query('//2006:Autodiscover/Response/Action/Settings');
+        $nodes = $xpath->query('//ms2006:Autodiscover/Response/Action/Settings');
         $this->assertEquals(1, $nodes->length, $responseDoc->saveXML());
         
-        $nodes = $xpath->query('//2006:Autodiscover/Response/Action/Settings/Server');
+        $nodes = $xpath->query('//ms2006:Autodiscover/Response/Action/Settings/Server');
         $this->assertEquals(2, $nodes->length, $responseDoc->saveXML());
     }
 }

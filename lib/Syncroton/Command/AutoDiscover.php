@@ -48,9 +48,9 @@ class Syncroton_Command_AutoDiscover implements Syncroton_Command_ICommand
     public function handle()
     {
         $xpath = new DomXPath($this->requestBody);
-        $xpath->registerNamespace('2006', 'http://schemas.microsoft.com/exchange/autodiscover/mobilesync/requestschema/2006');
+        $xpath->registerNamespace('ms2006', 'http://schemas.microsoft.com/exchange/autodiscover/mobilesync/requestschema/2006');
         
-        $nodes = $xpath->query('//2006:Autodiscover/2006:Request/2006:EMailAddress');
+        $nodes = $xpath->query('/ms2006:Autodiscover/ms2006:Request/ms2006:EMailAddress');
         if ($nodes->length === 0) {
             throw new Syncroton_Exception();
         }
