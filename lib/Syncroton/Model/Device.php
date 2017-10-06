@@ -45,6 +45,16 @@ class Syncroton_Model_Device extends Syncroton_Model_AEntry implements Syncroton
                     return $majorVersion;
                 }
                 break;
+
+            case Syncroton_Model_Device::TYPE_ANDROID:
+                if (preg_match('/Android\/(\d+)\.(\d+)/', $this->useragent, $matches)) {
+                    list(, $majorVersion, $minorVersion) = $matches;
+                    return $majorVersion;
+                } else if (! empty($this->os) && preg_match('/Android (\d+)\.(\d+)/', $this->os, $matches)) {
+                    list(, $majorVersion, $minorVersion) = $matches;
+                    return $majorVersion;
+                }
+                break;
         }
         
         return 0;
