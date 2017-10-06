@@ -39,6 +39,7 @@ class Syncroton_Registry extends ArrayObject
     const MAX_PING_INTERVAL   = 'max_ping_interval';
     const QUIET_TIME          = 'quiet_time';
     const SESSION_VALIDATOR   = 'session_validator';
+    const MAX_COLLECTIONS     = 'max_collections';
     
     const DATABASE            = 'database';
     const TRANSACTIONMANAGER  = 'transactionmanager';
@@ -278,6 +279,20 @@ class Syncroton_Registry extends ArrayObject
         return self::get(self::PING_TIMEOUT);
     }
     
+    /**
+     * Return maximum number of collections in Sync/Ping request
+     *
+     * @return int
+     */
+    public static function getMaxCollections()
+    {
+        if (!self::isRegistered(self::MAX_COLLECTIONS)) {
+            return null;
+        }
+
+        return self::get(self::MAX_COLLECTIONS);
+    }
+
     /**
      * returns policy backend
      * 

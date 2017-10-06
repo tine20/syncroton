@@ -22,7 +22,7 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
     const STATUS_MISSING_PARAMETERS         = 3;
     const STATUS_REQUEST_FORMAT_ERROR       = 4;
     const STATUS_INTERVAL_TO_GREAT_OR_SMALL = 5;
-    const STATUS_TO_MUCH_FOLDERS            = 6;
+    const STATUS_TOO_MANY_FOLDERS           = 6;
     const STATUS_FOLDER_NOT_FOUND           = 7;
     const STATUS_GENERAL_ERROR              = 8;
     
@@ -64,6 +64,14 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
             }
             
             if (isset($xml->Folders->Folder)) {
+                $maxCollections = Syncroton_Registry::getMaxCollections();
+                if ($maxCollections && count($xml->Folders->Folder) > $maxCollections) {
+                    $ping = $this->_outputDom->documentElement;
+                    $ping->appendChild($this->_outputDom->createElementNS('uri:Ping', 'Status', self::STATUS_TOO_MANY_FOLDERS));
+                    $ping->appendChild($this->_outputDom->createElementNS('uri:Ping', 'MaxFolders', $maxCollections));
+                    return;
+                }
+
                 $folders = array();
                 foreach ($xml->Folders->Folder as $folderXml) {
                     try {

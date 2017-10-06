@@ -31,6 +31,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
     const STATUS_FOLDER_HIERARCHY_HAS_CHANGED           = 12;
     const STATUS_RESEND_FULL_XML                        = 13;
     const STATUS_WAIT_INTERVAL_OUT_OF_RANGE             = 14;
+    const STATUS_TOO_MANY_COLLECTIONS                   = 15;
     
     const CONFLICT_OVERWRITE_SERVER                     = 0;
     const CONFLICT_OVERWRITE_PIM                        = 1;
@@ -141,6 +142,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
             $sync->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'Status', self::STATUS_WAIT_INTERVAL_OUT_OF_RANGE));
             $sync->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'Limit', floor($maxInterval/$intervalDiv)));
             $this->_heartbeatInterval = null;
+            return;
         }
         
         $this->_globalWindowSize = isset($requestXML->WindowSize) ? (int)$requestXML->WindowSize : 100;
@@ -161,7 +163,15 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                 $lastSyncCollection['options'] = array();
             }
         }
-        
+
+        $maxCollections = Syncroton_Registry::getMaxCollections();
+        if ($maxCollections && count($requestXML->Collections->Collection) > $maxCollections) {
+            $sync = $this->_outputDom->documentElement;
+            $sync->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'Status', self::STATUS_TOO_MANY_COLLECTIONS));
+            $sync->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'Limit', $maxCollections));
+            return;
+        }
+
         $collections = array();
         
         foreach ($requestXML->Collections->Collection as $xmlCollection) {
