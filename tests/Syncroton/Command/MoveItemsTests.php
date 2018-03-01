@@ -53,7 +53,7 @@ class Syncroton_Command_MoveItemsTests extends Syncroton_Command_ATestCase
         $doc = new DOMDocument();
         $doc->loadXML('<?xml version="1.0" encoding="utf-8"?>
             <!DOCTYPE AirSync PUBLIC "-//AIRSYNC//DTD AirSync//EN" "http://www.microsoft.com/">
-            <Moves xmlns="uri:Move"><Move><SrcMsgId>2246b0b87ee914e283d6c53717cc36c68cacd187</SrcMsgId><SrcFldId>a130b7462fde72c7d6215ce32226e1794d631fa8</SrcFldId><DstFldId>cf11782725c1e132d05fec5a7cd9862694933003</DstFldId></Move></Moves>'
+            <MoveItems xmlns="uri:Move"><Move><SrcMsgId>2246b0b87ee914e283d6c53717cc36c68cacd187</SrcMsgId><SrcFldId>a130b7462fde72c7d6215ce32226e1794d631fa8</SrcFldId><DstFldId>cf11782725c1e132d05fec5a7cd9862694933003</DstFldId></Move></MoveItems>'
         );
         
         $moveItems = new Syncroton_Command_MoveItems($doc, $this->_device, null);
@@ -64,7 +64,7 @@ class Syncroton_Command_MoveItemsTests extends Syncroton_Command_ATestCase
         $xpath = new DomXPath($responseDoc);
         $xpath->registerNamespace('Move', 'uri:Move');
         
-        $nodes = $xpath->query('//Move:Moves/Move:Response/Move:Status');
+        $nodes = $xpath->query('//Move:MoveItems/Move:Response/Move:Status');
         $this->assertEquals(1, $nodes->length, $responseDoc->saveXML());
         $this->assertEquals(Syncroton_Exception_Status_MoveItems::INVALID_SOURCE, $nodes->item(0)->nodeValue, $responseDoc->saveXML());
     }
@@ -76,7 +76,7 @@ class Syncroton_Command_MoveItemsTests extends Syncroton_Command_ATestCase
         $doc = new DOMDocument();
         $doc->loadXML('<?xml version="1.0" encoding="utf-8"?>
             <!DOCTYPE AirSync PUBLIC "-//AIRSYNC//DTD AirSync//EN" "http://www.microsoft.com/">
-            <Moves xmlns="uri:Move"><Move><SrcMsgId>2246b0b87ee914e283d6c53717cc36c68cacd187</SrcMsgId><SrcFldId>addressbookFolderId</SrcFldId><DstFldId>cf11782725c1e132d05fec5a7cd9862694933003</DstFldId></Move></Moves>'
+            <MoveItems xmlns="uri:Move"><Move><SrcMsgId>2246b0b87ee914e283d6c53717cc36c68cacd187</SrcMsgId><SrcFldId>addressbookFolderId</SrcFldId><DstFldId>cf11782725c1e132d05fec5a7cd9862694933003</DstFldId></Move></MoveItems>'
         );
         
         $moveItems = new Syncroton_Command_MoveItems($doc, $this->_device, null);
@@ -87,7 +87,7 @@ class Syncroton_Command_MoveItemsTests extends Syncroton_Command_ATestCase
         $xpath = new DomXPath($responseDoc);
         $xpath->registerNamespace('Move', 'uri:Move');
         
-        $nodes = $xpath->query('//Move:Moves/Move:Response/Move:Status');
+        $nodes = $xpath->query('//Move:MoveItems/Move:Response/Move:Status');
         $this->assertEquals(1, $nodes->length, $responseDoc->saveXML());
         $this->assertEquals(Syncroton_Exception_Status_MoveItems::INVALID_DESTINATION, $nodes->item(0)->nodeValue, $responseDoc->saveXML());
     }
@@ -99,7 +99,7 @@ class Syncroton_Command_MoveItemsTests extends Syncroton_Command_ATestCase
         $doc = new DOMDocument();
         $doc->loadXML('<?xml version="1.0" encoding="utf-8"?>
             <!DOCTYPE AirSync PUBLIC "-//AIRSYNC//DTD AirSync//EN" "http://www.microsoft.com/">
-            <Moves xmlns="uri:Move"><Move><SrcMsgId>2246b0b87ee914e283d6c53717cc36c68cacd187</SrcMsgId><SrcFldId>addressbookFolderId</SrcFldId><DstFldId>addressbookFolderId</DstFldId></Move></Moves>'
+            <MoveItems xmlns="uri:Move"><Move><SrcMsgId>2246b0b87ee914e283d6c53717cc36c68cacd187</SrcMsgId><SrcFldId>addressbookFolderId</SrcFldId><DstFldId>addressbookFolderId</DstFldId></Move></MoveItems>'
         );
         
         $moveItems = new Syncroton_Command_MoveItems($doc, $this->_device, null);
@@ -110,7 +110,7 @@ class Syncroton_Command_MoveItemsTests extends Syncroton_Command_ATestCase
         $xpath = new DomXPath($responseDoc);
         $xpath->registerNamespace('Move', 'uri:Move');
         
-        $nodes = $xpath->query('//Move:Moves/Move:Response/Move:Status');
+        $nodes = $xpath->query('//Move:MoveItems/Move:Response/Move:Status');
         $this->assertEquals(1, $nodes->length, $responseDoc->saveXML());
         $this->assertEquals(Syncroton_Exception_Status_MoveItems::SAME_FOLDER, $nodes->item(0)->nodeValue, $responseDoc->saveXML());
     }
@@ -119,11 +119,10 @@ class Syncroton_Command_MoveItemsTests extends Syncroton_Command_ATestCase
      */
     public function testMove()
     {
-        
         $doc = new DOMDocument();
         $doc->loadXML('<?xml version="1.0" encoding="utf-8"?>
             <!DOCTYPE AirSync PUBLIC "-//AIRSYNC//DTD AirSync//EN" "http://www.microsoft.com/">
-            <Moves xmlns="uri:Move"><Move><SrcMsgId>contact1</SrcMsgId><SrcFldId>addressbookFolderId</SrcFldId><DstFldId>anotherAddressbookFolderId</DstFldId></Move></Moves>'
+            <MoveItems xmlns="uri:Move"><Move><SrcMsgId>contact1</SrcMsgId><SrcFldId>addressbookFolderId</SrcFldId><DstFldId>anotherAddressbookFolderId</DstFldId></Move></MoveItems>'
         );
         
         $moveItems = new Syncroton_Command_MoveItems($doc, $this->_device, null);
@@ -134,15 +133,15 @@ class Syncroton_Command_MoveItemsTests extends Syncroton_Command_ATestCase
         $xpath = new DomXPath($responseDoc);
         $xpath->registerNamespace('Move', 'uri:Move');
         
-        $nodes = $xpath->query('//Move:Moves/Move:Response/Move:Status');
+        $nodes = $xpath->query('//Move:MoveItems/Move:Response/Move:Status');
         $this->assertEquals(1, $nodes->length, $responseDoc->saveXML());
         $this->assertEquals(Syncroton_Command_MoveItems::STATUS_SUCCESS, $nodes->item(0)->nodeValue, $responseDoc->saveXML());
         
-        $nodes = $xpath->query('//Move:Moves/Move:Response/Move:SrcMsgId');
+        $nodes = $xpath->query('//Move:MoveItems/Move:Response/Move:SrcMsgId');
         $this->assertEquals(1, $nodes->length, $responseDoc->saveXML());
         $this->assertEquals('contact1', $nodes->item(0)->nodeValue, $responseDoc->saveXML());
         
-        $nodes = $xpath->query('//Move:Moves/Move:Response/Move:DstMsgId');
+        $nodes = $xpath->query('//Move:MoveItems/Move:Response/Move:DstMsgId');
         $this->assertEquals(1, $nodes->length, $responseDoc->saveXML());
         $this->assertEquals('contact1', $nodes->item(0)->nodeValue, $responseDoc->saveXML());
     }    

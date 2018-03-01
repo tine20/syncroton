@@ -23,7 +23,7 @@ class Syncroton_Command_MoveItems extends Syncroton_Command_Wbxml
     const STATUS_SUCCESS                = 3;
 
     protected $_defaultNameSpace    = 'uri:Move';
-    protected $_documentElement     = 'Moves';
+    protected $_documentElement     = 'MoveItems';
 
     /**
      * list of items to move

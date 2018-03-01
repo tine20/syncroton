@@ -19,11 +19,11 @@
 class Syncroton_Wbxml_Dtd_ActiveSync_CodePage5 extends Syncroton_Wbxml_Dtd_ActiveSync_Abstract
 {
     protected $_codePageNumber  = 5;
-    
+
     protected $_codePageName    = 'Move';
-        
-    protected $_tags = array(     
-        'Moves'                   => 0x05,
+
+    protected $_tags = array(
+        'MoveItems'               => 0x05,
         'Move'                    => 0x06,
         'SrcMsgId'                => 0x07,
         'SrcFldId'                => 0x08,
