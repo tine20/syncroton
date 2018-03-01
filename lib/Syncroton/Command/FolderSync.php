@@ -208,7 +208,28 @@ class Syncroton_Command_FolderSync extends Syncroton_Command_Wbxml
                 
                 $updates[] = $change;
             }
-            
+
+            // Find changes in case backend does not support folder changes detection.
+            // On some backends getChangedFolders() can return an empty result.
+            // We make sure all is up-to-date comparing folder properties.
+            foreach ($clientFoldersIds as $folderId) {
+                if (isset($serverFolders[$folderId])) {
+                    $c = $clientFolders[$folderId];
+                    $s = $serverFolders[$folderId];
+
+                    if ($c->displayName !== $s->displayName
+                        || strval($c->parentId) !== strval($s->parentId)
+                        || $c->type != $s->type
+                    ) {
+                        $c->displayName = $s->displayName;
+                        $c->parentId    = $s->parentId;
+                        $c->type        = $s->type;
+
+                        $updates[] = $c;
+                    }
+                }
+            }
+
             // calculate deleted entries
             $serverDiff = array_diff($clientFoldersIds, $serverFoldersIds);
             foreach ($serverDiff as $serverFolderId) {
