@@ -1,9 +1,6 @@
 language: php
 php:
     - '7.1'
-
-services:
-  - mysql
     
 before_script:
   - composer install
