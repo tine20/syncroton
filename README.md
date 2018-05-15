@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/tine20/syncroton.svg?branch=master)](https://travis-ci.com/tine20/syncroton)
+
 # Syncroton
 
 Syncroton is a PHP based implementation of the [Exchange ActiveSync](http://en.wikipedia.org/wiki/Exchange_ActiveSync) protocol, which is licensed under the LGPL V3.
