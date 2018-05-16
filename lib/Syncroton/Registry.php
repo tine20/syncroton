@@ -249,7 +249,6 @@ class Syncroton_Registry extends ArrayObject
     }
     
     /**
-    /**
      * Return maximum ping interval (HeartbeatInterval) value (in seconds)
      *
      * @return int
