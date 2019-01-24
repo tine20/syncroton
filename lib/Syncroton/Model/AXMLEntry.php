@@ -5,7 +5,7 @@
  * @package     Syncroton
  * @subpackage  Model
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
- * @copyright   Copyright (c) 2012-2012 Metaways Infosystems GmbH (http://www.metaways.de)
+ * @copyright   Copyright (c) 2012-2019 Metaways Infosystems GmbH (http://www.metaways.de)
  * @author      Lars Kneschke <l.kneschke@metaways.de>
  */
 
@@ -55,7 +55,7 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
             
             list ($nameSpace, $elementProperties) = $this->_getElementProperties($elementName);
             
-            if ($nameSpace == 'Internal') {
+            if ($nameSpace === 'Internal') {
                 continue;
             }
             
@@ -75,18 +75,25 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
                     $element->appendChild($subElement);
                 }
                 $domParrent->appendChild($element);
-            } else if ($elementProperties['type'] == 'container' && !empty($elementProperties['multiple'])) {
+            } elseif ($elementProperties['type'] === 'container' && !empty($elementProperties['multiple'])) {
                 foreach ($value as $element) {
                     $container = $domParrent->ownerDocument->createElementNS($nameSpace, ucfirst($elementName));
                     $element->appendXML($container, $device);
                     $domParrent->appendChild($container);
                 }
-            } else if ($elementProperties['type'] == 'none') {
+            } elseif ($elementProperties['type'] === 'none') {
                 if ($value) {
                     $element = $domParrent->ownerDocument->createElementNS($nameSpace, ucfirst($elementName));
                     $domParrent->appendChild($element);
                 }
             } else {
+                if ($elementProperties['type'] === 'boolean') {
+                    if ($value) {
+                        $value = '1';
+                    } else {
+                        $value = '0';
+                    }
+                }
                 $element = $domParrent->ownerDocument->createElementNS($nameSpace, ucfirst($elementName));
                 $this->_appendXMLElement($device, $element, $elementProperties, $value);
                 $domParrent->appendChild($element);
@@ -285,6 +292,10 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
                     
                 case 'datetime':
                     $property = new DateTime((string) $xmlElement, new DateTimeZone('UTC'));
+                    break;
+
+                case 'boolean':
+                    $property = (bool) ((int) $xmlElement);
                     break;
 
                 case 'number':

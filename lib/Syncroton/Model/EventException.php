@@ -5,7 +5,7 @@
  * @package     Syncroton
  * @subpackage  Model
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
- * @copyright   Copyright (c) 2012-2012 Metaways Infosystems GmbH (http://www.metaways.de)
+ * @copyright   Copyright (c) 2012-2019 Metaways Infosystems GmbH (http://www.metaways.de)
  * @author      Lars Kneschke <l.kneschke@metaways.de>
  */
 
@@ -14,12 +14,16 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    string  class
- * @property    string  collectionId
- * @property    bool    deletesAsMoves
- * @property    bool    getChanges
- * @property    string  syncKey
- * @property    int     windowSize
+ * @property    string      class
+ * @property    string      collectionId
+ * @property    bool        deletesAsMoves
+ * @property    bool        getChanges
+ * @property    string      syncKey
+ * @property    int         windowSize
+ * @property    int         meetingStatus
+ * @property    int         responseType
+ * @property    bool        responseRequested
+ * @property    DateTime    appointmentReplyTime
  */
 
 class Syncroton_Model_EventException extends Syncroton_Model_AXMLEntry
@@ -45,10 +49,12 @@ class Syncroton_Model_EventException extends Syncroton_Model_AXMLEntry
             'location'                => array('type' => 'string'),
             'meetingStatus'           => array('type' => 'number'),
             'reminder'                => array('type' => 'number'),
+            'responseRequested'       => array('type' => 'boolean'),
             'responseType'            => array('type' => 'number'),
             'sensitivity'             => array('type' => 'number'),
             'startTime'               => array('type' => 'datetime'),
             'subject'                 => array('type' => 'string'),
+            'appointmentReplyTime'    => array('type' => 'datetime'),
         )
     );    
 }
