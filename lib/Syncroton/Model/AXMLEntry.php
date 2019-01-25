@@ -88,11 +88,7 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
                 }
             } else {
                 if ($elementProperties['type'] === 'boolean') {
-                    if ($value) {
-                        $value = '1';
-                    } else {
-                        $value = '0';
-                    }
+                    $value = ($value) ? '1' : '0';
                 }
                 $element = $domParrent->ownerDocument->createElementNS($nameSpace, ucfirst($elementName));
                 $this->_appendXMLElement($device, $element, $elementProperties, $value);

@@ -39,7 +39,11 @@ class Syncroton_Model_EventException extends Syncroton_Model_AXMLEntry
         'Calendar' => array(
             'allDayEvent'             => array('type' => 'number'),
             'appointmentReplyTime'    => array('type' => 'datetime'),
-            'attendees'               => array('type' => 'container', 'childElement' => 'attendee', 'class' => 'Syncroton_Model_EventAttendee'),
+            'attendees'               => array(
+                'type' => 'container',
+                'childElement' => 'attendee',
+                'class' => 'Syncroton_Model_EventAttendee'
+            ),
             'busyStatus'              => array('type' => 'number'),
             'categories'              => array('type' => 'container', 'childElement' => 'category'),
             'deleted'                 => array('type' => 'number'),
@@ -54,7 +58,6 @@ class Syncroton_Model_EventException extends Syncroton_Model_AXMLEntry
             'sensitivity'             => array('type' => 'number'),
             'startTime'               => array('type' => 'datetime'),
             'subject'                 => array('type' => 'string'),
-            'appointmentReplyTime'    => array('type' => 'datetime'),
         )
     );    
 }
