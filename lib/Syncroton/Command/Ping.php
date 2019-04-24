@@ -137,6 +137,10 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
                 // reconnect external connections, etc.
                 call_user_func($wakeupCallback);
 
+                // Calculate secondsLeft before any loop break just to have a correct value
+                // for logging purposes in case we breaked from the loop early
+                $secondsLeft = $intervalEnd - time();
+
                 try {
                     $device = $this->_deviceBackend->get($this->_device->id);
                 } catch (Syncroton_Exception_NotFound $e) {
@@ -249,7 +253,8 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
                 if ($status != self::STATUS_NO_CHANGES_FOUND) {
                     break;
                 }
-                
+
+                // Update secondsLeft (again)
                 $secondsLeft = $intervalEnd - time();
                 
                 if ($this->_logger instanceof Zend_Log)
