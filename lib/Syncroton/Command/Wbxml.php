@@ -143,8 +143,8 @@ abstract class Syncroton_Command_Wbxml implements Syncroton_Command_ICommand
         $this->_requestBody       = $requestBody;
         $this->_device            = $device;
         $this->_requestParameters = $requestParameters;
-        $this->_policyKey         = $requestParameters['policyKey'];
-        
+        $this->_policyKey         = isset($requestParameters['policyKey']) ? $requestParameters['policyKey'] : null;
+
         $this->_deviceBackend       = Syncroton_Registry::getDeviceBackend();
         $this->_folderBackend       = Syncroton_Registry::getFolderBackend();
         $this->_syncStateBackend    = Syncroton_Registry::getSyncStateBackend();
