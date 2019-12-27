@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Syncroton
  *
@@ -16,7 +17,6 @@
  * @package     Wbxml
  * @subpackage  Wbxml
  */
- 
- class Syncroton_Wbxml_Dtd_Exception_CodePageNotFound extends Exception 
- {
- }
+class Syncroton_Wbxml_Dtd_Exception_CodePageNotFound extends Exception
+{
+}

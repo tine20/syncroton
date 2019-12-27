@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Syncroton
  *
@@ -10,34 +11,22 @@
  */
 
 /**
- * class to handle ActiveSync event
+ * Class to handle ActiveSync Attachment
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    string  class
- * @property    string  collectionId
- * @property    bool    deletesAsMoves
- * @property    bool    getChanges
- * @property    string  syncKey
- * @property    int     windowSize
+ * @property    string  $clientId
+ * @property    string  $contentId
+ * @property    string  $contentLocation
+ * @property    string  $displayName
+ * @property    int     $estimatedDataSize
+ * @property    string  $fileReference
+ * @property    bool    $isInline
+ * @property    int     $method
+ * @property    int     $umAttDuration
+ * @property    int     $umAttOrder
  */
-class Syncroton_Model_EmailAttachment extends Syncroton_Model_AXMLEntry
+class Syncroton_Model_EmailAttachment extends Syncroton_Model_Attachment
 {
     protected $_xmlBaseElement = 'Attachment';
-    
-    protected $_properties = array(
-        'AirSyncBase' => array(
-            'contentId'               => array('type' => 'string'),
-            'contentLocation'         => array('type' => 'string'),
-            'displayName'             => array('type' => 'string'),
-            'estimatedDataSize'       => array('type' => 'string'),
-            'fileReference'           => array('type' => 'string'),
-            'isInline'                => array('type' => 'number'),
-            'method'                  => array('type' => 'string'),
-        ),
-        'Email2' => array(
-            'umAttDuration'         => array('type' => 'number', 'supportedSince' => '14.0'),
-            'umAttOrder'            => array('type' => 'number', 'supportedSince' => '14.0'),
-        ),
-    );
 }

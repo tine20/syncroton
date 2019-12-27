@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Syncroton
  *
@@ -18,10 +19,8 @@
  */
 class Syncroton_Wbxml_Dtd_ActiveSync_CodePage254 extends Syncroton_Wbxml_Dtd_ActiveSync_Abstract
 {
-    protected $_codePageNumber  = 254;
-    
-    protected $_codePageName    = 'WindowsLive';
-        
+    protected $_codePageNumber = 254;
+    protected $_codePageName   = 'WindowsLive';
     protected $_tags = array(
         'Annotations'            => 0x05,
         'Annotation'             => 0x06,

@@ -19,7 +19,7 @@
 class Syncroton_Model_Folder extends Syncroton_Model_AXMLEntry implements Syncroton_Model_IFolder
 {
     protected $_xmlBaseElement = array('FolderUpdate', 'FolderCreate');
-    
+
     protected $_properties = array(
         'FolderHierarchy' => array(
             'parentId'     => array('type' => 'string'),

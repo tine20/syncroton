@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Syncroton
  *
@@ -14,23 +15,20 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    int       CalendarType
- * @property    int       DayOfMonth
- * @property    int       DayOfWeek
- * @property    int       FirstDayOfWeek
- * @property    int       Interval
- * @property    int       IsLeapMonth
- * @property    int       MonthOfYear
- * @property    int       Occurrences
- * @property    int       Type
- * @property    DateTime  Until
- * @property    int       WeekOfMonth
+ * @property    int       $calendarType
+ * @property    int       $dayOfMonth
+ * @property    int       $dayOfWeek
+ * @property    int       $firstDayOfWeek
+ * @property    int       $interval
+ * @property    int       $isLeapMonth
+ * @property    int       $monthOfYear
+ * @property    int       $occurrences
+ * @property    int       $type
+ * @property    DateTime  $until
+ * @property    int       $weekOfMonth
  */
-
 class Syncroton_Model_EventRecurrence extends Syncroton_Model_AXMLEntry
 {
-    protected $_xmlBaseElement = 'Recurrence';
-    
     /**
      * recur types
      */
@@ -40,7 +38,7 @@ class Syncroton_Model_EventRecurrence extends Syncroton_Model_AXMLEntry
     const TYPE_MONTHLY_DAYN   = 3;     // Recurs monthly on the nth day
     const TYPE_YEARLY         = 5;     // Recurs yearly
     const TYPE_YEARLY_DAYN    = 6;     // Recurs yearly on the nth day
-    
+
     /**
      * day of week constants
      */
@@ -51,9 +49,11 @@ class Syncroton_Model_EventRecurrence extends Syncroton_Model_AXMLEntry
     const RECUR_DOW_THURSDAY    = 16;
     const RECUR_DOW_FRIDAY      = 32;
     const RECUR_DOW_SATURDAY    = 64;
-    
+
+    protected $_xmlBaseElement = 'Recurrence';
+
     protected $_dateTimeFormat = "Ymd\THis\Z";
-    
+
     protected $_properties = array(
         'Calendar' => array(
             'calendarType'            => array('type' => 'number'),

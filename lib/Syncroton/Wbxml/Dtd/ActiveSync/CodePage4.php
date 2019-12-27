@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Syncroton
  *
@@ -15,13 +16,10 @@
  * @package     Wbxml
  * @subpackage  ActiveSync
  */
- 
 class Syncroton_Wbxml_Dtd_ActiveSync_CodePage4 extends Syncroton_Wbxml_Dtd_ActiveSync_Abstract
 {
-    protected $_codePageNumber  = 4;
-    
-    protected $_codePageName    = 'Calendar';
-        
+    protected $_codePageNumber = 4;
+    protected $_codePageName   = 'Calendar';
     protected $_tags = array(
         'Timezone'                => 0x05,
         'AllDayEvent'             => 0x06,
@@ -69,6 +67,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage4 extends Syncroton_Wbxml_Dtd_Activ
         'IsLeapMonth'             => 0x38,
         'FirstDayOfWeek'          => 0x39,
         'OnlineMeetingConfLink'   => 0x3a,
-        'OnlineMeetingExternalLink' => 0x3b
+        'OnlineMeetingExternalLink' => 0x3b,
+        'ClientUid'               => 0x3c,
     );
 }

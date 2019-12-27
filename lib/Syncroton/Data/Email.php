@@ -25,7 +25,7 @@ class Syncroton_Data_Email extends Syncroton_Data_AData implements Syncroton_Dat
         Syncroton_Command_FolderSync::FOLDERTYPE_OUTBOX,
         Syncroton_Command_FolderSync::FOLDERTYPE_SENTMAIL
     );
-    
+
     /**
      * (non-PHPdoc)
      * @see Syncroton_Data_IDataEmail::forwardEmail()
@@ -35,10 +35,10 @@ class Syncroton_Data_Email extends Syncroton_Data_AData implements Syncroton_Dat
         if ($inputStream == 'triggerException') {
             throw new Syncroton_Exception_Status(Syncroton_Exception_Status::MAILBOX_SERVER_OFFLINE);
         }
-        
+
         // forward email
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see Syncroton_Data_AData::getFileReference()
@@ -46,14 +46,14 @@ class Syncroton_Data_Email extends Syncroton_Data_AData implements Syncroton_Dat
     public function getFileReference($fileReference)
     {
         list($messageId, $partId) = explode(Syncroton_Data_AData::LONGID_DELIMITER, $fileReference, 2);
-    
+
         // example code
         return new Syncroton_Model_FileReference(array(
             'contentType' => 'text/plain',
             'data'        => 'Lars'
         ));
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see Syncroton_Data_IDataEmail::replyEmail()
@@ -62,16 +62,16 @@ class Syncroton_Data_Email extends Syncroton_Data_AData implements Syncroton_Dat
     {
         // forward email
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see Syncroton_Data_AData::updateEntry()
      */
-    public function updateEntry($_folderId, $_serverId, Syncroton_Model_IEntry $_entry)
+    public function updateEntry($_folderId, $_serverId, Syncroton_Model_IEntry $_entry, $options = array())
     {
-        // not used by email
+        // update an email (or SMS)
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see Syncroton_Data_IDataEmail::sendEmail()
@@ -81,7 +81,7 @@ class Syncroton_Data_Email extends Syncroton_Data_AData implements Syncroton_Dat
         if ($inputStream == 'triggerException') {
             throw new Syncroton_Exception_Status(Syncroton_Exception_Status::MAILBOX_SERVER_OFFLINE);
         }
+
         // send email
     }
 }
-

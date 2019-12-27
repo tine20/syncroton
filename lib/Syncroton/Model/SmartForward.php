@@ -16,6 +16,16 @@
  *
  * @package    Syncroton
  * @subpackage Model
+ *
+ * @property  string                      $accountId
+ * @property  string                      $clientId
+ * @property  Syncroton_Model_Forwardee[] $forwardees
+ * @property  string                      $mime
+ * @property  bool                        $replaceMime
+ * @property  bool                        $saveInSentItems
+ * @property  string                      $source
+ * @property  int                         $status
+ * @property  string                      $templateID
  */
 class Syncroton_Model_SmartForward extends Syncroton_Model_AXMLEntry
 {
@@ -23,6 +33,7 @@ class Syncroton_Model_SmartForward extends Syncroton_Model_AXMLEntry
         'ComposeMail' => array(
             'accountId'       => array('type' => 'string'),
             'clientId'        => array('type' => 'string'),
+            'forwardees'      => array('type' => 'container', 'childElement' => 'forwardee', 'supportedSince' => '16.0'),
             'mime'            => array('type' => 'byteArray'),
             'replaceMime'     => array('type' => 'string'),
             'saveInSentItems' => array('type' => 'string'),

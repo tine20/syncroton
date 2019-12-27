@@ -14,23 +14,23 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property   int     EstimatedDataSize
- * @property   string  Data
- * @property   string  Part
- * @property   string  Preview
- * @property   bool    Truncated
- * @property   string  Type
+ *
+ * @property   int     $estimatedDataSize
+ * @property   string  $data
+ * @property   string  $part
+ * @property   string  $preview
+ * @property   bool    $truncated
+ * @property   string  $type
  */
-
 class Syncroton_Model_EmailBody extends Syncroton_Model_AXMLEntry
 {
     const TYPE_PLAINTEXT = 1;
     const TYPE_HTML      = 2;
     const TYPE_RTF       = 3;
     const TYPE_MIME      = 4;
-    
+
     protected $_xmlBaseElement = 'Body';
-    
+
     protected $_properties = array(
         'AirSyncBase' => array(
             'type'              => array('type' => 'string'),

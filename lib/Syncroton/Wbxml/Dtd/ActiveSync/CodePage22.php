@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Syncroton
  *
@@ -15,13 +16,10 @@
  * @package     Wbxml
  * @subpackage  ActiveSync
  */
- 
 class Syncroton_Wbxml_Dtd_ActiveSync_CodePage22 extends Syncroton_Wbxml_Dtd_ActiveSync_Abstract
 {
-    protected $_codePageNumber  = 22;
-    
-    protected $_codePageName    = 'Email2';
-        
+    protected $_codePageNumber = 22;
+    protected $_codePageName   = 'Email2';
     protected $_tags = array(
         'UmCallerID'            => 0x05,
         'UmUserNotes'           => 0x06,
@@ -38,5 +36,8 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage22 extends Syncroton_Wbxml_Dtd_Acti
         'AccountId'             => 0x11,
         'FirstDayOfWeek'        => 0x12,
         'MeetingMessageType'    => 0x13,
+        'IsDraft'               => 0x15,
+        'Bcc'                   => 0x16,
+        'Send'                  => 0x17,
    );
 }

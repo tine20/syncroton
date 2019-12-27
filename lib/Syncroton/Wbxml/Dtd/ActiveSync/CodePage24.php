@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Syncroton
  *
@@ -15,14 +16,11 @@
  * @package     Wbxml
  * @subpackage  ActiveSync
  */
- 
 class Syncroton_Wbxml_Dtd_ActiveSync_CodePage24 extends Syncroton_Wbxml_Dtd_ActiveSync_Abstract
 {
-    protected $_codePageNumber  = 24;
-    
-    protected $_codePageName    = 'RightsManagement';
-        
-    protected $_tags = array(     
+    protected $_codePageNumber = 24;
+    protected $_codePageName   = 'RightsManagement';
+    protected $_tags = array(
         'RightsManagementSupport'            => 0x05,
         'RightsManagementTemplates'          => 0x06,
         'RightsManagementTemplate'           => 0x07,
@@ -44,5 +42,4 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage24 extends Syncroton_Wbxml_Dtd_Acti
         'ContentOwner'                       => 0x17,
         'RemoveRightsManagementDistribution' => 0x18
     );
-    
 }
