@@ -32,7 +32,8 @@ class Syncroton_Command_SendMail extends Syncroton_Command_Wbxml
      */
     public function handle()
     {
-        if ($this->_requestParameters['contentType'] == 'message/rfc822') {
+        if (isset($this->_requestParameters['contentType']) &&
+                $this->_requestParameters['contentType'] === 'message/rfc822') {
             $this->_mime          = $this->_requestBody;
             $this->_saveInSent    = $this->_requestParameters['saveInSent'];
             $this->_replaceMime   = false;
