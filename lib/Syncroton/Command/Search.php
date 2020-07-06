@@ -5,7 +5,7 @@
  * @package     Syncroton
  * @subpackage  Command
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
- * @copyright   Copyright (c) 2008-2012 Metaways Infosystems GmbH (http://www.metaways.de)
+ * @copyright   Copyright (c) 2008-2020 Metaways Infosystems GmbH (http://www.metaways.de)
  * @author      Lars Kneschke <l.kneschke@metaways.de>
  */
 
@@ -33,9 +33,15 @@ class Syncroton_Command_Search extends Syncroton_Command_Wbxml
     /**
      * parse search command request
      *
+     * @throws Syncroton_Exception_UnexpectedValue
      */
     public function handle()
     {
+        if (! $this->_requestBody instanceof DOMDocument) {
+            throw new Syncroton_Exception_UnexpectedValue(
+                'request body is no DOMDocument. got: ' . print_r($this->_requestBody, true));
+        }
+
         $xml = simplexml_import_dom($this->_requestBody);
 
         $this->_store = new Syncroton_Model_StoreRequest($xml->Store);
