@@ -223,11 +223,10 @@ class Syncroton_Model_StoreRequest
 
     public function &__get($name)
     {
-        if (array_key_exists($name, $this->_store)) {
-            return $this->_store[$name];
+        if (! array_key_exists($name, $this->_store)) {
+            $this->_store[$name] = null;
         }
-        //echo $name . PHP_EOL;
-        return null;
+        return $this->_store[$name];
     }
 
     public function __set($name, $value)
