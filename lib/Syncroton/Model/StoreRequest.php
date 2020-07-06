@@ -226,8 +226,8 @@ class Syncroton_Model_StoreRequest
         if (array_key_exists($name, $this->_store)) {
             return $this->_store[$name];
         }
-        //echo $name . PHP_EOL;
-        return null;
+        $this->_store[$name] = null;
+        return $this->_store[$name];
     }
 
     public function __set($name, $value)
