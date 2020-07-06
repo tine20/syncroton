@@ -223,10 +223,9 @@ class Syncroton_Model_StoreRequest
 
     public function &__get($name)
     {
-        if (array_key_exists($name, $this->_store)) {
-            return $this->_store[$name];
+        if (! array_key_exists($name, $this->_store)) {
+            $this->_store[$name] = null;
         }
-        $this->_store[$name] = null;
         return $this->_store[$name];
     }
 
