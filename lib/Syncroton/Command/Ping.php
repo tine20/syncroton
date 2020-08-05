@@ -98,7 +98,7 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
         
         $lifeTime    = $this->_device->pinglifetime;
         $maxLifeTime = Syncroton_Registry::getMaxPingInterval();
-        
+
         if ($maxLifeTime > 0 && $lifeTime > $maxLifeTime) {
             $ping = $this->_outputDom->documentElement;
             $ping->appendChild($this->_outputDom->createElementNS('uri:Ping', 'Status', self::STATUS_INTERVAL_TO_GREAT_OR_SMALL));
@@ -161,9 +161,15 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
                     if ($this->_logger instanceof Zend_Log)
                         $this->_logger->err(__METHOD__ . '::' . __LINE__ . " " . $e->getMessage());
 
-                    // do nothing, maybe temporal issue, should we stop?
-                    continue;
-                }
+                // do nothing, maybe temporal issue, should we stop?
+                continue;
+            }
+        }
+
+        if ($status === self::STATUS_NO_CHANGES_FOUND) {
+            do {
+                // take a break to save battery lifetime
+                sleep(Syncroton_Registry::getPingTimeout());
 
                 // if another Ping command updated lastping property, we can stop processing this Ping command request
                 if ((isset($device->lastping) && $device->lastping instanceof DateTime) &&
@@ -190,17 +196,17 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
                 }
 
                 $now = new DateTime('now', new DateTimeZone('utc'));
-                
+
                 foreach ($folders as $folderId) {
                     try {
                         $folder         = $this->_folderBackend->get($folderId);
                         $dataController = Syncroton_Data_Factory::factory($folder->class, $this->_device, $this->_syncTimeStamp);
-                        
+
                     } catch (Syncroton_Exception_NotFound $e) {
                         if ($this->_logger instanceof Zend_Log)
                             $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " " . $e->getMessage());
                         $status = self::STATUS_FOLDER_NOT_FOUND;
-                        
+
                         break;
 
                     } catch (Zend_Db_Exception $e) {
@@ -220,7 +226,7 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
                     }
 
                     try {
-                        $syncState = $this->_syncStateBackend->getSyncState($this->_device, $folder);
+                        $syncState = $this->_syncStateBackend->getSyncState($this->_device, $folders[$folderId]);
                         
                         // another process synchronized data of this folder already. let's skip it
                         if ($syncState->lastsync > $this->_syncTimeStamp) {
@@ -232,7 +238,7 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
                             continue;
                         }
                         
-                        $foundChanges = $dataController->hasChanges($this->_contentStateBackend, $folder, $syncState);
+                        $foundChanges = $dataController->hasChanges($this->_contentStateBackend, $folders[$folderId], $syncState);
                         
                     } catch (Syncroton_Exception_NotFound $e) {
                         // folder got never synchronized to client
@@ -245,7 +251,7 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
                     }
                     
                     if ($foundChanges == true) {
-                        $this->_foldersWithChanges[] = $folder;
+                        $this->_foldersWithChanges[] = $folders[$folderId];
                         $status = self::STATUS_CHANGES_FOUND;
                     }
                 }

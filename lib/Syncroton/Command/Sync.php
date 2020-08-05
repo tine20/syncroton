@@ -32,7 +32,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
     const STATUS_RESEND_FULL_XML                        = 13;
     const STATUS_WAIT_INTERVAL_OUT_OF_RANGE             = 14;
     const STATUS_TOO_MANY_COLLECTIONS                   = 15;
-    
+
     const CONFLICT_OVERWRITE_SERVER                     = 0;
     const CONFLICT_OVERWRITE_PIM                        = 1;
     
@@ -451,6 +451,11 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
             $sleepCallback  = Syncroton_Registry::getSleepCallback();
             $wakeupCallback = Syncroton_Registry::getWakeupCallback();
             
+            // init data controllers
+            foreach($this->_collections as $collectionData) {
+                $dataControllers[$collectionData->folder->class] = Syncroton_Data_Factory::factory($collectionData->folder->class , $this->_device, $this->_syncTimeStamp);
+            }
+
             do {
                 // take a break to save battery lifetime
                 $sleepCallback();
@@ -464,7 +469,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                 }
 
                 $wakeupCallback();
-                
+
                 $now = new DateTime(null, new DateTimeZone('utc'));
 
                 foreach($this->_collections as $collectionData) {
@@ -528,7 +533,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                             continue;
                         }
                         
-                        $dataController = Syncroton_Data_Factory::factory($collectionData->folder->class , $this->_device, $this->_syncTimeStamp);
+                        $dataController = $dataControllers[$collectionData->folder->class];
                         
                         // countinue immediately if there are any changes available
                         if($dataController->hasChanges($this->_contentStateBackend, $collectionData->folder, $collectionData->syncState)) {
