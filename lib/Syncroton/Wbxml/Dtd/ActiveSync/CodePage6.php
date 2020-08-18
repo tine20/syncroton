@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Syncroton
  *
@@ -15,14 +16,11 @@
  * @package     Wbxml
  * @subpackage  ActiveSync
  */
- 
 class Syncroton_Wbxml_Dtd_ActiveSync_CodePage6 extends Syncroton_Wbxml_Dtd_ActiveSync_Abstract
 {
-    protected $_codePageNumber  = 6;
-    
-    protected $_codePageName    = 'ItemEstimate';
-        
-    protected $_tags = array(     
+    protected $_codePageNumber = 6;
+    protected $_codePageName   = 'ItemEstimate';
+    protected $_tags = array(
         'GetItemEstimate'         => 0x05,
         'Version'                 => 0x06,
         'Collections'             => 0x07,

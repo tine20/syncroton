@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Syncroton
  *
@@ -15,13 +16,10 @@
  * @package     Wbxml
  * @subpackage  ActiveSync
  */
- 
 class Syncroton_Wbxml_Dtd_ActiveSync_CodePage21 extends Syncroton_Wbxml_Dtd_ActiveSync_Abstract
 {
-    protected $_codePageNumber  = 21;
-    
-    protected $_codePageName    = 'ComposeMail';
-        
+    protected $_codePageNumber = 21;
+    protected $_codePageName   = 'ComposeMail';
     protected $_tags = array(
         'SendMail'        => 0x05,
         'SmartForward'    => 0x06,
@@ -37,5 +35,9 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage21 extends Syncroton_Wbxml_Dtd_Acti
         'ClientId'        => 0x11,
         'Status'          => 0x12,
         'AccountId'       => 0x13,
+        'Forwardees'      => 0x15,
+        'Forwardee'       => 0x16,
+        'Name'            => 0x17,
+        'Email'           => 0x18,
     );
 }

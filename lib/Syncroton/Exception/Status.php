@@ -94,6 +94,11 @@ class Syncroton_Exception_Status extends Syncroton_Exception
     const PICTURE_LIMIT_REACHED              = 175;
     const BODY_PART_CONVERSATION_TOO_LARGE   = 176;
     const MAXIMUM_DEVICES_REACHED            = 177;
+    const INVALID_MIME_BODY_COMBINATION      = 178;
+    const INVALID_SMART_FORWARD_PARAMETERS   = 179;
+    const INVALID_RECIPIENTS                 = 183;
+    const ONE_OR_MORE_EXCEPTIONS_FAILED      = 184;
+
 
     /**
      * Common error messages assigned to error codes
@@ -175,6 +180,10 @@ class Syncroton_Exception_Status extends Syncroton_Exception
         self::PICTURE_LIMIT_REACHED              => "The number of contact photos returned exceeds the size limit set by the MaxPictures element",
         self::BODY_PART_CONVERSATION_TOO_LARGE   => "The conversation is too large to compute the body parts",
         self::MAXIMUM_DEVICES_REACHED            => "The user's account has too many device partnerships",
+        self::INVALID_MIME_BODY_COMBINATION      => "The request included elements that are not allowed to be combined with Forwardees or Body element";
+        self::INVALID_SMART_FORWARD_PARAMETERS   => "The Forwardees or Body element in the request could not be parsed";
+        self::INVALID_RECIPIENTS                 => "A draft email either has no recipients or has a recipient email address that is not valid";
+        self::ONE_OR_MORE_EXCEPTIONS_FAILED      => "Failed to save all of the event exceptions specified in the request";
     );
 
     /**

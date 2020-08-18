@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Syncroton
  *
@@ -15,14 +16,11 @@
  * @package     Wbxml
  * @subpackage  ActiveSync
  */
- 
 class Syncroton_Wbxml_Dtd_ActiveSync_CodePage7 extends Syncroton_Wbxml_Dtd_ActiveSync_Abstract
 {
-    protected $_codePageNumber  = 7;
-    
-    protected $_codePageName    = 'FolderHierarchy';
-        
-    protected $_tags = array(     
+    protected $_codePageNumber = 7;
+    protected $_codePageName   = 'FolderHierarchy';
+    protected $_tags = array(
         'Folders'                => 0x05,
         'Folder'                 => 0x06,
         'DisplayName'            => 0x07,

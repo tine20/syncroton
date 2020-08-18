@@ -46,9 +46,6 @@ class Syncroton_Command_MoveItems extends Syncroton_Command_Wbxml
                 'dstFldId' => (string)$move->DstFldId
             );
         }
-
-        if ($this->_logger instanceof Zend_Log)
-            $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " moves: " . print_r($this->_moves, true));
     }
 
     /**
@@ -83,10 +80,8 @@ class Syncroton_Command_MoveItems extends Syncroton_Command_Wbxml
                 $newId          = $dataController->moveItem($move['srcFldId'], $move['srcMsgId'], $move['dstFldId']);
 
                 $response->appendChild($this->_outputDom->createElementNS('uri:Move', 'Status', Syncroton_Command_MoveItems::STATUS_SUCCESS));
-
-                if ($newId) {
+                if ($newId)
                     $response->appendChild($this->_outputDom->createElementNS('uri:Move', 'DstMsgId', $newId));
-                }
             } catch (Syncroton_Exception_Status $e) {
                 $response->appendChild($this->_outputDom->createElementNS('uri:Move', 'Status', $e->getCode()));
             } catch (Exception $e) {

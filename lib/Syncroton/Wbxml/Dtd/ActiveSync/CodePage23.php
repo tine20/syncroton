@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Syncroton
  *
@@ -15,14 +16,11 @@
  * @package     Wbxml
  * @subpackage  ActiveSync
  */
- 
 class Syncroton_Wbxml_Dtd_ActiveSync_CodePage23 extends Syncroton_Wbxml_Dtd_ActiveSync_Abstract
 {
-    protected $_codePageNumber  = 23;
-    
-    protected $_codePageName    = 'Notes';
-        
-    protected $_tags = array(     
+    protected $_codePageNumber = 23;
+    protected $_codePageName   = 'Notes';
+    protected $_tags = array(
         'Subject'          => 0x05,
         'MessageClass'     => 0x06,
         'LastModifiedDate' => 0x07,

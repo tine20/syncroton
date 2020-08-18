@@ -59,9 +59,6 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
                 $this->_emptyFolderContents[] = $this->_handleEmptyFolderContents($emptyFolderContents);
             }
         }
-        
-        if ($this->_logger instanceof Zend_Log) 
-            $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " fetches: " . print_r($this->_fetches, true));        
     }
     
     /**
@@ -252,12 +249,12 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
                 }
             }
 
-            if (isset($airSyncBase->Range)) {
-                $fetchArray['options']['range'] = (string)$airSyncBase->Range;
-            }
-
-            if (isset($fetch->Options->MIMESupport)) {
+            if (isset($fetch->Options->MIMESupport)){
                 $fetchArray['options']['mimeSupport'] = (int) $fetch->Options->MIMESupport;
+            }
+ 
+            if (isset($airSyncBase->Range)) {
+                $fetchArray['options']['range'] = (string) $airSyncBase->Range;
             }
         }
         

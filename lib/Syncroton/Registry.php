@@ -36,7 +36,7 @@ class Syncroton_Registry extends ArrayObject
     
     const DEFAULT_POLICY      = 'default_policy';
     const PING_TIMEOUT        = 'ping_timeout';
-    const MAX_PING_INTERVAL   = 'max_ping_interval';
+    const PING_INTERVAL       = 'ping_interval';
     const QUIET_TIME          = 'quiet_time';
     const SESSION_VALIDATOR   = 'session_validator';
     const MAX_COLLECTIONS     = 'max_collections';
@@ -253,6 +253,21 @@ class Syncroton_Registry extends ArrayObject
      *
      * @return int
      */
+    public static function getPingInterval()
+    {
+        if (!self::isRegistered(self::PING_INTERVAL)) {
+            return 3540; // 59 minutes limit defined in Activesync protocol spec.
+        }
+
+        return self::get(self::PING_INTERVAL);
+    }
+    
+    /**
+    /**
+     * Return maximum ping interval (HeartbeatInterval) value (in seconds)
+     *
+     * @return int
+     */
     public static function getMaxPingInterval()
     {
         if (!self::isRegistered(self::MAX_PING_INTERVAL)) {
@@ -324,7 +339,7 @@ class Syncroton_Registry extends ArrayObject
         
         return self::get(self::QUIET_TIME);
     }
-
+    
     /**
      * Returns sleep callback function
      *

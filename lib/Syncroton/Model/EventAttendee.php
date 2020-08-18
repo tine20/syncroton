@@ -14,18 +14,16 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    string  class
- * @property    string  collectionId
- * @property    bool    deletesAsMoves
- * @property    bool    getChanges
- * @property    string  syncKey
- * @property    int     windowSize
+ *
+ * @property  int       $attendeeStatus
+ * @property  int       $attendeeType
+ * @property  string    $email
+ * @property  string    $name
+ * @property  datetime  $proposedEndTime
+ * @property  datetime  $proposedStartTime
  */
-
 class Syncroton_Model_EventAttendee extends Syncroton_Model_AXMLEntry
 {
-    protected $_xmlBaseElement = 'Attendee';
-    
     /**
      * attendee status
      */
@@ -34,20 +32,26 @@ class Syncroton_Model_EventAttendee extends Syncroton_Model_AXMLEntry
     const ATTENDEE_STATUS_ACCEPTED      = 3;
     const ATTENDEE_STATUS_DECLINED      = 4;
     const ATTENDEE_STATUS_NOTRESPONDED  = 5;
-    
+
     /**
      * attendee types
      */
     const ATTENDEE_TYPE_REQUIRED = 1;
     const ATTENDEE_TYPE_OPTIONAL = 2;
     const ATTENDEE_TYPE_RESOURCE = 3;
-    
+
+    protected $_xmlBaseElement = 'Attendee';
+
     protected $_properties = array(
         'Calendar' => array(
             'attendeeStatus'          => array('type' => 'number'),
             'attendeeType'            => array('type' => 'number'),
             'email'                   => array('type' => 'string'),
             'name'                    => array('type' => 'string'),
-        )
+        ),
+        'MeetingResponse' => array(
+            'proposedEndTime'         => array('type' => 'datetime', 'supportedSince' => '16.1'),
+            'proposedStartTime'       => array('type' => 'datetime', 'supportedSince' => '16.1'),
+        ),
     );
 }

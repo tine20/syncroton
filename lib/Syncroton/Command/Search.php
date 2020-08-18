@@ -45,9 +45,6 @@ class Syncroton_Command_Search extends Syncroton_Command_Wbxml
         $xml = simplexml_import_dom($this->_requestBody);
 
         $this->_store = new Syncroton_Model_StoreRequest($xml->Store);
-
-        if ($this->_logger instanceof Zend_Log)
-            $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " stores: " . print_r($this->_store, true));
     }
 
     /**

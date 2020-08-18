@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Syncroton
  *
@@ -16,7 +17,6 @@
  * @package     Wbxml
  * @subpackage  ActiveSync
  */
- 
 abstract class Syncroton_Wbxml_Dtd_ActiveSync_Abstract
 {
     /**
@@ -24,14 +24,14 @@ abstract class Syncroton_Wbxml_Dtd_ActiveSync_Abstract
      *
      * @var integer
      */
-    protected $_codePageNumber  = NULL;
-            
+    protected $_codePageNumber = NULL;
+
     /**
      * codepage name
      *
      * @var string
      */
-    protected $_codePageName    = NULL;
+    protected $_codePageName = NULL;
 
     /**
      * document page identifier
@@ -39,15 +39,15 @@ abstract class Syncroton_Wbxml_Dtd_ActiveSync_Abstract
      *
      * @var integer
      */
-    protected $_dpi             = NULL;
-    
+    protected $_dpi = NULL;
+
     /**
      * mapping of tags to id's
      *
      * @var array
      */
-    protected $_tags            = array();
-    
+    protected $_tags = array();
+
     /**
      * return document page identifier
      * is always NULL for activesync
@@ -58,7 +58,7 @@ abstract class Syncroton_Wbxml_Dtd_ActiveSync_Abstract
     {
         return $this->_dpi;
     }
-    
+
     /**
      * get codepage name
      *
@@ -68,7 +68,7 @@ abstract class Syncroton_Wbxml_Dtd_ActiveSync_Abstract
     {
         return $this->_codePageName;
     }
-    
+
     /**
      * get namespace identifier
      *
@@ -78,7 +78,7 @@ abstract class Syncroton_Wbxml_Dtd_ActiveSync_Abstract
     {
         return 'uri:' . $this->_codePageName;
     }
-    
+
     /**
      * get tag identifier
      *
@@ -87,14 +87,14 @@ abstract class Syncroton_Wbxml_Dtd_ActiveSync_Abstract
      */
     public function getIdentity($_tag)
     {
-        if(!isset($this->_tags[$_tag])) {
+        if (!isset($this->_tags[$_tag])) {
             //var_dump($this->_tags);
             throw new Syncroton_Wbxml_Exception("tag $_tag not found");
         }
 
         return $this->_tags[$_tag];
     }
-    
+
     /**
      * return tag by given identity
      *
@@ -104,11 +104,11 @@ abstract class Syncroton_Wbxml_Dtd_ActiveSync_Abstract
     public function getTag($_identity)
     {
         $tag = array_search($_identity, $this->_tags);
-        
-        if($tag === false) {
+
+        if ($tag === false) {
             throw new Syncroton_Wbxml_Exception("identity $_identity not found");
         }
-        
+
         return $tag;
     }
 }

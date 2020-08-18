@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Syncroton
  *
@@ -15,13 +16,10 @@
  * @package     Wbxml
  * @subpackage  ActiveSync
  */
- 
 class Syncroton_Wbxml_Dtd_ActiveSync_CodePage0 extends Syncroton_Wbxml_Dtd_ActiveSync_Abstract
 {
-    protected $_codePageNumber  = 0;
-    
-    protected $_codePageName    = 'AirSync';
-    
+    protected $_codePageNumber = 0;
+    protected $_codePageName   = 'AirSync';
     protected $_tags = array(
         'Sync'              => 0x05,
         'Responses'         => 0x06,

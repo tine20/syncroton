@@ -50,9 +50,6 @@ class Syncroton_Command_MeetingResponse extends Syncroton_Command_Wbxml
                 );
             }
         }
-
-        if ($this->_logger instanceof Zend_Log)
-            $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " results: " . print_r($this->_results, true));
     }
 
     /**

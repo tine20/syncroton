@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Syncroton
  *
@@ -15,14 +16,11 @@
  * @package     Wbxml
  * @subpackage  ActiveSync
  */
- 
 class Syncroton_Wbxml_Dtd_ActiveSync_CodePage3 extends Syncroton_Wbxml_Dtd_ActiveSync_Abstract
 {
-    protected $_codePageNumber  = 3;
-    
-    protected $_codePageName    = 'AirNotify';
-        
-    protected $_tags = array(     
+    protected $_codePageNumber = 3;
+    protected $_codePageName   = 'AirNotify';
+    protected $_tags = array(
         'Notify'                    => 0x05,
         'Notification'              => 0x06,
         'Version'                   => 0x07,
@@ -43,7 +41,4 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage3 extends Syncroton_Wbxml_Dtd_Activ
         'NotifyGUID'                => 0x16,
         'DeivceFriendlyName'        => 0x17
     );
-
-    // attribute page
-    #"Version='1.1'"           => 0x05,
 }

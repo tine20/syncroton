@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Syncroton
  *
@@ -16,13 +17,10 @@
  * @subpackage  ActiveSync
  * @todo        add missing tags
  */
- 
 class Syncroton_Wbxml_Dtd_ActiveSync_CodePage14 extends Syncroton_Wbxml_Dtd_ActiveSync_Abstract
 {
-    protected $_codePageNumber  = 14;
-    
-    protected $_codePageName    = 'Provision';
-        
+    protected $_codePageNumber = 14;
+    protected $_codePageName   = 'Provision';
     protected $_tags = array(
         'Provision'                          => 0x05,
         'Policies'                           => 0x06,
@@ -78,5 +76,6 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage14 extends Syncroton_Wbxml_Dtd_Acti
         'ApplicationName'                    => 0x38,
         'ApprovedApplicationList'            => 0x39,
         'Hash'                               => 0x3a,
+        'AccountOnlyRemoteWipe'              => 0x3b,
     );
 }
