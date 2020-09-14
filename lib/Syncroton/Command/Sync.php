@@ -32,7 +32,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
     const STATUS_RESEND_FULL_XML                        = 13;
     const STATUS_WAIT_INTERVAL_OUT_OF_RANGE             = 14;
     const STATUS_TOO_MANY_COLLECTIONS                   = 15;
-    
+
     const CONFLICT_OVERWRITE_SERVER                     = 0;
     const CONFLICT_OVERWRITE_PIM                        = 1;
     
@@ -57,7 +57,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
     const TRUNCATE_51200                                = 6;
     const TRUNCATE_102400                               = 7;
     const TRUNCATE_NOTHING                              = 8;
-    
+
     /**
      * filter types
      */
@@ -71,7 +71,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
     const FILTER_6_MONTHS_BACK  = 7;
     const FILTER_INCOMPLETE     = 8;
     
-    
+
     protected $_defaultNameSpace    = 'uri:AirSync';
     protected $_documentElement     = 'Sync';
     
@@ -83,7 +83,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
     protected $_collections = array();
     
     protected $_modifications = array();
-    
+
     /**
      * the global WindowSize
      *
@@ -107,7 +107,42 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
     protected $_maxWindowSize = 100;
     
     protected $_heartbeatInterval = null;
-    
+
+    /**
+     * class to inject behavior changes
+     * Value are class name
+     */
+    protected static $_plugin = NULL;
+
+    /**
+     * Object that changes behavior
+     */
+    protected $_pluginInstance = NULL;
+
+    /**
+     *
+     * @param unknown $requestBody
+     * @param Syncroton_Model_IDevice $device
+     * @param array $requestParameters
+     */
+    public function __construct($requestBody, Syncroton_Model_IDevice $device, $requestParameters)
+    {
+        parent::__construct($requestBody, $device, $requestParameters);
+        $plugin = self::$_plugin;
+        if (!empty($plugin)) {
+            $this->_pluginInstance = new $plugin();
+        }
+    }
+
+    /**
+     *
+     * @param string $plugin
+     */
+    public static function setPlugin($plugin)
+    {
+        self::$_plugin = $plugin;
+    }
+
     /**
      * process the XML file and add, change, delete or fetches data 
      */
@@ -123,7 +158,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
             
             return $this->_outputDom;
         }
-        
+
         if (isset($requestXML->HeartbeatInterval)) {
             $intervalDiv = 1;
             $this->_heartbeatInterval = (int)$requestXML->HeartbeatInterval;
@@ -131,12 +166,12 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
             $intervalDiv = 60;
             $this->_heartbeatInterval = (int)$requestXML->Wait * $intervalDiv;
         }
-        
+
         $maxInterval = Syncroton_Registry::getMaxPingInterval();
         if ($maxInterval <= 0 || $maxInterval > Syncroton_Server::MAX_HEARTBEAT_INTERVAL) {
             $maxInterval = Syncroton_Server::MAX_HEARTBEAT_INTERVAL;
         }
-        
+
         if ($this->_heartbeatInterval && $this->_heartbeatInterval > $maxInterval) {
             $sync = $this->_outputDom->documentElement;
             $sync->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'Status', self::STATUS_WAIT_INTERVAL_OUT_OF_RANGE));
@@ -154,7 +189,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
         if ($this->_globalWindowSize > $this->_maxWindowSize) {
             $this->_globalWindowSize = $this->_maxWindowSize;
         }
-        
+
         // load options from lastsynccollection
         $lastSyncCollection = array('options' => array());
         if (!empty($this->_device->lastsynccollection)) {
@@ -230,7 +265,10 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                 // reset sync state for this folder
                 $this->_syncStateBackend->resetState($this->_device, $collectionData->folder);
                 $this->_contentStateBackend->resetState($this->_device, $collectionData->folder);
-            
+
+                // dependency injection by plugins
+                $collectionData = $this->applyCustomsForCollectionData($this->_folderBackend, $collectionData);
+
                 $collectionData->syncState    = new Syncroton_Model_SyncState(array(
                     'device_id' => $this->_device,
                     'counter'   => 0,
@@ -464,7 +502,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                 }
 
                 $wakeupCallback();
-                
+
                 $now = new DateTime(null, new DateTimeZone('utc'));
 
                 foreach($this->_collections as $collectionData) {
@@ -639,16 +677,6 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                                 $this->_device,
                                 $collectionData->folder
                             );
-
-                            // fetch entries changed since last sync
-                            $allChangedEntries = $dataController->getChangedEntries(
-                                $collectionData->collectionId,
-                                $collectionData->syncState->lastsync,
-                                $this->_syncTimeStamp,
-                                $collectionData->options['filterType']
-                            );
-
-                            // fetch all entries
                             $allServerEntries = $dataController->getServerEntries(
                                 $collectionData->collectionId,
                                 $collectionData->options['filterType']
@@ -673,9 +701,11 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
 
                             // entries to be deleted
                             $serverModifications['deleted'] = array_diff($allClientEntries, $allServerEntries);
+                            
+                            // fetch entries changed since last sync
+                            $serverModifications['changed'] = $this->fetchEntriesChangedSinceLastSync($dataController, $collectionData, $allClientEntries, $this->_folderBackend, $this->_syncTimeStamp);
 
-                            // entries changed since last sync
-                            $serverModifications['changed'] = array_merge($allChangedEntries, $clientModifications['forceChange']);
+                            $serverModifications['changed'] = array_merge($serverModifications['changed'], $clientModifications['forceChange']);
 
                             foreach($serverModifications['changed'] as $id => $serverId) {
                                 // skip entry, if it got changed by client during current sync
@@ -768,8 +798,8 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                         try {
                             $applicationData = $this->_outputDom->createElementNS('uri:AirSync', 'ApplicationData');
                             
-                            $dataController
-                                ->getEntry($fetchCollectionData, $serverId)
+                            $this
+                                ->getEntry($dataController, $fetchCollectionData, $serverId)
                                 ->appendXML($applicationData, $this->_device);
                             
                             $fetch->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'Status', self::STATUS_SUCCESS));
@@ -822,8 +852,8 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                         
                         $applicationData = $add->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'ApplicationData'));
                         
-                        $dataController
-                            ->getEntry($collectionData, $serverId)
+                        $this
+                            ->getEntry(dataController, $collectionData, $serverId)
                             ->appendXML($applicationData, $this->_device);
                         
                         $commands->appendChild($add);
@@ -849,6 +879,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                         'device_id'        => $this->_device,
                         'folder_id'        => $collectionData->folder,
                         'contentid'        => $serverId,
+                        'bigcontentid'     => $id,
                         'creation_time'    => $this->_syncTimeStamp,
                         'creation_synckey' => $collectionData->syncState->counter + 1
                     ));
@@ -869,8 +900,8 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                         
                         $applicationData = $change->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'ApplicationData'));
                         
-                        $dataController
-                            ->getEntry($collectionData, $serverId)
+                        $this
+                            ->getEntry(dataController, $collectionData, $serverId)
                             ->appendXML($applicationData, $this->_device);
                         
 
@@ -1036,6 +1067,9 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                 if ($this->_logger instanceof Zend_Log) 
                     $this->_logger->warn(__METHOD__ . '::' . __LINE__ . ' failed to get folder state for: ' . $collectionData->collectionId);
             }
+
+            //Plugin
+            $this->applyCustomUpdateForImapStatus($dataController, $collectionData->folder);
         }
         
         if ($collections->hasChildNodes() === true) {
@@ -1161,5 +1195,71 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
         $device->lastsynccollection = Zend_Json::encode($lastSyncCollection);
         
         return $requestBody;
+    }
+
+    /**
+     * @param Syncroton_Backend_IFolder $folderBackend
+     * @param Syncroton_Model_SyncCollection $collectionData
+     */
+    public function applyCustomsForCollectionData(Syncroton_Backend_IFolder $folderBackend, Syncroton_Model_SyncCollection $collectionData)
+    {
+        // custom treatment
+        if (!empty($this->_pluginInstance)){
+            return call_user_func_array(array($this->_pluginInstance, __FUNCTION__), array($folderBackend, $collectionData));
+        }
+        return $collectionData;
+    }
+
+    /**
+     * @param unknown                 $dataController
+     * @param Syncroton_Model_IFolder $folder
+     */
+    public function applyCustomUpdateForImapStatus($dataController, Syncroton_Model_IFolder $folder)
+    {
+        // custom treatment
+        if (!empty($this->_pluginInstance) && ($dataController instanceof ActiveSync_Controller_Email)){
+            call_user_func_array(array($this->_pluginInstance, __FUNCTION__), array($dataController, $folder));
+        }
+    }
+
+    /**
+     * @param unknown                         $dataController
+     * @param Syncroton_Model_SyncCollection  $collectionData
+     * @param array                           $allClientEntries
+     * @param Syncroton_Backend_IFolder       $folderBackend
+     * @param Datetime                        $syncTimeStamp
+     */
+    public function fetchEntriesChangedSinceLastSync($dataController, Syncroton_Model_SyncCollection $collectionData, $allClientEntries, Syncroton_Backend_IFolder $folderBackend, DateTime $syncTimeStamp)
+    {
+        // custom treatment
+        if (!empty($this->_pluginInstance) && ($dataController instanceof ActiveSync_Controller_Email)){
+            $serverModificationsChanged = call_user_func_array(array($this->_pluginInstance, __FUNCTION__), array($dataController, $collectionData, $allClientEntries, $folderBackend, $syncTimeStamp));
+        } else { // default treatment
+            $serverModificationsChanged = $dataController->getChangedEntries(
+                    $collectionData->collectionId,
+                    $collectionData->syncState->lastsync,
+                    $syncTimeStamp,
+                    $collectionData->options['filterType']
+            );
+        }
+
+        return $serverModificationsChanged;
+    }
+
+    /**
+     * Get item from server module
+     *
+     * @param unknown                              $dataController
+     * @param Syncroton_Model_SyncCollection       $collectionData
+     * @param string                               $id
+     * @param string                               $serverId
+     */
+    public function getEntry($dataController, $collectionData, $id, $serverId)
+    {
+        if (!empty($this->_pluginInstance)){
+            return call_user_func_array(array($this->_pluginInstance, __FUNCTION__), array($dataController, $collectionData, $id, $serverId));
+        } else { // default treatment
+            return $dataController->getEntry($collectionData, $serverId);
+        }
     }
 }

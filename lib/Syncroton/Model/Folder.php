@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Syncroton
  *
@@ -36,4 +35,34 @@ class Syncroton_Model_Folder extends Syncroton_Model_AXMLEntry implements Syncro
             'lastfiltertype' => array('type' => 'number')
         ),
     );
+
+    /**
+     * list of plugin classes
+     * @var array
+     */
+    protected static $plugins = array();
+
+    /**
+     *
+     * @param array $plugin name of a plugin class
+     */
+    public static function addPlugin($plugin)
+    {
+        self::$plugins[] = $plugin;
+    }
+
+    /**
+     *
+     * @param string $properties
+     */
+    public function __construct($properties = NULL)
+    {
+        // plugins can change model properties
+        foreach(self::$plugins as $plugin){
+            $plugin = new $plugin(get_object_vars($this));
+            $changedProperties = $plugin->getChangedProperties();
+            $this->_properties = $changedProperties['_properties'];
+        }
+        parent::__construct($properties);
+    }
 }
