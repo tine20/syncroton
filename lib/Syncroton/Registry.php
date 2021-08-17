@@ -53,7 +53,9 @@ class Syncroton_Registry extends ArrayObject
 
     const SLEEP_CALLBACK      = 'sleep_callback';
     const WAKEUP_CALLBACK     = 'wakeup_callback';
-    
+
+    const IS_UNITTEST         = 'is_unittest';
+
     /**
      * Class name of the singleton registry object.
      * @var string
