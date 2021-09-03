@@ -90,7 +90,7 @@ class Syncroton_Model_EventTests extends Syncroton_Model_ATestCase
      */
     public static function main()
     {
-        $suite  = new PHPUnit_Framework_TestSuite('Syncroton calendar event tests');
+        $suite  = new PHPUnit\Framework\TestSuite('Syncroton calendar event tests');
         PHPUnit_TextUI_TestRunner::run($suite);
     }
     

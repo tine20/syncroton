@@ -15,7 +15,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  */
-class Syncroton_Backend_PolicyTests extends PHPUnit_Framework_TestCase
+class Syncroton_Backend_PolicyTests extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Syncroton_Backend_Policy
@@ -35,7 +35,7 @@ class Syncroton_Backend_PolicyTests extends PHPUnit_Framework_TestCase
      */
     public static function main()
     {
-        $suite  = new PHPUnit_Framework_TestSuite('Syncroton ActiveSync Sync command tests');
+        $suite  = new PHPUnit\Framework\TestSuite('Syncroton ActiveSync Sync command tests');
         PHPUnit_TextUI_TestRunner::run($suite);
     }
     
@@ -43,7 +43,7 @@ class Syncroton_Backend_PolicyTests extends PHPUnit_Framework_TestCase
      * (non-PHPdoc)
      * @see ActiveSync/ActiveSync_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_db = getTestDatabase();
         
@@ -59,7 +59,7 @@ class Syncroton_Backend_PolicyTests extends PHPUnit_Framework_TestCase
      *
      * @access protected
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_db->rollBack();
     }
@@ -99,7 +99,7 @@ class Syncroton_Backend_PolicyTests extends PHPUnit_Framework_TestCase
     
     public function testGetExceptionNotFound()
     {
-        $this->setExpectedException('Syncroton_Exception_NotFound');
+        $this->expectException('Syncroton_Exception_NotFound');
     
         $this->_policyBackend->get('invalidId');
     }

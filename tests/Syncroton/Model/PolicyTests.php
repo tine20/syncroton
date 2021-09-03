@@ -30,7 +30,7 @@ class Syncroton_Model_PolicyTests extends Syncroton_Model_ATestCase
      */
     public static function main()
     {
-        $suite  = new PHPUnit_Framework_TestSuite('Syncroton Policy model tests');
+        $suite  = new PHPUnit\Framework\TestSuite('Syncroton Policy model tests');
         PHPUnit_TextUI_TestRunner::run($suite);
     }
     

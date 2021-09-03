@@ -24,14 +24,14 @@ class Syncroton_AllTests
     
     public static function suite ()
     {
-        $suite = new PHPUnit_Framework_TestSuite('Syncroton All Tests');
+        $suite = new PHPUnit\Framework\TestSuite('Syncroton All Tests');
         
-        $suite->addTestSuite('Syncroton_Backend_AllTests');
-        $suite->addTestSuite('Syncroton_Command_AllTests');
-        $suite->addTestSuite('Syncroton_Data_AllTests');
-        $suite->addTestSuite('Syncroton_Model_AllTests');
-        $suite->addTestSuite('Syncroton_Wbxml_AllTests');
-        #$suite->addTestSuite('Syncroton_ServerTests'); #Disabled because it breaks CodeCoverage on build server
+        $suite->addTestSuite(Syncroton_Backend_AllTests::class);
+        $suite->addTestSuite(Syncroton_Command_AllTests::class);
+        $suite->addTestSuite(Syncroton_Data_AllTests::class);
+        $suite->addTestSuite(Syncroton_Model_AllTests::class);
+        $suite->addTestSuite(Syncroton_Wbxml_AllTests::class);
+        #$suite->addTestSuite(Syncroton_ServerTests::class); #Disabled because it breaks CodeCoverage on build server
         
         return $suite;
     }

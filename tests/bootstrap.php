@@ -53,7 +53,7 @@ function getTestDatabase()
                 $cols[$idx] = $col;
             }
 
-            $sql_query = substr($sql_query, 0, $start) . "\n" . implode($cols, ',') . ")";
+            $sql_query = substr($sql_query, 0, $start) . "\n" . implode(',', $cols) . ")";
 
             $db->query($sql_query);
         }

@@ -19,13 +19,13 @@ class Syncroton_ServerTests extends Syncroton_Command_ATestCase
 {
     #protected $_logPriority = Zend_Log::DEBUG;
     
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $_GET = array();
     }
     
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         

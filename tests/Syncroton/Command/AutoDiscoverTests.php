@@ -15,7 +15,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  */
-class Syncroton_Command_AutoDiscoverTests extends PHPUnit_Framework_TestCase
+class Syncroton_Command_AutoDiscoverTests extends \PHPUnit\Framework\TestCase
 {
     /**
      * test creation of calendar folder

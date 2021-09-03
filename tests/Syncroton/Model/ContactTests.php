@@ -62,7 +62,7 @@ class Syncroton_Model_ContactTests extends Syncroton_Model_ATestCase
      */
     public static function main()
     {
-        $suite  = new PHPUnit_Framework_TestSuite('Syncroton contact tests');
+        $suite  = new PHPUnit\Framework\TestSuite('Syncroton contact tests');
         PHPUnit_TextUI_TestRunner::run($suite);
     }
     

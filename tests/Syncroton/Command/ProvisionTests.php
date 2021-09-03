@@ -31,11 +31,11 @@ class Syncroton_Command_ProvisionTests extends Syncroton_Command_ATestCase
      */
     public static function main()
     {
-        $suite  = new PHPUnit_Framework_TestSuite('Syncroton Provision command tests');
+        $suite  = new PHPUnit\Framework\TestSuite('Syncroton Provision command tests');
         PHPUnit_TextUI_TestRunner::run($suite);
     }
     
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         

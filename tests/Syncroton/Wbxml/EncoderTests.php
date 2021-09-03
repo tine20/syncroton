@@ -15,7 +15,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  */
-class Syncroton_Wbxml_EncoderTests extends PHPUnit_Framework_TestCase
+class Syncroton_Wbxml_EncoderTests extends \PHPUnit\Framework\TestCase
 {
     protected $_xmlContactBirthdayWithoutTimeAndroid = '<?xml version="1.0" encoding="utf-8"?>
         <!DOCTYPE AirSync PUBLIC "-//AIRSYNC//DTD AirSync//EN" "http://www.microsoft.com/">
@@ -50,7 +50,7 @@ class Syncroton_Wbxml_EncoderTests extends PHPUnit_Framework_TestCase
      */
     public static function main()
     {
-        $suite  = new PHPUnit_Framework_TestSuite('Syncroton wbxml encoder tests');
+        $suite  = new PHPUnit\Framework\TestSuite('Syncroton wbxml encoder tests');
         PHPUnit_TextUI_TestRunner::run($suite);
     }
     

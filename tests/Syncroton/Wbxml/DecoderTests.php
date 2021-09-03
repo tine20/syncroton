@@ -15,7 +15,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  */
-class Syncroton_Wbxml_DecoderTests extends PHPUnit_Framework_TestCase
+class Syncroton_Wbxml_DecoderTests extends \PHPUnit\Framework\TestCase
 {
     /**
      * Runs the test methods of this class.
@@ -25,7 +25,7 @@ class Syncroton_Wbxml_DecoderTests extends PHPUnit_Framework_TestCase
      */
     public static function main()
     {
-        $suite  = new PHPUnit_Framework_TestSuite('Syncroton wbxml decoder tests');
+        $suite  = new PHPUnit\Framework\TestSuite('Syncroton wbxml decoder tests');
         PHPUnit_TextUI_TestRunner::run($suite);
     }
     

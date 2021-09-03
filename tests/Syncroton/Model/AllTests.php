@@ -24,15 +24,15 @@ class Syncroton_Model_AllTests
     
     public static function suite ()
     {
-        $suite = new PHPUnit_Framework_TestSuite('Syncroton all model tests');
+        $suite = new PHPUnit\Framework\TestSuite('Syncroton all model tests');
         
-        $suite->addTestSuite('Syncroton_Model_ContactTests');
-        $suite->addTestSuite('Syncroton_Model_EmailTests');
-        $suite->addTestSuite('Syncroton_Model_EventTests');
-        $suite->addTestSuite('Syncroton_Model_FileReferenceTests');
-        $suite->addTestSuite('Syncroton_Model_PolicyTests');
-        $suite->addTestSuite('Syncroton_Model_SyncCollectionTests');
-        $suite->addTestSuite('Syncroton_Model_TaskTests');
+        $suite->addTestSuite(Syncroton_Model_ContactTests::class);
+        $suite->addTestSuite(Syncroton_Model_EmailTests::class);
+        $suite->addTestSuite(Syncroton_Model_EventTests::class);
+        $suite->addTestSuite(Syncroton_Model_FileReferenceTests::class);
+        $suite->addTestSuite(Syncroton_Model_PolicyTests::class);
+        $suite->addTestSuite(Syncroton_Model_SyncCollectionTests::class);
+        $suite->addTestSuite(Syncroton_Model_TaskTests::class);
         
         return $suite;
     }

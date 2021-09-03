@@ -25,7 +25,7 @@ class Syncroton_Model_FileReferenceTests extends Syncroton_Model_ATestCase
      */
     public static function main()
     {
-        $suite  = new PHPUnit_Framework_TestSuite('Syncroton email model tests');
+        $suite  = new PHPUnit\Framework\TestSuite('Syncroton email model tests');
         PHPUnit_TextUI_TestRunner::run($suite);
     }
     

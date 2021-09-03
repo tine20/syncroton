@@ -27,7 +27,7 @@ class Syncroton_Command_SendMailTests extends Syncroton_Command_ATestCase
      */
     public static function main()
     {
-        $suite  = new PHPUnit_Framework_TestSuite('ActiveSync SendMail command tests');
+        $suite  = new PHPUnit\Framework\TestSuite('ActiveSync SendMail command tests');
         PHPUnit_TextUI_TestRunner::run($suite);
     }
     

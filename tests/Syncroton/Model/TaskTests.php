@@ -68,7 +68,7 @@ Zeile 3</AirSyncBase:Data></AirSyncBase:Body>
      */
     public static function main()
     {
-        $suite  = new PHPUnit_Framework_TestSuite('Syncroton task model tests');
+        $suite  = new PHPUnit\Framework\TestSuite('Syncroton task model tests');
         PHPUnit_TextUI_TestRunner::run($suite);
     }
     

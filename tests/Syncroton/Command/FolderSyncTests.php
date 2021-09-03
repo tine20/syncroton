@@ -27,7 +27,7 @@ class Syncroton_Command_FolderSyncTests extends Syncroton_Command_ATestCase
      */
     public static function main()
     {
-        $suite  = new PHPUnit_Framework_TestSuite('ActiveSync FolderSync command tests');
+        $suite  = new PHPUnit\Framework\TestSuite('ActiveSync FolderSync command tests');
         PHPUnit_TextUI_TestRunner::run($suite);
     }
     

@@ -15,7 +15,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  */
-class Syncroton_Backend_SyncStateTests extends PHPUnit_Framework_TestCase
+class Syncroton_Backend_SyncStateTests extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Syncroton_Model_Device
@@ -55,7 +55,7 @@ class Syncroton_Backend_SyncStateTests extends PHPUnit_Framework_TestCase
      */
     public static function main()
     {
-        $suite  = new PHPUnit_Framework_TestSuite('Syncroton SyncState backend tests');
+        $suite  = new PHPUnit\Framework\TestSuite('Syncroton SyncState backend tests');
         PHPUnit_TextUI_TestRunner::run($suite);
     }
     
@@ -63,7 +63,7 @@ class Syncroton_Backend_SyncStateTests extends PHPUnit_Framework_TestCase
      * (non-PHPdoc)
      * @see ActiveSync/ActiveSync_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_db = getTestDatabase();
         
@@ -87,7 +87,7 @@ class Syncroton_Backend_SyncStateTests extends PHPUnit_Framework_TestCase
      *
      * @access protected
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_db->rollBack();
     }
@@ -227,14 +227,14 @@ class Syncroton_Backend_SyncStateTests extends PHPUnit_Framework_TestCase
     
     public function testGetExceptionNotFound()
     {
-        $this->setExpectedException('Syncroton_Exception_NotFound');
+        $this->expectException('Syncroton_Exception_NotFound');
         
         $this->_syncStateBackend->get('invalidId');
     }
     
     public function testGetSyncStateExceptionNotFound()
     {
-        $this->setExpectedException('Syncroton_Exception_NotFound');
+        $this->expectException('Syncroton_Exception_NotFound');
         
         $this->_syncStateBackend->getSyncState('invalidId', 'invalidId');
     }

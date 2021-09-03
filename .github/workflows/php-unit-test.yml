@@ -18,8 +18,8 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [ubuntu-18.04]
-        php-versions: ['7.1', '7.4', '8.0']
+        operating-system: [ubuntu-20.04]
+        php-versions: ['7.4', '8.0']
 
     name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
     steps:
@@ -32,11 +32,13 @@ jobs:
         php-version: ${{ matrix.php-versions }}
 
     - name: Composer install
-      run: composer install
+      run: composer update -W
 
     - name: Unit tests
       run: |
         ls -al
         cd tests
         ls -al
+        sudo apt install php-sqlite3
+        ../vendor/bin/phpunit --check-version
         ../vendor/bin/phpunit --color

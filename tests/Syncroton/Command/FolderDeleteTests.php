@@ -34,7 +34,7 @@ class Syncroton_Command_FolderDeleteTests extends Syncroton_Command_ATestCase
      */
     public static function main()
     {
-        $suite  = new PHPUnit_Framework_TestSuite('ActiveSync FolderDelete command tests');
+        $suite  = new PHPUnit\Framework\TestSuite('ActiveSync FolderDelete command tests');
         PHPUnit_TextUI_TestRunner::run($suite);
     }
     
@@ -42,7 +42,7 @@ class Syncroton_Command_FolderDeleteTests extends Syncroton_Command_ATestCase
      * (non-PHPdoc)
      * @see Syncroton/Syncroton_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         

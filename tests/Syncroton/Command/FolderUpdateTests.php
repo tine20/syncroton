@@ -25,11 +25,11 @@ class Syncroton_Command_FolderUpdateTests extends Syncroton_Command_ATestCase
      */
     public static function main()
     {
-        $suite  = new PHPUnit_Framework_TestSuite('ActiveSync FolderUpdate command tests');
+        $suite  = new PHPUnit\Framework\TestSuite('ActiveSync FolderUpdate command tests');
         PHPUnit_TextUI_TestRunner::run($suite);
     }
     
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         

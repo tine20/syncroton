@@ -24,9 +24,9 @@ class Syncroton_Data_AllTests
     
     public static function suite ()
     {
-        $suite = new PHPUnit_Framework_TestSuite('Syncroton all data backend tests');
+        $suite = new PHPUnit\Framework\TestSuite('Syncroton all data backend tests');
         
-        $suite->addTestSuite('Syncroton_Data_ContactsTests');
+        $suite->addTestSuite(Syncroton_Data_ContactsTests::class);
         
         return $suite;
     }

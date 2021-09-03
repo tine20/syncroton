@@ -27,7 +27,7 @@ class Syncroton_Command_SmartForwardTests extends Syncroton_Command_ATestCase
      */
     public static function main()
     {
-        $suite  = new PHPUnit_Framework_TestSuite('ActiveSync SmartForward command tests');
+        $suite  = new PHPUnit\Framework\TestSuite('ActiveSync SmartForward command tests');
         PHPUnit_TextUI_TestRunner::run($suite);
     }
     

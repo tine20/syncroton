@@ -27,7 +27,7 @@ class Syncroton_Command_GetAttachmentTests extends Syncroton_Command_ATestCase
      */
     public static function main()
     {
-        $suite  = new PHPUnit_Framework_TestSuite('ActiveSync GetAttachment command tests');
+        $suite  = new PHPUnit\Framework\TestSuite('ActiveSync GetAttachment command tests');
         PHPUnit_TextUI_TestRunner::run($suite);
     }
     

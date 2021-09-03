@@ -24,10 +24,10 @@ class Syncroton_Wbxml_AllTests
     
     public static function suite ()
     {
-        $suite = new PHPUnit_Framework_TestSuite('Syncroton all Wbxml tests');
+        $suite = new PHPUnit\Framework\TestSuite('Syncroton all Wbxml tests');
         
-        $suite->addTestSuite('Syncroton_Wbxml_DecoderTests');
-        $suite->addTestSuite('Syncroton_Wbxml_EncoderTests');
+        $suite->addTestSuite(Syncroton_Wbxml_DecoderTests::class);
+        $suite->addTestSuite(Syncroton_Wbxml_EncoderTests::class);
         
         return $suite;
     }
