@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/tine20/syncroton.svg?branch=master)](https://travis-ci.com/tine20/syncroton)
+[![Build Status](https://github.com/tine20/zendframework1/actions/workflows/php-unit-test.yml/badge.svg)]
 
 # Syncroton
 
