@@ -23,7 +23,16 @@ class Syncroton_Backend_SyncState extends Syncroton_Backend_ABackend implements 
     protected $_modelClassName = 'Syncroton_Model_SyncState';
 
     protected $_modelInterfaceName = 'Syncroton_Model_ISyncState';
-    
+
+public $_logger;
+
+    public function delete($id)
+    {
+        if ($this->_logger instanceof Zend_Log)
+            $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " deleting sync state " . $id);
+        return parent::delete($id);
+    }
+
     /**
      * (non-PHPdoc)
      * @see Syncroton_Backend_ISyncState::create()
@@ -59,6 +68,10 @@ class Syncroton_Backend_SyncState extends Syncroton_Backend_ABackend implements 
      */
     protected function _deleteOtherStates(Syncroton_Model_ISyncState $state)
     {
+        if ($this->_logger instanceof Zend_Log)
+            $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " deleting sync states of type " . $state->type .
+                " and counter != " . $state->counter);
+
         // remove all other synckeys
         $where = array(
             'device_id = ?' => $state->deviceId,
@@ -124,7 +137,10 @@ class Syncroton_Backend_SyncState extends Syncroton_Backend_ABackend implements 
     {
         $deviceId = $deviceId instanceof Syncroton_Model_IDevice ? $deviceId->id : $deviceId;
         $folderId = $folderId instanceof Syncroton_Model_IFolder ? $folderId->id : $folderId;
-         
+
+        if ($this->_logger instanceof Zend_Log)
+            $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " deleting sync states of type " . $folderId);
+
         $where = array(
             $this->_db->quoteInto($this->_db->quoteIdentifier('device_id') . ' = ?', $deviceId),
             $this->_db->quoteInto($this->_db->quoteIdentifier('type') . ' = ?',      $folderId)
