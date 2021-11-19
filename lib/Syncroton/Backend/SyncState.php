@@ -236,6 +236,7 @@ public $_logger;
         if (!$isUnittest) {
             $this->_db->query('COMMIT');
             $this->_db->query('UNLOCK TABLES');
+            $this->_db->query('SET autocommit=1');
         }
         
         return $state;
