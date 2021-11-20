@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Syncroton
  *
@@ -17,10 +18,8 @@
  */
 class Syncroton_Wbxml_Dtd_ActiveSync_CodePage13 extends Syncroton_Wbxml_Dtd_ActiveSync_Abstract
 {
-    protected $_codePageNumber  = 13;
-
-    protected $_codePageName    = 'Ping';
-
+    protected $_codePageNumber = 13;
+    protected $_codePageName   = 'Ping';
     protected $_tags = array(
         'Ping'                   => 0x05,
         'AutdState'              => 0x06,   //unused

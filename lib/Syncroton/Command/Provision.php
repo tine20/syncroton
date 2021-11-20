@@ -95,7 +95,7 @@ class Syncroton_Command_Provision extends Syncroton_Command_Wbxml
             if ($this->_logger instanceof Zend_Log) 
                 $this->_logger->debug(__METHOD__ . '::' . __LINE__ . ' PolicyType: ' . $this->_policyType . ' PolicyKey: ' . $this->_sendPolicyKey);
             
-            if($this->_sendPolicyKey === NULL) {
+            if (!$this->_sendPolicyKey) {
                 $this->_sendPolicy();
             } elseif ($this->_sendPolicyKey == $this->_device->policykey) {
                 $this->_acknowledgePolicy();

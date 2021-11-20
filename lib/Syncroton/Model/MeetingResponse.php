@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Syncroton
  *
@@ -14,31 +15,34 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    int     userResponse
- * @property    string  collectionId
- * @property    string  calendarId
- * @property    string  requestId
- * @property    string  instanceId
- * @property    string  longId
+ *
+ * @property  string  $calendarId
+ * @property  string  $collectionId
+ * @property  string  $instanceId
+ * @property  string  $longId
+ * @property  string  $requestId
+ * @property  Syncroton_Model_SendResponse $sendResponse
+ * @property  int     $userResponse
  */
 class Syncroton_Model_MeetingResponse extends Syncroton_Model_AXMLEntry
 {
-    protected $_xmlBaseElement = 'Request';
-    
     /**
      * attendee status
      */
     const RESPONSE_ACCEPTED  = 1;
     const RESPONSE_TENTATIVE = 2;
     const RESPONSE_DECLINED  = 3;
-    
+
+    protected $_xmlBaseElement = 'Request';
+
     protected $_properties = array(
         'MeetingResponse' => array(
-            'userResponse'  => array('type' => 'number'),
-            'collectionId'  => array('type' => 'string'),
             'calendarId'    => array('type' => 'string'),
-            'requestId'     => array('type' => 'string'),
+            'collectionId'  => array('type' => 'string'),
             'instanceId'    => array('type' => 'datetime'),
+            'requestId'     => array('type' => 'string'),
+            'sendResponse'  => array('type' => 'container', 'class' => 'Syncroton_Model_SendResponse', 'supportedSince' => '16.0'),
+            'userResponse'  => array('type' => 'number'),
         ),
         'Search' => array(
             'longId'        => array('type' => 'string')

@@ -97,12 +97,16 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
         }
         
         $lifeTime    = $this->_device->pinglifetime;
-        $maxLifeTime = Syncroton_Registry::getMaxPingInterval();
-        
-        if ($maxLifeTime > 0 && $lifeTime > $maxLifeTime) {
+        $maxInterval = Syncroton_Registry::getPingInterval();
+
+        if ($maxInterval <= 0 || $maxInterval > Syncroton_Server::MAX_HEARTBEAT_INTERVAL) {
+            $maxInterval = Syncroton_Server::MAX_HEARTBEAT_INTERVAL;
+        }
+
+        if ($lifeTime > $maxInterval) {
             $ping = $this->_outputDom->documentElement;
             $ping->appendChild($this->_outputDom->createElementNS('uri:Ping', 'Status', self::STATUS_INTERVAL_TO_GREAT_OR_SMALL));
-            $ping->appendChild($this->_outputDom->createElementNS('uri:Ping', 'HeartbeatInterval', $maxLifeTime));
+            $ping->appendChild($this->_outputDom->createElementNS('uri:Ping', 'HeartbeatInterval', $maxInterval));
             return;
         }
         
@@ -149,14 +153,6 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
 
                     $status = self::STATUS_FOLDER_NOT_FOUND;
                     break;
-                } catch (Zend_Db_Exception $e) {
-                    if ($this->_logger instanceof Zend_Log) {
-                        $this->_logger->err(__METHOD__ . '::' . __LINE__ . " " . $e->getMessage());
-                    }
-
-                    // stop here, sql server might have gone away
-                    $status = self::STATUS_GENERAL_ERROR;
-                    break;
                 } catch (Exception $e) {
                     if ($this->_logger instanceof Zend_Log)
                         $this->_logger->err(__METHOD__ . '::' . __LINE__ . " " . $e->getMessage());
@@ -202,15 +198,7 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
                         $status = self::STATUS_FOLDER_NOT_FOUND;
                         
                         break;
-
-                    } catch (Zend_Db_Exception $e) {
-                        if ($this->_logger instanceof Zend_Log)
-                            $this->_logger->err(__METHOD__ . '::' . __LINE__ . " " . $e->getMessage());
-
-                        // stop here, sql server might have gone away
-                        $status = self::STATUS_GENERAL_ERROR;
-                        break;
-
+                        
                     } catch (Exception $e) {
                         if ($this->_logger instanceof Zend_Log)
                             $this->_logger->err(__METHOD__ . '::' . __LINE__ . " " . $e->getMessage());
