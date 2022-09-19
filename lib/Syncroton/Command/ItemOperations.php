@@ -118,7 +118,7 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
                     $fileReference = $dataController->getFileReference($fetch['fileReference']);
                     
                     // unset data field and move content to stream
-                    if ($this->_requestParameters['acceptMultipart'] == true) {
+                    if ($this->_requestParameters && $this->_requestParameters['acceptMultipart'] == true) {
                         $this->_headers['Content-Type'] = 'application/vnd.ms-sync.multipart';
                         
                         $partStream = fopen("php://temp", 'r+');
@@ -252,12 +252,13 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
                 }
             }
 
-            if (isset($airSyncBase->Range)) {
-                $fetchArray['options']['range'] = (string)$airSyncBase->Range;
+            if (isset($fetch->Options->Range)) {
+                $fetchArray['options']['range'] = (string)$fetch->Options->Range;
             }
 
-            if (isset($fetch->Options->MIMESupport)) {
-                $fetchArray['options']['mimeSupport'] = (int) $fetch->Options->MIMESupport;
+            $airSync = $fetch->Options->children('uri:AirSync');
+            if (isset($airSync->MIMESupport)) {
+                $fetchArray['options']['mimeSupport'] = (int) $airSync->MIMESupport;
             }
         }
         

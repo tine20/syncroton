@@ -5,7 +5,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
- * @copyright   Copyright (c) 2012 Metaways Infosystems GmbH (http://www.metaways.de)
+ * @copyright   Copyright (c) 2012-2022 Metaways Infosystems GmbH (http://www.metaways.de)
  * @author      Lars Kneschke <l.kneschke@metaways.de>
  */
 
@@ -15,7 +15,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  */
-class Syncroton_Wbxml_EncoderTests extends PHPUnit_Framework_TestCase
+class Syncroton_Wbxml_EncoderTests extends Syncroton_Command_ATestCase
 {
     protected $_xmlContactBirthdayWithoutTimeAndroid = '<?xml version="1.0" encoding="utf-8"?>
         <!DOCTYPE AirSync PUBLIC "-//AIRSYNC//DTD AirSync//EN" "http://www.microsoft.com/">
@@ -41,18 +41,6 @@ class Syncroton_Wbxml_EncoderTests extends PHPUnit_Framework_TestCase
             </Collections>
         </Sync>
     ';
-    
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite  = new PHPUnit_Framework_TestSuite('Syncroton wbxml encoder tests');
-        PHPUnit_TextUI_TestRunner::run($suite);
-    }
     
     /**
      * 
@@ -87,12 +75,10 @@ class Syncroton_Wbxml_EncoderTests extends PHPUnit_Framework_TestCase
         $testDoc->encoding     = 'utf-8';
 
         // creates a syncroton record
-        $record = new Syncroton_Model_Contact(array(
-            'Contacts' => array(
+        $record = new Syncroton_Model_Contact([
                 // chr(0x1F) is not a valid XML char!
                 'firstName' => 'foo' . chr(0x20).chr(0x1F) . 'a',
-            )
-        ));
+        ]);
 
         $device = $this->_getDevice();
         $record->appendXML($testDoc->getElementsByTagName('Sync')->item(0), $device);
@@ -103,6 +89,9 @@ class Syncroton_Wbxml_EncoderTests extends PHPUnit_Framework_TestCase
 
         $encoder = new Syncroton_Wbxml_Encoder($outputStream, 'UTF-8', 3);
         $encoder->encode($testDoc);
+
+        rewind($outputStream);
+        $this->assertStringContainsString('foo a', stream_get_contents($outputStream));
     }
 
     /**

@@ -5,7 +5,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
- * @copyright   Copyright (c) 2009-2012 Metaways Infosystems GmbH (http://www.metaways.de)
+ * @copyright   Copyright (c) 2009-2022 Metaways Infosystems GmbH (http://www.metaways.de)
  * @author      Lars Kneschke <l.kneschke@metaways.de>
  */
 
@@ -18,18 +18,6 @@
 class Syncroton_Command_FolderSyncTests extends Syncroton_Command_ATestCase
 {
     #protected $_logPriority = Zend_Log::DEBUG;
-    
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite  = new PHPUnit_Framework_TestSuite('ActiveSync FolderSync command tests');
-        PHPUnit_TextUI_TestRunner::run($suite);
-    }
     
     /**
      * test reponse with synckey 0
@@ -78,10 +66,10 @@ class Syncroton_Command_FolderSyncTests extends Syncroton_Command_ATestCase
         
         // rewind back last sync timestamp
         $syncState = Syncroton_Registry::getSyncStateBackend()->getSyncState($this->_device, 'FolderSync');
-        $syncState->lastsync = new DateTime('2013-02-09 10:40:36', new DateTimeZone('utc'));
+        $syncState->lastsync = new DateTime('2013-02-09 10:40:36', new DateTimeZone('UTC'));
         $syncState = Syncroton_Registry::getSyncStateBackend()->update($syncState);
         
-        $createdFolder = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime(null, new DateTimeZone('utc')))->createFolder(
+        $createdFolder = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime('now', new DateTimeZone('UTC')))->createFolder(
             new Syncroton_Model_Folder(array(
                 'serverId'    => 'addressbookFolderId2',
                 'parentId'    => null,
@@ -91,11 +79,11 @@ class Syncroton_Command_FolderSyncTests extends Syncroton_Command_ATestCase
         );
         
         // update created folder to validate that created folders are not returned as changes folders
-        Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime(null, new DateTimeZone('utc')))->updateFolder(
+        Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime('now', new DateTimeZone('UTC')))->updateFolder(
             $createdFolder
         );
         
-        Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime(null, new DateTimeZone('utc')))->updateFolder(
+        Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime('now', new DateTimeZone('UTC')))->updateFolder(
             new Syncroton_Model_Folder(array(
                 'serverId'    => 'anotherAddressbookFolderId',
                 'parentId'    => null,

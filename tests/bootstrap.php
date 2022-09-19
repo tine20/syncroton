@@ -1,11 +1,13 @@
 <?php
 
-$paths = array(
-    realpath(dirname(__FILE__)),
-    realpath(dirname(__FILE__) . '/../lib'),
-    get_include_path()
-);
-set_include_path(implode(PATH_SEPARATOR, $paths));
+require '../vendor/autoload.php';
+
+set_include_path(implode(PATH_SEPARATOR, [
+    realpath(__DIR__ . '/../vendor/zendframework/zendframework1/library'),
+    get_include_path(),
+]));
+
+Syncroton_Registry::set(Syncroton_Registry::IS_UNITTEST, true);
 
 function getTestDatabase()
 {
@@ -53,13 +55,13 @@ function getTestDatabase()
                 $cols[$idx] = $col;
             }
 
-            $sql_query = substr($sql_query, 0, $start) . "\n" . implode($cols, ',') . ")";
+            $sql_query = substr($sql_query, 0, $start) . "\n" . implode(',', $cols) . ")";
 
             $db->query($sql_query);
         }
     }
     
-    $now = new DateTime(null, new DateTimeZone('UTC'));
+    $now = new DateTime('now', new DateTimeZone('UTC'));
     
     // create test folders
     $folders = array(

@@ -5,7 +5,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
- * @copyright   Copyright (c) 2009-2012 Metaways Infosystems GmbH (http://www.metaways.de)
+ * @copyright   Copyright (c) 2009-2022 Metaways Infosystems GmbH (http://www.metaways.de)
  * @author      Lars Kneschke <l.kneschke@metaways.de>
  */
 
@@ -15,7 +15,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  */
-class Syncroton_Backend_ContentTests extends PHPUnit_Framework_TestCase
+class Syncroton_Backend_ContentTests extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Syncroton_Model_Device
@@ -53,22 +53,10 @@ class Syncroton_Backend_ContentTests extends PHPUnit_Framework_TestCase
     protected $_db;
     
     /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite  = new PHPUnit_Framework_TestSuite('Syncroton Content backend tests');
-        PHPUnit_TextUI_TestRunner::run($suite);
-    }
-    
-    /**
      * (non-PHPdoc)
      * @see ActiveSync/ActiveSync_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_db = getTestDatabase();
         
@@ -93,7 +81,7 @@ class Syncroton_Backend_ContentTests extends PHPUnit_Framework_TestCase
      *
      * @access protected
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_db->rollBack();
     }
@@ -149,14 +137,14 @@ class Syncroton_Backend_ContentTests extends PHPUnit_Framework_TestCase
     
     public function testGetExceptionNotFound()
     {
-        $this->setExpectedException('Syncroton_Exception_NotFound');
+        $this->expectException('Syncroton_Exception_NotFound');
     
         $this->_contentBackend->get('invalidId');
     }
     
     public function testGetContentStateExceptionNotFound()
     {
-        $this->setExpectedException('Syncroton_Exception_NotFound');
+        $this->expectException('Syncroton_Exception_NotFound');
     
         $this->_contentBackend->getContentState('invalidId', 'invalidId', 'invalidId');
     }
@@ -167,7 +155,7 @@ class Syncroton_Backend_ContentTests extends PHPUnit_Framework_TestCase
             'deviceId'        => $_device,
             'folderId'        => $_folder,
             'contentid'        => 'abc1234',
-            'creationTime'    => new DateTime(null, new DateTimeZone('utc')),
+            'creationTime'    => new DateTime('now', new DateTimeZone('UTC')),
             'creation_synckey' => 1
         ));
     }

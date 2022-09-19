@@ -128,7 +128,7 @@ abstract class Syncroton_Backend_ABackend implements Syncroton_Backend_IBackend
             unset($data[$key]);
             
             if (!empty($value) && preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/', $value)) { # 2012-08-12 07:43:26
-                $value = new DateTime($value, new DateTimeZone('utc'));
+                $value = new DateTime($value, new DateTimeZone('UTC'));
             }
             
             $data[$this->_toCamelCase($key, false)] = $value;

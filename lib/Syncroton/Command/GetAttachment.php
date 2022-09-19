@@ -49,7 +49,7 @@ class Syncroton_Command_GetAttachment extends Syncroton_Command_Wbxml
         if (PHP_SAPI !== 'cli') {
             // cache for 3600 seconds
             $maxAge = 3600;
-            $now = new DateTime(null, new DateTimeZone('UTC'));
+            $now = new DateTime('now', new DateTimeZone('UTC'));
             header('Cache-Control: private, max-age=' . $maxAge);
             header("Expires: " . gmdate('D, d M Y H:i:s', $now->modify("+{$maxAge} sec")->getTimestamp()) . " GMT");
             

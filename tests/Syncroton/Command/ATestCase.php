@@ -5,7 +5,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
- * @copyright   Copyright (c) 2009-2012 Metaways Infosystems GmbH (http://www.metaways.de)
+ * @copyright   Copyright (c) 2009-2022 Metaways Infosystems GmbH (http://www.metaways.de)
  * @author      Lars Kneschke <l.kneschke@metaways.de>
  */
 
@@ -15,7 +15,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  */
-abstract class Syncroton_Command_ATestCase extends PHPUnit_Framework_TestCase
+abstract class Syncroton_Command_ATestCase extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Syncroton_Model_IDevice
@@ -53,7 +53,7 @@ abstract class Syncroton_Command_ATestCase extends PHPUnit_Framework_TestCase
      * (non-PHPdoc)
      * @see Syncroton/Syncroton_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         Syncroton_Registry::setDatabase(getTestDatabase());
         
@@ -92,7 +92,7 @@ abstract class Syncroton_Command_ATestCase extends PHPUnit_Framework_TestCase
      *
      * @access protected
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         Syncroton_Registry::set(Syncroton_Registry::PING_TIMEOUT, 60);
         Syncroton_Registry::set(Syncroton_Registry::QUIET_TIME, 120);

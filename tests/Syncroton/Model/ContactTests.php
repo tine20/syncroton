@@ -5,7 +5,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
- * @copyright   Copyright (c) 2009-2012 Metaways Infosystems GmbH (http://www.metaways.de)
+ * @copyright   Copyright (c) 2009-2022 Metaways Infosystems GmbH (http://www.metaways.de)
  * @author      Lars Kneschke <l.kneschke@metaways.de>
  */
 
@@ -53,18 +53,7 @@ class Syncroton_Model_ContactTests extends Syncroton_Model_ATestCase
         <AirSyncBase:Body><AirSyncBase:Type>1</AirSyncBase:Type><AirSyncBase:Data>Rewdfyyh fddg</AirSyncBase:Data></AirSyncBase:Body>
     </ApplicationData>
 </Add></Commands></Collection></Collections></Sync>';
-    
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite  = new PHPUnit_Framework_TestSuite('Syncroton contact tests');
-        PHPUnit_TextUI_TestRunner::run($suite);
-    }
+
     
     /**
      * test add contact

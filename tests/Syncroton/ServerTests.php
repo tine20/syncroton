@@ -5,7 +5,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
- * @copyright   Copyright (c) 2009-2012 Metaways Infosystems GmbH (http://www.metaways.de)
+ * @copyright   Copyright (c) 2009-2022 Metaways Infosystems GmbH (http://www.metaways.de)
  * @author      Lars Kneschke <l.kneschke@metaways.de>
  */
 
@@ -19,13 +19,13 @@ class Syncroton_ServerTests extends Syncroton_Command_ATestCase
 {
     #protected $_logPriority = Zend_Log::DEBUG;
     
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $_GET = array();
     }
     
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         

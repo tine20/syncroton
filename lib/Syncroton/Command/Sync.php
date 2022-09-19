@@ -465,7 +465,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
 
                 $wakeupCallback();
                 
-                $now = new DateTime(null, new DateTimeZone('utc'));
+                $now = new DateTime('now', new DateTimeZone('UTC'));
 
                 foreach($this->_collections as $collectionData) {
                     // continue immediately if folder does not exist 
@@ -631,7 +631,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
 
                     if ($hasChanges) {
                         // update _syncTimeStamp as $dataController->hasChanges might have spent some time
-                        $this->_syncTimeStamp = new DateTime(null, new DateTimeZone('utc'));
+                        $this->_syncTimeStamp = new DateTime('now', new DateTimeZone('UTC'));
 
                         try {
                             // fetch entries added since last sync
