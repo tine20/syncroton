@@ -90,7 +90,7 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
             }
         }
         
-        $this->_device->lastping = new DateTime('now', new DateTimeZone('utc'));
+        $this->_device->lastping = new DateTime('now', new DateTimeZone('UTC'));
 
         if ($status == self::STATUS_NO_CHANGES_FOUND) {
             $this->_device = $this->_deviceBackend->update($this->_device);
@@ -109,7 +109,7 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
         $intervalEnd = $intervalStart + $lifeTime;
         $secondsLeft = $intervalEnd;
         
-        $folders = unserialize($this->_device->pingfolder);
+        $folders = $this->_device->pingfolder ? unserialize($this->_device->pingfolder) : null;
         
         if ($status === self::STATUS_NO_CHANGES_FOUND && (!is_array($folders) || count($folders) == 0)) {
             $status = self::STATUS_MISSING_PARAMETERS;
@@ -189,7 +189,7 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
                     continue;
                 }
 
-                $now = new DateTime('now', new DateTimeZone('utc'));
+                $now = new DateTime('now', new DateTimeZone('UTC'));
                 
                 foreach ($folders as $folderId) {
                     try {

@@ -5,7 +5,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
- * @copyright   Copyright (c) 2009-2012 Metaways Infosystems GmbH (http://www.metaways.de)
+ * @copyright   Copyright (c) 2009-2022 Metaways Infosystems GmbH (http://www.metaways.de)
  * @author      Lars Kneschke <l.kneschke@metaways.de>
  */
 
@@ -18,18 +18,6 @@
 class Syncroton_Command_ItemOperationsTests extends Syncroton_Command_ATestCase
 {
     #protected $_logPriority = Zend_Log::DEBUG;
-    
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite  = new PHPUnit_Framework_TestSuite('ActiveSync ItemOperations command tests');
-        PHPUnit_TextUI_TestRunner::run($suite);
-    }
     
     /**
      */
@@ -49,7 +37,7 @@ class Syncroton_Command_ItemOperationsTests extends Syncroton_Command_ATestCase
         $responseDoc = $folderSync->getResponse();
         
         
-        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_EMAIL, $this->_device, new DateTime(null, new DateTimeZone('UTC')));
+        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_EMAIL, $this->_device, new DateTime('now', new DateTimeZone('UTC')));
         
         $entries = $dataController->getServerEntries('emailInboxFolderId', null);
         
@@ -201,13 +189,13 @@ class Syncroton_Command_ItemOperationsTests extends Syncroton_Command_ATestCase
         $this->assertEquals('TGFycw==', $nodes->item(0)->nodeValue, 'data mismatch');
 
         // FIXME assertions are currently failing - no idea how and when this happened ... maybe php 7 issue?
-//        $nodes = $xpath->query('//ItemOperations:ItemOperations/ItemOperations:Response/ItemOperations:Fetch/ItemOperations:Properties/ItemOperations:Total');
-//        $this->assertEquals(1, $nodes->length, 'ItemOperations:Total missing: ' . $responseDoc->saveXML());
-//        $this->assertEquals(4, $nodes->item(0)->nodeValue, 'data mismatch');
+        $nodes = $xpath->query('//ItemOperations:ItemOperations/ItemOperations:Response/ItemOperations:Fetch/ItemOperations:Properties/ItemOperations:Total');
+        $this->assertEquals(1, $nodes->length, 'ItemOperations:Total missing: ' . $responseDoc->saveXML());
+        $this->assertEquals(4, $nodes->item(0)->nodeValue, 'data mismatch');
         
-//        $nodes = $xpath->query('//ItemOperations:ItemOperations/ItemOperations:Response/ItemOperations:Fetch/ItemOperations:Properties/ItemOperations:Range');
-//        $this->assertEquals(1, $nodes->length, 'ItemOperations:Range missing');
-//        $this->assertEquals('0-3', $nodes->item(0)->nodeValue, 'data mismatch');
+        $nodes = $xpath->query('//ItemOperations:ItemOperations/ItemOperations:Response/ItemOperations:Fetch/ItemOperations:Properties/ItemOperations:Range');
+        $this->assertEquals(1, $nodes->length, 'ItemOperations:Range missing');
+        $this->assertEquals('0-3', $nodes->item(0)->nodeValue, 'data mismatch');
     }
     
     /**
@@ -288,7 +276,7 @@ class Syncroton_Command_ItemOperationsTests extends Syncroton_Command_ATestCase
         $responseDoc = $folderSync->getResponse();
         
 
-        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_EMAIL, $this->_device, new DateTime(null, new DateTimeZone('UTC')));
+        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_EMAIL, $this->_device, new DateTime('now', new DateTimeZone('UTC')));
         
         $entries = $dataController->getServerEntries('emailInboxFolderId', null);
         

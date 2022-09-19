@@ -5,7 +5,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
- * @copyright   Copyright (c) 2009-2013 Metaways Infosystems GmbH (http://www.metaways.de)
+ * @copyright   Copyright (c) 2009-2022 Metaways Infosystems GmbH (http://www.metaways.de)
  * @author      Lars Kneschke <l.kneschke@metaways.de>
  */
 
@@ -637,7 +637,7 @@ class Syncroton_Command_SyncTests extends Syncroton_Command_ATestCase
         
         
         // turn back last sync time
-        $tenSecondsAgo = new DateTime(null, new DateTimeZone('utc'));
+        $tenSecondsAgo = new DateTime('now', new DateTimeZone('UTC'));
         $tenSecondsAgo->modify('-10 second');
         
         $folder    = Syncroton_Registry::getFolderBackend()->getFolder($this->_device, 'addressbookFolderId');
@@ -875,9 +875,9 @@ class Syncroton_Command_SyncTests extends Syncroton_Command_ATestCase
         
         $folder   = Syncroton_Registry::getFolderBackend()->getFolder($this->_device, 'addressbookFolderId');
         
-        $oneSecondAgo = new DateTime(null, new DateTimeZone('utc'));
+        $oneSecondAgo = new DateTime('now', new DateTimeZone('UTC'));
         $oneSecondAgo->modify('-1 second');
-        $tenSecondsAgo = new DateTime(null, new DateTimeZone('utc'));
+        $tenSecondsAgo = new DateTime('now', new DateTimeZone('UTC'));
         $tenSecondsAgo->modify('-10 second');
         
         // update modify timeStamp of contact
@@ -1058,9 +1058,9 @@ class Syncroton_Command_SyncTests extends Syncroton_Command_ATestCase
         
         $folder    = Syncroton_Registry::getFolderBackend()->getFolder($this->_device, 'addressbookFolderId');
         
-        $oneSecondAgo = new DateTime(null, new DateTimeZone('utc'));
+        $oneSecondAgo = new DateTime('now', new DateTimeZone('UTC'));
         $oneSecondAgo->modify('-1 second');
-        $tenSecondsAgo = new DateTime(null, new DateTimeZone('utc'));
+        $tenSecondsAgo = new DateTime('now', new DateTimeZone('UTC'));
         $tenSecondsAgo->modify('-10 second');
         
         // update modify timeStamp of contact
@@ -1132,7 +1132,7 @@ class Syncroton_Command_SyncTests extends Syncroton_Command_ATestCase
     {
         $serverId = $this->testAddingContactToServer();
         
-        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime(null, new DateTimeZone('UTC')));
+        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime('now', new DateTimeZone('UTC')));
         
         $entries = $dataController->getServerEntries('addressbookFolderId', null);
         
@@ -1312,7 +1312,7 @@ class Syncroton_Command_SyncTests extends Syncroton_Command_ATestCase
     {
         $this->testSyncOfContacts();
         
-        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime(null, new DateTimeZone('UTC')));
+        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime('now', new DateTimeZone('UTC')));
         
         $entries = $dataController->getServerEntries('addressbookFolderId', null);
         
@@ -1356,7 +1356,7 @@ class Syncroton_Command_SyncTests extends Syncroton_Command_ATestCase
     {
         $this->testSyncOfContacts();
         
-        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime(null, new DateTimeZone('UTC')));
+        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime('now', new DateTimeZone('UTC')));
         
         $entries = $dataController->getServerEntries('addressbookFolderId', null);
         

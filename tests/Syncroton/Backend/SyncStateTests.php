@@ -5,7 +5,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
- * @copyright   Copyright (c) 2009-2012 Metaways Infosystems GmbH (http://www.metaways.de)
+ * @copyright   Copyright (c) 2009-2022 Metaways Infosystems GmbH (http://www.metaways.de)
  * @author      Lars Kneschke <l.kneschke@metaways.de>
  */
 
@@ -15,7 +15,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  */
-class Syncroton_Backend_SyncStateTests extends PHPUnit_Framework_TestCase
+class Syncroton_Backend_SyncStateTests extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Syncroton_Model_Device
@@ -48,22 +48,10 @@ class Syncroton_Backend_SyncStateTests extends PHPUnit_Framework_TestCase
     protected $_db;
     
     /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite  = new PHPUnit_Framework_TestSuite('Syncroton SyncState backend tests');
-        PHPUnit_TextUI_TestRunner::run($suite);
-    }
-    
-    /**
      * (non-PHPdoc)
      * @see ActiveSync/ActiveSync_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_db = getTestDatabase();
         
@@ -87,7 +75,7 @@ class Syncroton_Backend_SyncStateTests extends PHPUnit_Framework_TestCase
      *
      * @access protected
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_db->rollBack();
     }
@@ -101,7 +89,7 @@ class Syncroton_Backend_SyncStateTests extends PHPUnit_Framework_TestCase
             'device_id'   => $this->_device,
             'type'        => 'FolderSync',
             'counter'     => '0',
-            'lastsync'    => new DateTime(null, new DateTimeZone('utc')),
+            'lastsync'    => new DateTime('now', new DateTimeZone('UTC')),
             'pendingdata' => array('foobar' => 'test')
         ));
         
@@ -160,7 +148,7 @@ class Syncroton_Backend_SyncStateTests extends PHPUnit_Framework_TestCase
             'device_id'   => $this->_device,
             'type'        => 'FolderSync',
             'counter'     => '0',
-            'lastsync'    => new DateTime(null, new DateTimeZone('utc')),
+            'lastsync'    => new DateTime('now', new DateTimeZone('UTC')),
             'pendingdata' => null
         ));
         $syncState->lastsync->modify('-2 min');
@@ -170,7 +158,7 @@ class Syncroton_Backend_SyncStateTests extends PHPUnit_Framework_TestCase
             'device_id'   => $this->_device,
             'type'        => 'FolderSync',
             'counter'     => '1',
-            'lastsync'    => new DateTime(null, new DateTimeZone('utc')),
+            'lastsync'    => new DateTime('now', new DateTimeZone('UTC')),
             'pendingdata' => null
         ));
         
@@ -197,7 +185,7 @@ class Syncroton_Backend_SyncStateTests extends PHPUnit_Framework_TestCase
             'device_id'   => $this->_device,
             'type'        => 'FolderSync',
             'counter'     => '0',
-            'lastsync'    => new DateTime(null, new DateTimeZone('utc')),
+            'lastsync'    => new DateTime('now', new DateTimeZone('UTC')),
             'pendingdata' => array()
         ));
         $syncState->lastsync->modify('-2 min');
@@ -207,7 +195,7 @@ class Syncroton_Backend_SyncStateTests extends PHPUnit_Framework_TestCase
             'device_id'   => $this->_device,
             'type'        => 'FolderSync',
             'counter'     => '1',
-            'lastsync'    => new DateTime(null, new DateTimeZone('utc')),
+            'lastsync'    => new DateTime('now', new DateTimeZone('UTC')),
             'pendingdata' => array()
         ));
         
@@ -227,14 +215,14 @@ class Syncroton_Backend_SyncStateTests extends PHPUnit_Framework_TestCase
     
     public function testGetExceptionNotFound()
     {
-        $this->setExpectedException('Syncroton_Exception_NotFound');
+        $this->expectException('Syncroton_Exception_NotFound');
         
         $this->_syncStateBackend->get('invalidId');
     }
     
     public function testGetSyncStateExceptionNotFound()
     {
-        $this->setExpectedException('Syncroton_Exception_NotFound');
+        $this->expectException('Syncroton_Exception_NotFound');
         
         $this->_syncStateBackend->getSyncState('invalidId', 'invalidId');
     }

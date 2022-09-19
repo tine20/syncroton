@@ -5,7 +5,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
- * @copyright   Copyright (c) 2009-2012 Metaways Infosystems GmbH (http://www.metaways.de)
+ * @copyright   Copyright (c) 2009-2022 Metaways Infosystems GmbH (http://www.metaways.de)
  * @author      Lars Kneschke <l.kneschke@metaways.de>
  */
 
@@ -17,14 +17,10 @@
  */
 class Syncroton_Backend_AllTests
 {
-    public static function main ()
-    {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
-    }
-    
+
     public static function suite ()
     {
-        $suite = new PHPUnit_Framework_TestSuite('Syncroton All Backend Tests');
+        $suite = new \PHPUnit\Framework\TestSuite('Syncroton All Backend Tests');
         
         $suite->addTestSuite('Syncroton_Backend_ContentTests');
         $suite->addTestSuite('Syncroton_Backend_DeviceTests');

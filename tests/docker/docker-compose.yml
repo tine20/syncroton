@@ -1,0 +1,30 @@
+version: '2'
+services:
+  cli8:
+    build: ./php8/
+    volumes:
+      - ../../:/src/
+      - ./xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
+    networks:
+      - external_network
+    environment:
+      # needed by PHPSTORM for debugging
+      PHP_IDE_CONFIG: "serverName=syncroton"
+
+  cli81:
+    build: ./php81/
+    volumes:
+      - ../../:/src/
+      - ./xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
+    networks:
+      - external_network
+    environment:
+      # needed by PHPSTORM for debugging
+      PHP_IDE_CONFIG: "serverName=syncroton"
+
+networks:
+  external_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 174.118.0.0/16

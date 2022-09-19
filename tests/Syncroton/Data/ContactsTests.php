@@ -5,7 +5,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  * @license     http://www.tine20.org/licenses/lgpl.html LGPL Version 3
- * @copyright   Copyright (c) 2009-2012 Metaways Infosystems GmbH (http://www.metaways.de)
+ * @copyright   Copyright (c) 2009-2022 Metaways Infosystems GmbH (http://www.metaways.de)
  * @author      Lars Kneschke <l.kneschke@metaways.de>
  */
 
@@ -36,18 +36,6 @@ class Syncroton_Data_ContactsTests extends Syncroton_Command_ATestCase
 <Sync xmlns="uri:AirSync" xmlns:AirSyncBase="uri:AirSyncBase" xmlns:Contacts="uri:Contacts"><Collections><Collection><Class>Contacts</Class><SyncKey>3</SyncKey><CollectionId>addressbook-root</CollectionId><DeletesAsMoves/><WindowSize>100</WindowSize><Options><AirSyncBase:BodyPreference><AirSyncBase:Type>1</AirSyncBase:Type><AirSyncBase:TruncationSize>5120</AirSyncBase:TruncationSize></AirSyncBase:BodyPreference><Conflict>1</Conflict></Options><Commands><Add><ClientId>4600</ClientId><ApplicationData><Contacts:FileAs>Fritzchen</Contacts:FileAs><Contacts:FirstName>Fritzchen</Contacts:FirstName><Contacts:LastName>Meinen</Contacts:LastName><Contacts:Birthday>1969-12-31</Contacts:Birthday><AirSyncBase:Body><AirSyncBase:Type>1</AirSyncBase:Type><AirSyncBase:EstimatedDataSize>0</AirSyncBase:EstimatedDataSize><AirSyncBase:Data></AirSyncBase:Data></AirSyncBase:Body><Contacts:Categories/><Contacts:Picture/></ApplicationData></Add></Commands></Collection></Collections></Sync>';
     
     /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite  = new PHPUnit_Framework_TestSuite('Syncroton contacts tests');
-        PHPUnit_TextUI_TestRunner::run($suite);
-    }
-    
-    /**
      * validate getFolders for IPhones
      */
     public function testGetFoldersIPhone()
@@ -62,7 +50,7 @@ class Syncroton_Data_ContactsTests extends Syncroton_Command_ATestCase
             Syncroton_Backend_DeviceTests::getTestDevice(Syncroton_Model_Device::TYPE_IPHONE)
         );
                 
-        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $device, new DateTime(null, new DateTimeZone('UTC')));
+        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $device, new DateTime('now', new DateTimeZone('UTC')));
         
         $folders = $dataController->getAllFolders();
                 
@@ -89,7 +77,7 @@ class Syncroton_Data_ContactsTests extends Syncroton_Command_ATestCase
             Syncroton_Backend_DeviceTests::getTestDevice(Syncroton_Model_Device::TYPE_WEBOS)
         );
         
-        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $device, new DateTime(null, new DateTimeZone('UTC')));
+        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $device, new DateTime('now', new DateTimeZone('UTC')));
         
         $allEntries = $dataController->getServerEntries('addressbookFolderId', null);
         
@@ -121,7 +109,7 @@ class Syncroton_Data_ContactsTests extends Syncroton_Command_ATestCase
      */
     public function testAddContact()
     {
-        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime(null, new DateTimeZone('UTC')));
+        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime('now', new DateTimeZone('UTC')));
         $dataClass = 'Syncroton_Model_Contact';
         
         $xml = new SimpleXMLElement($this->_xmlContactBirthdayWithoutTimeAndroid);
@@ -146,7 +134,7 @@ class Syncroton_Data_ContactsTests extends Syncroton_Command_ATestCase
      */
     public function testSearchGAL()
     {
-        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime(null, new DateTimeZone('UTC')));
+        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $this->_device, new DateTime('now', new DateTimeZone('UTC')));
         
         $entry = $this->testAddContact();
         
@@ -191,7 +179,7 @@ class Syncroton_Data_ContactsTests extends Syncroton_Command_ATestCase
             Syncroton_Backend_DeviceTests::getTestDevice(Syncroton_Model_Device::TYPE_IPHONE)
         );
         
-        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $device, new DateTime(null, new DateTimeZone('UTC')));
+        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $device, new DateTime('now', new DateTimeZone('UTC')));
         
         $collection = new Syncroton_Model_SyncCollection();
         $collection->collectionId = 'addressbookFolderId';
@@ -213,8 +201,8 @@ class Syncroton_Data_ContactsTests extends Syncroton_Command_ATestCase
         $encoder = new Syncroton_Wbxml_Encoder($outputStream, 'UTF-8', 3);
         $encoder->encode($testDoc);
         
-        #rewind($outputStream);
-        #fpassthru($outputStream);
+        rewind($outputStream);
+        $this->assertStringContainsString('Lars', stream_get_contents($outputStream));
     }
     
     /**
@@ -234,7 +222,7 @@ class Syncroton_Data_ContactsTests extends Syncroton_Command_ATestCase
                 Syncroton_Backend_DeviceTests::getTestDevice(Syncroton_Model_Device::TYPE_IPHONE)
         );
         
-        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $device, new DateTime(null, new DateTimeZone('UTC')));
+        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $device, new DateTime('now', new DateTimeZone('UTC')));
         
         $entries = $dataController->getServerEntries('addressbookFolderId', null);
         
@@ -257,7 +245,7 @@ class Syncroton_Data_ContactsTests extends Syncroton_Command_ATestCase
         );
         
         // update modify timeStamp of contact
-        $oneSecondAgo = new DateTime(null, new DateTimeZone('utc'));
+        $oneSecondAgo = new DateTime('now', new DateTimeZone('UTC'));
         $oneSecondAgo->modify('-1 second');
         
         $dataController = Syncroton_Data_Factory::factory(
@@ -275,10 +263,10 @@ class Syncroton_Data_ContactsTests extends Syncroton_Command_ATestCase
         $dataController = Syncroton_Data_Factory::factory(
             Syncroton_Data_Factory::CLASS_CONTACTS, 
             $device, 
-            new DateTime(null, new DateTimeZone('UTC'))
+            new DateTime('now', new DateTimeZone('UTC'))
         );
         
-        $tenSecondsAgo = new DateTime(null, new DateTimeZone('utc'));
+        $tenSecondsAgo = new DateTime('now', new DateTimeZone('UTC'));
         $tenSecondsAgo->modify('-10 second');
         
         $entries = $dataController->getChangedEntries('addressbookFolderId', $tenSecondsAgo);
@@ -299,7 +287,7 @@ class Syncroton_Data_ContactsTests extends Syncroton_Command_ATestCase
             Syncroton_Backend_DeviceTests::getTestDevice(Syncroton_Model_Device::TYPE_IPHONE)
         );
         
-        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $device, new DateTime(null, new DateTimeZone('UTC')));
+        $dataController = Syncroton_Data_Factory::factory(Syncroton_Data_Factory::CLASS_CONTACTS, $device, new DateTime('now', new DateTimeZone('UTC')));
         
         $entries = $dataController->getServerEntries('addressbookFolderId', null);
         

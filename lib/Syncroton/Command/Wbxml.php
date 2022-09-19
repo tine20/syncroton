@@ -154,7 +154,7 @@ abstract class Syncroton_Command_Wbxml implements Syncroton_Command_ICommand
             $this->_logger          = Syncroton_Registry::get('loggerBackend');
         }
         
-        $this->_syncTimeStamp = new DateTime(null, new DateTimeZone('UTC'));
+        $this->_syncTimeStamp = new DateTime('now', new DateTimeZone('UTC'));
         
         // set default content type
         $this->_headers['Content-Type'] = 'application/vnd.ms-sync.wbxml';

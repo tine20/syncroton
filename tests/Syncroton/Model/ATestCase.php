@@ -15,7 +15,7 @@
  * @package     Syncroton
  * @subpackage  Tests
  */
-class Syncroton_Model_ATestCase extends PHPUnit_Framework_TestCase
+class Syncroton_Model_ATestCase extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Syncroton_Model_IDevice
@@ -26,7 +26,7 @@ class Syncroton_Model_ATestCase extends PHPUnit_Framework_TestCase
      * (non-PHPdoc)
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_testDevice = Syncroton_Backend_DeviceTests::getTestDevice(Syncroton_Model_Device::TYPE_ANDROID);
     }

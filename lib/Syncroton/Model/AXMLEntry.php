@@ -177,7 +177,7 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
                 $element->appendChild($element->ownerDocument->createCDATASection(base64_encode($value)));
             } else {
                 // strip off any non printable control characters
-                if (!ctype_print($value)) {
+                if (!ctype_print((string)$value)) {
                     $value = $this->_removeControlChars($value);
                 }
                 

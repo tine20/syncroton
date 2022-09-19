@@ -1,12 +1,6 @@
 <phpunit backupGlobals="false"
          bootstrap="bootstrap.php"
          colors="true">
-    <filter>
-        <blacklist>
-            <directory suffix=".php">../tests</directory>
-            <directory suffix=".php">../lib/Zend</directory>
-        </blacklist>
-    </filter>
     
     <testsuites>
         <testsuite name="All Tests">

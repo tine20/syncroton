@@ -40,7 +40,7 @@ abstract class Syncroton_Model_AEntry implements Syncroton_Model_IEntry, Iterato
      * (non-PHPdoc)
      * @see Countable::count()
      */    
-    public function count()
+    public function count(): int
     {
         return count($this->_elements);
     }
@@ -49,7 +49,7 @@ abstract class Syncroton_Model_AEntry implements Syncroton_Model_IEntry, Iterato
      * (non-PHPdoc)
      * @see IteratorAggregate::getIterator()
      */
-    public function getIterator() 
+    public function getIterator(): \Traversable
     {
         return new ArrayIterator($this->_elements);
     }

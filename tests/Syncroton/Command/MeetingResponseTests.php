@@ -20,18 +20,6 @@ class Syncroton_Command_MeetingResponseTests extends Syncroton_Command_ATestCase
     #protected $_logPriority = Zend_Log::DEBUG;
     
     /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite  = new PHPUnit_Framework_TestSuite('ActiveSync FolderCreate command tests');
-        PHPUnit_TextUI_TestRunner::run($suite);
-    }
-    
-    /**
      * test processing of meeting reponse
      */
     public function testMeetingResponse()
