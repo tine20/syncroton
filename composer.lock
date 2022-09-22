@@ -4,15 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b1d3c71909b1c384c1e428dee0b45c64",
+    "content-hash": "dadd8aa169e0f0cf21503ec18d42294c",
     "packages": [
         {
             "name": "zendframework/zendframework1",
-            "version": "1.12.20pl60",
+            "version": "1.12.20pl61",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tine20/zendframework1.git",
-                "reference": "79b61879e425f7df1cace1080d313c20ba977250"
+                "reference": "7b16470eb5a064052f0dbc4f3d846bf2c9a645dc"
             },
             "require": {
                 "php": ">=7.4.0"
@@ -29,7 +29,7 @@
                 "New BSD License"
             ],
             "description": "Metaways Infosystems GmbH - Patched Zendframework1",
-            "time": "2022-09-20T08:45:45+00:00"
+            "time": "2022-09-22T18:53:23+00:00"
         }
     ],
     "packages-dev": [
@@ -1491,7 +1491,7 @@
     "aliases": [
         {
             "package": "zendframework/zendframework1",
-            "version": "1.12.20.0-patch60",
+            "version": "1.12.20.0-patch61",
             "alias": "1.12.20",
             "alias_normalized": "1.12.20.0"
         }
