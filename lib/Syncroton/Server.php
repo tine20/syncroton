@@ -105,9 +105,9 @@ class Syncroton_Server
         
         $className = 'Syncroton_Command_' . $requestParameters['command'];
         
-        if(!class_exists($className)) {
+        if (!class_exists($className)) {
             if ($this->_logger instanceof Zend_Log)
-                $this->_logger->crit(__METHOD__ . '::' . __LINE__ . " command not supported: " . $requestParameters['command']);
+                $this->_logger->notice(__METHOD__ . '::' . __LINE__ . " command not supported: " . $requestParameters['command']);
             
             header("HTTP/1.1 501 not implemented");
             
@@ -161,11 +161,11 @@ class Syncroton_Server
             
         } catch (Exception $e) {
             if ($this->_logger instanceof Zend_Log)
-                $this->_logger->crit(__METHOD__ . '::' . __LINE__ . " unexpected exception occured: " . get_class($e));
+                $this->_logger->err(__METHOD__ . '::' . __LINE__ . " unexpected exception occured: " . get_class($e));
             if ($this->_logger instanceof Zend_Log)
-                $this->_logger->crit(__METHOD__ . '::' . __LINE__ . " exception message: " . $e->getMessage());
+                $this->_logger->err(__METHOD__ . '::' . __LINE__ . " exception message: " . $e->getMessage());
             if ($this->_logger instanceof Zend_Log)
-                $this->_logger->crit(__METHOD__ . '::' . __LINE__ . " " . $e->getTraceAsString());
+                $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " " . $e->getTraceAsString());
             
             header("HTTP/1.1 500 Internal server error");
             

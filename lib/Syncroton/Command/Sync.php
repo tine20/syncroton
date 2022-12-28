@@ -246,7 +246,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
             // check for invalid sycnkey
             if(($collectionData->syncState = $this->_syncStateBackend->validate($this->_device, $collectionData->folder, $collectionData->syncKey)) === false) {
                 if ($this->_logger instanceof Zend_Log) 
-                    $this->_logger->warn(__METHOD__ . '::' . __LINE__ . " invalid synckey {$collectionData->syncKey} provided");
+                    $this->_logger->notice(__METHOD__ . '::' . __LINE__ . " invalid synckey {$collectionData->syncKey} provided");
                 
                 // reset sync state for this folder
                 $this->_syncStateBackend->resetState($this->_device, $collectionData->folder);
