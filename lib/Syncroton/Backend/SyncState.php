@@ -169,7 +169,7 @@ public $_logger;
         
         $stmt = $this->_db->query($select);
         $data = $stmt->fetch();
-        $stmt = null; # see https://bugs.php.net/bug.php?id=44081
+        $stmt->closeCursor();
         
         if ($data === false) {
             return false;
@@ -186,57 +186,50 @@ public $_logger;
         
         $stmt = $this->_db->query($select);
         $moreRecentStateData = $stmt->fetch();
-        $stmt = null; # see https://bugs.php.net/bug.php?id=44081
+        $stmt->closeCursor();
         $isUnittest = Syncroton_Registry::getInstance()->offsetExists(Syncroton_Registry::IS_UNITTEST);
-        
-        // found more recent synckey => the last sync repsone got not received by the client
-        if ($moreRecentStateData !== false) {
-            // undelete entries marked as deleted in Syncroton_content table
-            $this->_db->update($this->_tablePrefix . 'content', array(
-                'is_deleted'  => 0,
-            ), array(
-                'device_id = ?'        => $deviceId,
-                'folder_id = ?'        => $folderId,
-                'creation_synckey = ?' => $state->counter,
-                'is_deleted = ?'       => 1
-            ));
-            
-        } else {
-            // finally delete all entries marked for removal in Syncroton_content table
+
+        try {
             if (!$isUnittest) {
                 // this is very susceptible to deadlocks, lets get the hammer out and bash away
-                $this->_db->query('SET autocommit=0');
-                $this->_db->query('LOCK TABLES ' . $this->_tablePrefix . 'content WRITE');
+                $this->_db->query('LOCK TABLES ' . $this->_tablePrefix . 'content WRITE, ' .
+                    $this->_tablePrefix . $this->_tableName . ' WRITE');
             }
+
+            // found more recent synckey => the last sync repsone got not received by the client
+            if ($moreRecentStateData !== false) {
+                // undelete entries marked as deleted in Syncroton_content table
+                $this->_db->update($this->_tablePrefix . 'content', array(
+                    'is_deleted' => 0,
+                ), array(
+                    'device_id = ?' => $deviceId,
+                    'folder_id = ?' => $folderId,
+                    'creation_synckey = ?' => $state->counter,
+                    'is_deleted = ?' => 1
+                ));
+
+            } else {
+                // finally delete all entries marked for removal in Syncroton_content table
+                $this->_db->delete($this->_tablePrefix . 'content', array(
+                    'device_id = ?' => $deviceId,
+                    'folder_id = ?' => $folderId,
+                    'is_deleted = ?' => 1
+                ));
+            }
+
+            // remove all other synckeys
+            $this->_deleteOtherStates($state);
+
+            // remove entries from Syncroton_content table with an creation_synckey bigger than current one
             $this->_db->delete($this->_tablePrefix . 'content', array(
-                'device_id = ?'  => $deviceId,
-                'folder_id = ?'  => $folderId,
-                'is_deleted = ?' => 1
+                'device_id = ?' => $deviceId,
+                'folder_id = ?' => $folderId,
+                'creation_synckey > ?' => $state->counter,
             ));
+        } finally {
             if (!$isUnittest) {
-                $this->_db->query('COMMIT');
                 $this->_db->query('UNLOCK TABLES');
             }
-        }
-        
-        // remove all other synckeys
-        $this->_deleteOtherStates($state);
-        
-        // remove entries from Syncroton_content table with an creation_synckey bigger than current one
-        if (!$isUnittest) {
-            // this is very susceptible to deadlocks, lets get the hammer out and bash away
-            $this->_db->query('SET autocommit=0');
-            $this->_db->query('LOCK TABLES ' . $this->_tablePrefix . 'content WRITE');
-        }
-        $this->_db->delete($this->_tablePrefix . 'content', array(
-            'device_id = ?'        => $deviceId,
-            'folder_id = ?'        => $folderId,
-            'creation_synckey > ?' => $state->counter,
-        ));
-        if (!$isUnittest) {
-            $this->_db->query('COMMIT');
-            $this->_db->query('UNLOCK TABLES');
-            $this->_db->query('SET autocommit=1');
         }
         
         return $state;
