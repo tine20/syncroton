@@ -252,8 +252,6 @@ class Syncroton_Server
      */
     protected function _logDomDocument($priority, DOMDocument $dom, $method, $line)
     {
-        $loops = 0;
-        
         $tempStream = fopen('php://temp/maxmemory:5242880', 'r+');
                 
         $dom->formatOutput = true;
@@ -261,13 +259,8 @@ class Syncroton_Server
         $dom->formatOutput = false;
         
         rewind($tempStream);
-        
-        // log data in 1MByte chunks
-        while (!feof($tempStream)) {
-            $this->_logger->log($method . '::' . $line . " xml response($loops):\n" . fread($tempStream, 1048576), $priority);
-            
-            $loops++;
-        }
+
+        $this->_logger->log($method . '::' . $line . " xml response(first 4k):\n" . fread($tempStream, 4 * 1024), $priority);
         
         fclose($tempStream);
     }
