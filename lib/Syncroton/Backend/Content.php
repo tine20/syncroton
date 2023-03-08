@@ -53,7 +53,7 @@ class Syncroton_Backend_Content extends Syncroton_Backend_ABackend implements Sy
         $deviceId = $deviceId instanceof Syncroton_Model_IDevice ? $deviceId->id : $deviceId;
         $folderId = $folderId instanceof Syncroton_Model_IFolder ? $folderId->id : $folderId;
     
-        $select = $this->_db->select()->forUpdate(true)
+        $select = $this->_db->select()
             ->from($this->_tablePrefix . 'content')
             ->where($this->_db->quoteIdentifier('device_id')  . ' = ?', $deviceId)
             ->where($this->_db->quoteIdentifier('folder_id')  . ' = ?', $folderId)
@@ -83,7 +83,7 @@ class Syncroton_Backend_Content extends Syncroton_Backend_ABackend implements Sy
         $deviceId = $deviceId instanceof Syncroton_Model_IDevice ? $deviceId->id : $deviceId;
         $folderId = $folderId instanceof Syncroton_Model_IFolder ? $folderId->id : $folderId;
                 
-        $select = $this->_db->select()->forUpdate(true)
+        $select = $this->_db->select()
             ->from($this->_tablePrefix . 'content', 'contentid')
             ->where($this->_db->quoteIdentifier('device_id')  . ' = ?', $deviceId)
             ->where($this->_db->quoteIdentifier('folder_id')  . ' = ?', $folderId)
