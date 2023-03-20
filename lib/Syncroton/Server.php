@@ -190,7 +190,7 @@ class Syncroton_Server
             } catch (Syncroton_Wbxml_Exception $swe) {
                 if ($this->_logger instanceof Zend_Log) {
                     $this->_logger->err(__METHOD__ . '::' . __LINE__ . " Could not encode output: " . $swe);
-                    $this->_logDomDocument(Zend_Log::WARN, $response, __METHOD__, __LINE__);
+                    $this->_logDomDocument(Zend_Log::DEBUG, $response, __METHOD__, __LINE__);
                 }
                 
                 header("HTTP/1.1 500 Internal server error");
@@ -245,7 +245,7 @@ class Syncroton_Server
     /**
      * write (possible big) DOMDocument in smaller chunks to log file
      * 
-     * @param unknown     $priority
+     * @param int         $priority
      * @param DOMDocument $dom
      * @param string      $method
      * @param int         $line
