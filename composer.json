@@ -14,7 +14,7 @@
     "require": {
         "php": ">=7.4.0",
         "ext-ctype": "*",
-        "zendframework/zendframework1": "1.12.20pl62 as 1.12.20"
+        "zendframework/zendframework1": "1.12.20.*"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5",
