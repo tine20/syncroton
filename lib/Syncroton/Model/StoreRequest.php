@@ -188,7 +188,9 @@ class Syncroton_Model_StoreRequest
                 }
             }
 
-            $this->_store['options']['range'] = explode('-', $this->_store['options']['range']);
+            $this->_store['options']['range'] = isset($this->_store['options']['range'])
+                ? explode('-', $this->_store['options']['range'])
+                : [];
 
             if (isset($xmlStore->Options->MIMESupport)) {
                 $this->_store['options']['mimeSupport'] = (int) $xmlStore->Options->MIMESupport;
