@@ -67,6 +67,8 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
      * @var string
      */
     protected $_currentTag = NULL;
+
+    protected $_attributes = null;
     
     /**
      * the constructor
@@ -206,7 +208,6 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
         }
 
         $this->_attributes = $_attributes;
-        
     }
     
     /**
