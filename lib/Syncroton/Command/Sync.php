@@ -257,7 +257,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                 continue;
             }
             
-            $dataController = Syncroton_Data_Factory::factory($collectionData->folder->class, $this->_device, $this->_syncTimeStamp);
+            $dataController = Syncroton_Data_Factory::factory($collectionData->folder->class, $this->_device, $collectionData->syncState->lastsync);
             
             switch($collectionData->folder->class) {
                 case Syncroton_Data_Factory::CLASS_CALENDAR:
@@ -528,7 +528,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                             continue;
                         }
                         
-                        $dataController = Syncroton_Data_Factory::factory($collectionData->folder->class , $this->_device, $this->_syncTimeStamp);
+                        $dataController = Syncroton_Data_Factory::factory($collectionData->folder->class , $this->_device, $collectionData->syncState->lastsync);
                         
                         // countinue immediately if there are any changes available
                         if($dataController->hasChanges($this->_contentStateBackend, $collectionData->folder, $collectionData->syncState)) {
