@@ -17,17 +17,17 @@
  * @package     Syncroton
  * @subpackage  Model
  *
- * @property    string    Alias
- * @property    string    Company
- * @property    string    DisplayName
- * @property    string    EmailAddress
- * @property    string    FirstName
- * @property    string    LastName
- * @property    string    MobilePhone
- * @property    string    Office
- * @property    string    Phone
- * @property    string    Picture
- * @property    string    Title
+ * @property    string    $Alias
+ * @property    string    $Company
+ * @property    string    $DisplayName
+ * @property    string    $EmailAddress
+ * @property    string    $FirstName
+ * @property    string    $LastName
+ * @property    string    $MobilePhone
+ * @property    string    $Office
+ * @property    string    $Phone
+ * @property    string    $Picture
+ * @property    string    $Title
  */
 class Syncroton_Model_GAL extends Syncroton_Model_AXMLEntry
 {

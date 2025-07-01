@@ -14,14 +14,14 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    string    Alias
- * @property    DateTime  Anniversary
- * @property    string    AssistantName
- * @property    string    AssistantPhoneNumber
- * @property    DateTime  Birthday
- * @property    string    Business2PhoneNumber
- * @property    string    BusinessAddressCity
- * @property    Syncroton_Model_EmailBody  Body
+ * @property    string    $Alias
+ * @property    DateTime  $Anniversary
+ * @property    string    $AssistantName
+ * @property    string    $AssistantPhoneNumber
+ * @property    DateTime  $Birthday
+ * @property    string    $Business2PhoneNumber
+ * @property    string    $BusinessAddressCity
+ * @property    Syncroton_Model_EmailBody  $Body
  */
 
 class Syncroton_Model_Contact extends Syncroton_Model_AXMLEntry

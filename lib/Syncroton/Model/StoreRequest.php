@@ -16,9 +16,9 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    string  name
- * @property    array   options
- * @property    array   query
+ * @property    string  $name
+ * @property    array   $options
+ * @property    array   $query
  */
 class Syncroton_Model_StoreRequest
 {

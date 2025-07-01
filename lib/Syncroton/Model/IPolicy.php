@@ -14,17 +14,17 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    string   id
- * @property    string   deviceid
- * @property    string   devicetype
- * @property    string   policyKey
- * @property    string   policyId
- * @property    string   ownerId
- * @property    string   acsversion
- * @property    string   pingfolder
- * @property    string   pinglifetime
- * @property    string   remotewipe
- * @property    string   useragent
+ * @property    string   $id
+ * @property    string   $deviceid
+ * @property    string   $devicetype
+ * @property    string   $policyKey
+ * @property    string   $policyId
+ * @property    string   $ownerId
+ * @property    string   $acsversion
+ * @property    string   $pingfolder
+ * @property    string   $pinglifetime
+ * @property    string   $remotewipe
+ * @property    string   $useragent
  */
 interface Syncroton_Model_IPolicy
 {

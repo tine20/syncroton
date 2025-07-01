@@ -14,12 +14,12 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    int     userResponse
- * @property    string  collectionId
- * @property    string  calendarId
- * @property    string  requestId
- * @property    string  instanceId
- * @property    string  longId
+ * @property    int     $userResponse
+ * @property    string  $collectionId
+ * @property    string  $calendarId
+ * @property    string  $requestId
+ * @property    string  $instanceId
+ * @property    string  $longId
  */
 class Syncroton_Model_MeetingResponse extends Syncroton_Model_AXMLEntry
 {

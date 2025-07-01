@@ -14,10 +14,10 @@
  *
  * @package    Syncroton
  * @subpackage Model
- * @property  string  status
- * @property  array   result
- * @property  array   range
- * @property  int     total
+ * @property  string  $status
+ * @property  array   $result
+ * @property  array   $range
+ * @property  int     $total
  */
 class Syncroton_Model_StoreResponse extends Syncroton_Model_AXMLEntry
 {

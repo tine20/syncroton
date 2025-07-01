@@ -14,8 +14,8 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    string  ContentType
- * @property    string  Data
+ * @property    string  $ContentType
+ * @property    string  $Data
  */
 
 class Syncroton_Model_FileReference extends Syncroton_Model_AXMLEntry

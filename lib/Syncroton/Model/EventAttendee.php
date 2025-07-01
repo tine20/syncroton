@@ -14,12 +14,12 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    string  class
- * @property    string  collectionId
- * @property    bool    deletesAsMoves
- * @property    bool    getChanges
- * @property    string  syncKey
- * @property    int     windowSize
+ * @property    string  $class
+ * @property    string  $collectionId
+ * @property    bool    $deletesAsMoves
+ * @property    bool    $getChanges
+ * @property    string  $syncKey
+ * @property    int     $windowSize
  */
 
 class Syncroton_Model_EventAttendee extends Syncroton_Model_AXMLEntry

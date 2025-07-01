@@ -14,15 +14,15 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    string   id
- * @property    string   deviceId
- * @property    string   class
- * @property    string   serverId
- * @property    string   parentId
- * @property    string   displayName
- * @property    string   creationTime
- * @property    string   lastfiltertype
- * @property    string   type
+ * @property    string   $id
+ * @property    string   $deviceId
+ * @property    string   $class
+ * @property    string   $serverId
+ * @property    string   $parentId
+ * @property    string   $displayName
+ * @property    string   $creationTime
+ * @property    string   $lastfiltertype
+ * @property    string   $type
  */
 interface Syncroton_Model_IFolder
 {

@@ -14,13 +14,13 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    string  friendlyName
- * @property    string  iMEI
- * @property    string  mobileOperator
- * @property    string  model
- * @property    string  oS
- * @property    string  oSLanguage
- * @property    string  phoneNumber
+ * @property    string  $friendlyName
+ * @property    string  $iMEI
+ * @property    string  $mobileOperator
+ * @property    string  $model
+ * @property    string  $oS
+ * @property    string  $oSLanguage
+ * @property    string  $phoneNumber
  */
 
 class Syncroton_Model_DeviceInformation extends Syncroton_Model_AXMLEntry

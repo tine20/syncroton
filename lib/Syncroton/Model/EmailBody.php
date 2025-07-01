@@ -14,12 +14,12 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property   int     EstimatedDataSize
- * @property   string  Data
- * @property   string  Part
- * @property   string  Preview
- * @property   bool    Truncated
- * @property   string  Type
+ * @property   int     $EstimatedDataSize
+ * @property   string  $Data
+ * @property   string  $Part
+ * @property   string  $Preview
+ * @property   bool    $Truncated
+ * @property   string  $Type
  */
 
 class Syncroton_Model_EmailBody extends Syncroton_Model_AXMLEntry

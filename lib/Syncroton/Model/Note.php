@@ -14,11 +14,11 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    Syncroton_Model_EmailBody body
- * @property    array                     categories
- * @property    DateTime                  lastModifiedDate
- * @property    string                    messageClass
- * @property    string                    subject
+ * @property    Syncroton_Model_EmailBody $body
+ * @property    array                     $categories
+ * @property    DateTime                  $lastModifiedDate
+ * @property    string                    $messageClass
+ * @property    string                    $subject
  */
 class Syncroton_Model_Note extends Syncroton_Model_AXMLEntry
 {
