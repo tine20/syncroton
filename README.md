@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/tine20/zendframework1/actions/workflows/php-unit-test.yml/badge.svg)]
+[![Build Status](https://github.com/tine20/syncroton/actions/workflows/php-unit-test.yml/badge.svg)]
 
 # Syncroton
 
