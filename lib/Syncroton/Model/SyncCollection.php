@@ -20,6 +20,7 @@
  * @property    bool    $getChanges
  * @property    string  $syncKey
  * @property    int     $windowSize
+ * @property    array   $options
  */
 
 class Syncroton_Model_SyncCollection extends Syncroton_Model_AXMLEntry
