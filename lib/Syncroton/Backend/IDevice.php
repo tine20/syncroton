@@ -20,8 +20,8 @@
 interface Syncroton_Backend_IDevice extends Syncroton_Backend_IBackend
 {
     /**
-     * @param unknown_type $userId
-     * @param unknown_type $deviceId
+     * @param mixed $userId
+     * @param mixed $deviceId
      * @return Syncroton_Model_IDevice
      */
     public function getUserDevice($userId, $deviceId);

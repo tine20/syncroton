@@ -39,7 +39,7 @@ interface Syncroton_Data_IData
      * 
      * @param string $_folderId
      * @param string $_serverId
-     * @param unknown_type $_collectionData
+     * @param mixed $_collectionData
      */
     public function deleteEntry($_folderId, $_serverId, $_collectionData);
     
@@ -86,7 +86,7 @@ interface Syncroton_Data_IData
     
     /**
      * 
-     * @param unknown_type $fileReference
+     * @param mixed $fileReference
      * @return Syncroton_Model_FileReference
      */
     public function getFileReference($fileReference);
