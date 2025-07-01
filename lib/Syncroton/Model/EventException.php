@@ -14,16 +14,16 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    string      class
- * @property    string      collectionId
- * @property    bool        deletesAsMoves
- * @property    bool        getChanges
- * @property    string      syncKey
- * @property    int         windowSize
- * @property    int         meetingStatus
- * @property    int         responseType
- * @property    bool        responseRequested
- * @property    DateTime    appointmentReplyTime
+ * @property    string      $class
+ * @property    string      $collectionId
+ * @property    bool        $deletesAsMoves
+ * @property    bool        $getChanges
+ * @property    string      $syncKey
+ * @property    int         $windowSize
+ * @property    int         $meetingStatus
+ * @property    int         $responseType
+ * @property    bool        $responseRequested
+ * @property    DateTime    $appointmentReplyTime
  */
 
 class Syncroton_Model_EventException extends Syncroton_Model_AXMLEntry

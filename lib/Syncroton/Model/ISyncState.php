@@ -14,11 +14,11 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    string    device_id
- * @property    string    type
- * @property    string    counter
- * @property    DateTime  lastsync
- * @property    string    pendingdata
+ * @property    string    $device_id
+ * @property    string    $type
+ * @property    string    $counter
+ * @property    DateTime  $lastsync
+ * @property    string    $pendingdata
  */
 interface Syncroton_Model_ISyncState
 {

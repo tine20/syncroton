@@ -17,8 +17,8 @@
  * @package     Syncroton
  * @subpackage  Model
  *
- * @property    string    Status
- * @property    string    Data
+ * @property    string    $Status
+ * @property    string    $Data
  */
 class Syncroton_Model_GALPicture extends Syncroton_Model_AXMLEntry
 {

@@ -14,13 +14,13 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    string    id
- * @property    string    device_id
- * @property    string    folder_id
- * @property    string    contentid
- * @property    DateTime  creation_time
- * @property    string    creation_synckey
- * @property    string    is_deleted
+ * @property    string    $id
+ * @property    string    $device_id
+ * @property    string    $folder_id
+ * @property    string    $contentid
+ * @property    DateTime  $creation_time
+ * @property    string    $creation_synckey
+ * @property    string    $is_deleted
  */
 interface Syncroton_Model_IContent
 {

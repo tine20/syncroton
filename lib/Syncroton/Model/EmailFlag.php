@@ -16,19 +16,19 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    DateTime  CompleteTime
- * @property    DateTime  DateCompleted
- * @property    DateTime  DueDate
- * @property    string    FlagType
- * @property    DateTime  OrdinalDate
- * @property    int       ReminderSet
- * @property    DateTime  ReminderTime
- * @property    DateTime  StartDate
- * @property    string    Status
- * @property    string    Subject
- * @property    string    SubOrdinalDate
- * @property    DateTime  UtcDueDate
- * @property    DateTime  UtcStartDate
+ * @property    DateTime  $CompleteTime
+ * @property    DateTime  $DateCompleted
+ * @property    DateTime  $DueDate
+ * @property    string    $FlagType
+ * @property    DateTime  $OrdinalDate
+ * @property    int       $ReminderSet
+ * @property    DateTime  $ReminderTime
+ * @property    DateTime  $StartDate
+ * @property    string    $Status
+ * @property    string    $Subject
+ * @property    string    $SubOrdinalDate
+ * @property    DateTime  $UtcDueDate
+ * @property    DateTime  $UtcStartDate
  */
 class Syncroton_Model_EmailFlag extends Syncroton_Model_AXMLEntry
 {

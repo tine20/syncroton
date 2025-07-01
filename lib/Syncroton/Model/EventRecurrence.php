@@ -14,17 +14,17 @@
  *
  * @package     Syncroton
  * @subpackage  Model
- * @property    int       CalendarType
- * @property    int       DayOfMonth
- * @property    int       DayOfWeek
- * @property    int       FirstDayOfWeek
- * @property    int       Interval
- * @property    int       IsLeapMonth
- * @property    int       MonthOfYear
- * @property    int       Occurrences
- * @property    int       Type
- * @property    DateTime  Until
- * @property    int       WeekOfMonth
+ * @property    int       $CalendarType
+ * @property    int       $DayOfMonth
+ * @property    int       $DayOfWeek
+ * @property    int       $FirstDayOfWeek
+ * @property    int       $Interval
+ * @property    int       $IsLeapMonth
+ * @property    int       $MonthOfYear
+ * @property    int       $Occurrences
+ * @property    int       $Type
+ * @property    DateTime  $Until
+ * @property    int       $WeekOfMonth
  */
 
 class Syncroton_Model_EventRecurrence extends Syncroton_Model_AXMLEntry
