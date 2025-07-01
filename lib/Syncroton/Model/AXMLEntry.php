@@ -142,7 +142,7 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
     /**
      * add needed xml namespaces to DomDocument
      * 
-     * @param unknown_type $domParrent
+     * @param mixed $domParrent
      */
     protected function _addXMLNamespaces(DOMElement $domParrent)
     {
@@ -227,7 +227,7 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
     
     /**
      * 
-     * @param unknown_type $element
+     * @param mixed $element
      * @throws InvalidArgumentException
      * @return multitype:unknown
      */

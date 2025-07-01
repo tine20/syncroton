@@ -25,7 +25,7 @@ interface Syncroton_Model_IEntry
 {
     /**
      * 
-     * @param unknown_type $properties
+     * @param mixed $properties
      */
     public function __construct($properties = null);
     

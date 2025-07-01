@@ -29,7 +29,7 @@ class Syncroton_Data_Factory
     protected static $_classMap = array();
     
     /**
-     * @param unknown_type $_class
+     * @param mixed $_class
      * @param Syncroton_Model_IDevice $_device
      * @param DateTime $_timeStamp
      * @throws InvalidArgumentException

@@ -50,7 +50,7 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
     /**
      * when to take data next time from the different stacks
      *
-     * @var unknown_type
+     * @var mixed
      */
     protected $_nextStackPop = NULL;
     
@@ -213,7 +213,7 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
     /**
      * strip uri: from nameSpace
      *
-     * @param unknown_type $_nameSpace
+     * @param mixed $_nameSpace
      * @return unknown
      */
     protected function _stripNameSpace($_nameSpace)

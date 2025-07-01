@@ -420,11 +420,11 @@ class Syncroton_Server
     /**
      * get existing device of owner or create new device for owner
      *
-     * @param unknown_type $ownerId
-     * @param unknown_type $deviceId
-     * @param unknown_type $deviceType
-     * @param unknown_type $userAgent
-     * @param unknown_type $protocolVersion
+     * @param mixed $ownerId
+     * @param mixed $deviceId
+     * @param mixed $deviceType
+     * @param mixed $userAgent
+     * @param mixed $protocolVersion
      * @return Syncroton_Model_Device
      */
     protected function _getUserDevice($ownerId, $requestParameters)

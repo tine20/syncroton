@@ -98,7 +98,7 @@ abstract class Syncroton_Wbxml_Dtd_ActiveSync_Abstract
     /**
      * return tag by given identity
      *
-     * @param unknown_type $_identity
+     * @param mixed $_identity
      * @return unknown
      */
     public function getTag($_identity)
