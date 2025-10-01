@@ -772,15 +772,24 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                                 ->getEntry($fetchCollectionData, $serverId)
                                 ->appendXML($applicationData, $this->_device);
                             
-                            $fetch->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'Status', self::STATUS_SUCCESS));
+                            $fetch->appendChild($this->_outputDom->createElementNS('uri:AirSync',
+                                'Status', self::STATUS_SUCCESS));
                             
                             $fetch->appendChild($applicationData);
+                        } catch (Syncroton_Exception_NotFound $senf) {
+                            if ($this->_logger instanceof Zend_Log) {
+                                $this->_logger->info(__METHOD__ . '::' . __LINE__
+                                    . ' ' . $senf->getMessage());
+                            }
                         } catch (Exception $e) {
-                            if ($this->_logger instanceof Zend_Log) 
-                                $this->_logger->warn(__METHOD__ . '::' . __LINE__ . ' unable to convert entry ("' . $serverId . '") to xml: ' . $e->getMessage() . ' ' . get_class($e) . ' for data controller: ' . get_class($dataController));
-                            if ($this->_logger instanceof Zend_Log) 
-                                $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " unable to convert entry to xml: " . $e->getTraceAsString());
-                            $fetch->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'Status', self::STATUS_OBJECT_NOT_FOUND));
+                            if ($this->_logger instanceof Zend_Log) {
+                                $this->_logger->warn(__METHOD__ . '::' . __LINE__
+                                    . ' Unable to convert entry ("' . $serverId . '") to xml: ' . $e->getMessage()
+                                    . ' ' . get_class($e) . ' for data controller: ' . get_class($dataController));
+                                $this->_logger->debug(__METHOD__ . '::' . __LINE__ . ' ' . $e->getTraceAsString());
+                            }
+                            $fetch->appendChild($this->_outputDom->createElementNS('uri:AirSync',
+                                'Status', self::STATUS_OBJECT_NOT_FOUND));
                         }
                     }
                 }
@@ -836,12 +845,19 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                             $this->_logger->warn(__METHOD__ . '::' . __LINE__ . " memory exhausted for entry: " . $serverId);
                         
                         continue;
-                        
+
+                    } catch (Syncroton_Exception_NotFound $senf) {
+                        if ($this->_logger instanceof Zend_Log) {
+                            $this->_logger->info(__METHOD__ . '::' . __LINE__
+                                . ' ' . $senf->getMessage());
+                        }
                     } catch (Exception $e) {
                         if ($this->_logger instanceof Zend_Log)
-                            $this->_logger->warn(__METHOD__ . '::' . __LINE__ . " unable to convert entry to xml: " . $e->getMessage());
+                            $this->_logger->warn(__METHOD__ . '::' . __LINE__
+                                . " unable to convert entry to xml: " . $e->getMessage());
                         if ($this->_logger instanceof Zend_Log)
-                            $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " unable to convert entry to xml: " . $e->getTraceAsString());
+                            $this->_logger->debug(__METHOD__ . '::' . __LINE__
+                                . " " . $e->getTraceAsString());
                     }
                     
                     // mark as sent to the client, even the conversion to xml might have failed 
