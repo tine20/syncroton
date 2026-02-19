@@ -23,7 +23,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage14 extends Syncroton_Wbxml_Dtd_Acti
     
     protected $_codePageName    = 'Provision';
         
-    protected $_tags = array(
+    protected $_tags = [
         'Provision'                          => 0x05,
         'Policies'                           => 0x06,
         'Policy'                             => 0x07,
@@ -78,5 +78,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage14 extends Syncroton_Wbxml_Dtd_Acti
         'ApplicationName'                    => 0x38,
         'ApprovedApplicationList'            => 0x39,
         'Hash'                               => 0x3a,
-    );
+    ];
 }

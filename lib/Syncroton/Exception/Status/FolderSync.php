@@ -30,11 +30,11 @@ class Syncroton_Exception_Status_FolderSync extends Syncroton_Exception_Status
      *
      * @var array
      */
-    protected $_errorMessages = array(
+    protected $_errorMessages = [
         self::FOLDER_SERVER_ERROR => "An error occurred on the server",
         self::INVALID_SYNCKEY     => "Synchronization key mismatch or invalid synchronization key",
         self::INVALID_REQUEST     => "Malformed request",
         self::UNKNOWN_ERROR       => "An unknown error occurred",
         self::UNKNOWN_CODE        => "Unusual back-end issue",
-    );
+    ];
 }

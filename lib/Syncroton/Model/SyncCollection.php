@@ -25,10 +25,10 @@
 
 class Syncroton_Model_SyncCollection extends Syncroton_Model_AXMLEntry
 {
-    protected $_elements = array(
+    protected $_elements = [
         'syncState' => null,
         'folder'    => null
-    );
+    ];
     
     protected $_xmlCollection;
     
@@ -43,7 +43,7 @@ class Syncroton_Model_SyncCollection extends Syncroton_Model_AXMLEntry
         }
         
         if (!isset($this->_elements['options'])) {
-            $this->_elements['options'] = array();
+            $this->_elements['options'] = [];
         }
         if (!isset($this->_elements['options']['filterType'])) {
             $this->_elements['options']['filterType'] = Syncroton_Command_Sync::FILTER_NOTHING;
@@ -55,7 +55,7 @@ class Syncroton_Model_SyncCollection extends Syncroton_Model_AXMLEntry
             $this->_elements['options']['mimeTruncation'] = Syncroton_Command_Sync::TRUNCATE_NOTHING;
         }
             if (!isset($this->_elements['options']['bodyPreferences'])) {
-            $this->_elements['options']['bodyPreferences'] = array();
+            $this->_elements['options']['bodyPreferences'] = [];
         }
     }
     
@@ -246,7 +246,7 @@ class Syncroton_Model_SyncCollection extends Syncroton_Model_AXMLEntry
         
         // process options
         if (isset($properties->Options)) {
-            $this->_elements['options'] = array();
+            $this->_elements['options'] = [];
             
             // optional parameters
             if (isset($properties->Options->FilterType)) {
@@ -269,9 +269,9 @@ class Syncroton_Model_SyncCollection extends Syncroton_Model_AXMLEntry
                 
                 foreach ($airSyncBase->BodyPreference as $bodyPreference) {
                     $type = (int) $bodyPreference->Type;
-                    $this->_elements['options']['bodyPreferences'][$type] = array(
+                    $this->_elements['options']['bodyPreferences'][$type] = [
                         'type' => $type
-                    );
+                    ];
                     
                     // optional
                     if (isset($bodyPreference->TruncationSize)) {
@@ -293,9 +293,9 @@ class Syncroton_Model_SyncCollection extends Syncroton_Model_AXMLEntry
     
     public function toArray()
     {
-        $result = array();
+        $result = [];
         
-        foreach (array('syncKey', 'collectionId', 'deletesAsMoves', 'conversationMode', 'getChanges', 'windowSize', 'class', 'options') as $key) {
+        foreach (['syncKey', 'collectionId', 'deletesAsMoves', 'conversationMode', 'getChanges', 'windowSize', 'class', 'options'] as $key) {
             if (isset($this->$key)) {
                 $result[$key] = $this->$key;
             }

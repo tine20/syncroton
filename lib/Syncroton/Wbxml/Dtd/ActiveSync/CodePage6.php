@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage6 extends Syncroton_Wbxml_Dtd_Activ
     
     protected $_codePageName    = 'ItemEstimate';
         
-    protected $_tags = array(     
+    protected $_tags = [     
         'GetItemEstimate'         => 0x05,
         'Version'                 => 0x06,
         'Collections'             => 0x07,
@@ -33,5 +33,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage6 extends Syncroton_Wbxml_Dtd_Activ
         'Estimate'                => 0x0c,
         'Response'                => 0x0d,
         'Status'                  => 0x0e
-    );
+    ];
 }

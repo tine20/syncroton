@@ -42,12 +42,12 @@ class Syncroton_Model_EventAttendee extends Syncroton_Model_AXMLEntry
     const ATTENDEE_TYPE_OPTIONAL = 2;
     const ATTENDEE_TYPE_RESOURCE = 3;
     
-    protected $_properties = array(
-        'Calendar' => array(
-            'attendeeStatus'          => array('type' => 'number'),
-            'attendeeType'            => array('type' => 'number'),
-            'email'                   => array('type' => 'string'),
-            'name'                    => array('type' => 'string'),
-        )
-    );
+    protected $_properties = [
+        'Calendar' => [
+            'attendeeStatus'          => ['type' => 'number'],
+            'attendeeType'            => ['type' => 'number'],
+            'email'                   => ['type' => 'string'],
+            'name'                    => ['type' => 'string'],
+        ]
+    ];
 }

@@ -18,10 +18,10 @@
 
 class Syncroton_Data_Contacts extends Syncroton_Data_AData implements Syncroton_Data_IDataSearch
 {
-    protected $_supportedFolderTypes = array(
+    protected $_supportedFolderTypes = [
         Syncroton_Command_FolderSync::FOLDERTYPE_CONTACT,
         Syncroton_Command_FolderSync::FOLDERTYPE_CONTACT_USER_CREATED
-    );
+    ];
     
     /**
      * (non-PHPdoc)
@@ -29,15 +29,15 @@ class Syncroton_Data_Contacts extends Syncroton_Data_AData implements Syncroton_
      */
     public function getSearchEntry($longId, $options)
     {
-        list($collectionId, $serverId) = explode(Syncroton_Data_AData::LONGID_DELIMITER, $longId, 2);
+        [$collectionId, $serverId] = explode(Syncroton_Data_AData::LONGID_DELIMITER, $longId, 2);
         
-        $contact = $this->getEntry(new Syncroton_Model_SyncCollection(array('collectionId' => $collectionId)), $serverId);
+        $contact = $this->getEntry(new Syncroton_Model_SyncCollection(['collectionId' => $collectionId]), $serverId);
         
-        return new Syncroton_Model_GAL(array(
+        return new Syncroton_Model_GAL([
             'firstName' => $contact->firstName,
             'lastName'  => $contact->lastName,
-            'picture'   => new Syncroton_Model_GALPicture(array('status' => 1, 'data' => 'abc'))
-        ));
+            'picture'   => new Syncroton_Model_GALPicture(['status' => 1, 'data' => 'abc'])
+        ]);
     }
     
     /**
@@ -51,10 +51,10 @@ class Syncroton_Data_Contacts extends Syncroton_Data_AData implements Syncroton_
         $serverIds = $this->getServerEntries('addressbookFolderId', Syncroton_Command_Sync::FILTER_NOTHING);
         
         $total = 0;
-        $found = array();
+        $found = [];
         
         foreach ($serverIds as $serverId) {
-            $contact = $this->getEntry(new Syncroton_Model_SyncCollection(array('collectionId' => 'addressbookFolderId')), $serverId);
+            $contact = $this->getEntry(new Syncroton_Model_SyncCollection(['collectionId' => 'addressbookFolderId']), $serverId);
             
             if ($contact->firstName == $store->query) {
                 $total++;
@@ -62,16 +62,16 @@ class Syncroton_Data_Contacts extends Syncroton_Data_AData implements Syncroton_
                 if (count($found) == $store->options['range'][1]+1) {
                     continue;
                 }
-                $found[] = new Syncroton_Model_StoreResponseResult(array(
+                $found[] = new Syncroton_Model_StoreResponseResult([
                     'longId' => 'addressbookFolderId' . Syncroton_Data_AData::LONGID_DELIMITER .  $serverId,
                     'properties' => $this->getSearchEntry('addressbookFolderId' . Syncroton_Data_AData::LONGID_DELIMITER .  $serverId, $store->options)
-                ));
+                ]);
             }
         }
         
         if (count($found) > 0) {
             $storeResponse->result = $found;
-            $storeResponse->range = array(0, count($found) - 1);
+            $storeResponse->range = [0, count($found) - 1];
             $storeResponse->total = $total;
         } else {
             $storeResponse->total = $total;

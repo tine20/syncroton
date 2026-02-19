@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage22 extends Syncroton_Wbxml_Dtd_Acti
     
     protected $_codePageName    = 'Email2';
         
-    protected $_tags = array(
+    protected $_tags = [
         'UmCallerID'            => 0x05,
         'UmUserNotes'           => 0x06,
         'UmAttDuration'         => 0x07,
@@ -38,5 +38,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage22 extends Syncroton_Wbxml_Dtd_Acti
         'AccountId'             => 0x11,
         'FirstDayOfWeek'        => 0x12,
         'MeetingMessageType'    => 0x13,
-   );
+   ];
 }

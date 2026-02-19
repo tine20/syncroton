@@ -26,7 +26,7 @@ class Syncroton_Exception_Status_Autodiscover extends Syncroton_Exception_Status
      *
      * @var array
      */
-    protected $_errorMessages = array(
+    protected $_errorMessages = [
         self::PROTOCOL_ERROR => "Protocol error",
-    );
+    ];
 }

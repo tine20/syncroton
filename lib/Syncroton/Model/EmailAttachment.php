@@ -25,19 +25,19 @@ class Syncroton_Model_EmailAttachment extends Syncroton_Model_AXMLEntry
 {
     protected $_xmlBaseElement = 'Attachment';
     
-    protected $_properties = array(
-        'AirSyncBase' => array(
-            'contentId'               => array('type' => 'string'),
-            'contentLocation'         => array('type' => 'string'),
-            'displayName'             => array('type' => 'string'),
-            'estimatedDataSize'       => array('type' => 'string'),
-            'fileReference'           => array('type' => 'string'),
-            'isInline'                => array('type' => 'number'),
-            'method'                  => array('type' => 'string'),
-        ),
-        'Email2' => array(
-            'umAttDuration'         => array('type' => 'number', 'supportedSince' => '14.0'),
-            'umAttOrder'            => array('type' => 'number', 'supportedSince' => '14.0'),
-        ),
-    );
+    protected $_properties = [
+        'AirSyncBase' => [
+            'contentId'               => ['type' => 'string'],
+            'contentLocation'         => ['type' => 'string'],
+            'displayName'             => ['type' => 'string'],
+            'estimatedDataSize'       => ['type' => 'string'],
+            'fileReference'           => ['type' => 'string'],
+            'isInline'                => ['type' => 'number'],
+            'method'                  => ['type' => 'string'],
+        ],
+        'Email2' => [
+            'umAttDuration'         => ['type' => 'number', 'supportedSince' => '14.0'],
+            'umAttOrder'            => ['type' => 'number', 'supportedSince' => '14.0'],
+        ],
+    ];
 }

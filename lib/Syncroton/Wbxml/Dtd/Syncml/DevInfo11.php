@@ -19,14 +19,14 @@
  
 class Syncroton_Wbxml_Dtd_Syncml_DevInfo11 extends Syncroton_Wbxml_Dtd_Syncml_Abstract
 {
-    protected $_codePages = array(
-        0x00 => array(
+    protected $_codePages = [
+        0x00 => [
             'codePageNumber'=> 0x00,
             'dtdname'       => 'DevInf',
             'dpi'           => '-//SYNCML//DTD DevInf 1.1//EN',
             'url'           => 'http://www.syncml.org/docs/devinf_v11_20020215.dtd',
             'urn'           => 'syncml:devinf1.1',
-            'tags'          => array(     
+            'tags'          => [     
                 "CTCap"             => 0x05, 
                 "CTType"            => 0x06, 
                 "DataStore"         => 0x07, 
@@ -65,7 +65,7 @@ class Syncroton_Wbxml_Dtd_Syncml_DevInfo11 extends Syncroton_Wbxml_Dtd_Syncml_Ab
                 "UTC"               => 0x28, 
                 "SupportNumberOfChanges"=> 0x29, 
                 "SupportLargeObjs"  => 0x2a 
-            )
-        )
-    );
+            ]
+        ]
+    ];
 }

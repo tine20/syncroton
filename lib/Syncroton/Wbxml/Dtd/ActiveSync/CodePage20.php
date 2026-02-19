@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage20 extends Syncroton_Wbxml_Dtd_Acti
     
     protected $_codePageName    = 'ItemOperations';
         
-    protected $_tags = array(     
+    protected $_tags = [     
         'ItemOperations'        => 0x05,
         'Fetch'                 => 0x06,
         'Store'                 => 0x07,
@@ -44,5 +44,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage20 extends Syncroton_Wbxml_Dtd_Acti
         'DstFldId'              => 0x17,
         'ConversationId'        => 0x18,
         'MoveAlways'            => 0x19,
-    );
+    ];
 }

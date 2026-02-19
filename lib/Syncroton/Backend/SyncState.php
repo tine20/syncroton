@@ -73,11 +73,11 @@ public $_logger;
                 " and counter != " . $state->counter);
 
         // remove all other synckeys
-        $where = array(
+        $where = [
             'device_id = ?' => $state->deviceId,
             'type = ?'      => $state->type,
             'counter != ?'  => $state->counter
-        );
+        ];
     
         $this->_db->delete($this->_tablePrefix . $this->_tableName, $where);
     
@@ -141,10 +141,10 @@ public $_logger;
         if ($this->_logger instanceof Zend_Log)
             $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " deleting sync states of type " . $folderId);
 
-        $where = array(
+        $where = [
             $this->_db->quoteInto($this->_db->quoteIdentifier('device_id') . ' = ?', $deviceId),
             $this->_db->quoteInto($this->_db->quoteIdentifier('type') . ' = ?',      $folderId)
-        );
+        ];
     
         $this->_db->delete($this->_tablePrefix . $this->_tableName, $where);
     }
@@ -191,33 +191,33 @@ public $_logger;
         // found more recent synckey => the last sync repsone got not received by the client
         if ($moreRecentStateData !== false) {
             // undelete entries marked as deleted in Syncroton_content table
-            $this->_db->update($this->_tablePrefix . 'content', array(
+            $this->_db->update($this->_tablePrefix . 'content', [
                 'is_deleted' => 0,
-            ), array(
+            ], [
                 'device_id = ?' => $deviceId,
                 'folder_id = ?' => $folderId,
                 'creation_synckey = ?' => $state->counter,
                 'is_deleted = ?' => 1
-            ));
+            ]);
 
         } else {
             // finally delete all entries marked for removal in Syncroton_content table
-            $this->_db->delete($this->_tablePrefix . 'content', array(
+            $this->_db->delete($this->_tablePrefix . 'content', [
                 'device_id = ?' => $deviceId,
                 'folder_id = ?' => $folderId,
                 'is_deleted = ?' => 1
-            ));
+            ]);
         }
 
         // remove all other synckeys
         $this->_deleteOtherStates($state);
 
         // remove entries from Syncroton_content table with an creation_synckey bigger than current one
-        $this->_db->delete($this->_tablePrefix . 'content', array(
+        $this->_db->delete($this->_tablePrefix . 'content', [
             'device_id = ?' => $deviceId,
             'folder_id = ?' => $folderId,
             'creation_synckey > ?' => $state->counter,
-        ));
+        ]);
         
         return $state;
     }

@@ -32,32 +32,32 @@ class Syncroton_Model_EventException extends Syncroton_Model_AXMLEntry
     
     protected $_dateTimeFormat = "Ymd\THis\Z";
     
-    protected $_properties = array(
-        'AirSyncBase' => array(
-            'body'                    => array('type' => 'container', 'class' => 'Syncroton_Model_EmailBody')
-        ),
-        'Calendar' => array(
-            'allDayEvent'             => array('type' => 'number'),
-            'appointmentReplyTime'    => array('type' => 'datetime'),
-            'attendees'               => array(
+    protected $_properties = [
+        'AirSyncBase' => [
+            'body'                    => ['type' => 'container', 'class' => 'Syncroton_Model_EmailBody']
+        ],
+        'Calendar' => [
+            'allDayEvent'             => ['type' => 'number'],
+            'appointmentReplyTime'    => ['type' => 'datetime'],
+            'attendees'               => [
                 'type' => 'container',
                 'childElement' => 'attendee',
                 'class' => 'Syncroton_Model_EventAttendee'
-            ),
-            'busyStatus'              => array('type' => 'number'),
-            'categories'              => array('type' => 'container', 'childElement' => 'category'),
-            'deleted'                 => array('type' => 'number'),
-            'dtStamp'                 => array('type' => 'datetime'),
-            'endTime'                 => array('type' => 'datetime'),
-            'exceptionStartTime'      => array('type' => 'datetime'),
-            'location'                => array('type' => 'string'),
-            'meetingStatus'           => array('type' => 'number'),
-            'reminder'                => array('type' => 'number'),
-            'responseRequested'       => array('type' => 'boolean'),
-            'responseType'            => array('type' => 'number'),
-            'sensitivity'             => array('type' => 'number'),
-            'startTime'               => array('type' => 'datetime'),
-            'subject'                 => array('type' => 'string'),
-        )
-    );    
+            ],
+            'busyStatus'              => ['type' => 'number'],
+            'categories'              => ['type' => 'container', 'childElement' => 'category'],
+            'deleted'                 => ['type' => 'number'],
+            'dtStamp'                 => ['type' => 'datetime'],
+            'endTime'                 => ['type' => 'datetime'],
+            'exceptionStartTime'      => ['type' => 'datetime'],
+            'location'                => ['type' => 'string'],
+            'meetingStatus'           => ['type' => 'number'],
+            'reminder'                => ['type' => 'number'],
+            'responseRequested'       => ['type' => 'boolean'],
+            'responseType'            => ['type' => 'number'],
+            'sensitivity'             => ['type' => 'number'],
+            'startTime'               => ['type' => 'datetime'],
+            'subject'                 => ['type' => 'string'],
+        ]
+    ];    
 }

@@ -38,11 +38,11 @@ class Syncroton_Command_SendMail extends Syncroton_Command_Wbxml
             $this->_saveInSent    = $this->_requestParameters['saveInSent'];
             $this->_replaceMime   = false;
 
-            $this->_source = array(
+            $this->_source = [
                 'collectionId' => $this->_requestParameters['collectionId'],
                 'itemId'       => $this->_requestParameters['itemId'],
                 'instanceId'   => null
-            );
+            ];
 
         } else if ($this->_requestBody) {
             $xml = simplexml_import_dom($this->_requestBody);
@@ -55,11 +55,11 @@ class Syncroton_Command_SendMail extends Syncroton_Command_Wbxml
                 if ($xml->Source->LongId) {
                     $this->_source = (string)$xml->Source->LongId;
                 } else {
-                    $this->_source = array(
+                    $this->_source = [
                         'collectionId' => (string)$xml->Source->FolderId,
                         'itemId'       => (string)$xml->Source->ItemId,
                         'instanceId'   => isset($xml->Source->InstanceId) ? (string)$xml->Source->InstanceId : null
-                    );
+                    ];
                 }
             }
         }
@@ -75,9 +75,9 @@ class Syncroton_Command_SendMail extends Syncroton_Command_Wbxml
             }
 
             $response_type = 'Syncroton_Model_' . $this->_documentElement;
-            $response      = new $response_type(array(
+            $response      = new $response_type([
                 'status' => Syncroton_Exception_Status::INVALID_CONTENT,
-            ));
+            ]);
 
             $response->appendXML($this->_outputDom->documentElement, $this->_device);
 
@@ -105,9 +105,9 @@ class Syncroton_Command_SendMail extends Syncroton_Command_Wbxml
                 $this->_logger->warn(__METHOD__ . '::' . __LINE__ . " Sending email failed: " . $ses->getMessage());
 
             $response_type = 'Syncroton_Model_' . $this->_documentElement;
-            $response      = new $response_type(array(
+            $response      = new $response_type([
                 'status' => $ses->getCode(),
-            ));
+            ]);
 
             $response->appendXML($this->_outputDom->documentElement, $this->_device);
 

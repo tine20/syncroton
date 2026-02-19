@@ -30,11 +30,11 @@ class Syncroton_Exception_Status_MoveItems extends Syncroton_Exception_Status
      *
      * @var array
      */
-    protected $_errorMessages = array(
+    protected $_errorMessages = [
         self::INVALID_SOURCE          => "Invalid source collection ID or item ID",
         self::INVALID_DESTINATION     => "Invalid destination collection ID",
         self::SAME_FOLDER             => "Source and destination collection IDs are the same",
         self::ITEM_EXISTS_OR_LOCKED   => "The item cannot be moved to more than one item at a time, or the source or destination item was locked",
         self::FOLDER_LOCKED           => "Source or destination item was locked",
-    );
+    ];
 }

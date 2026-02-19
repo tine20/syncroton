@@ -119,7 +119,7 @@ class Syncroton_Registry extends ArrayObject
             throw new Zend_Exception('Registry is already initialized');
         }
 
-        self::setClassName(get_class($registry));
+        self::setClassName($registry::class);
         self::$_registry = $registry;
     }
 
@@ -375,9 +375,7 @@ class Syncroton_Registry extends ArrayObject
     public static function getSessionValidator()
     {
         if (!self::isRegistered(self::SESSION_VALIDATOR)) {
-            self::set(self::SESSION_VALIDATOR, function() {
-                return true;
-            });
+            self::set(self::SESSION_VALIDATOR, fn() => true);
         }
 
         return self::get(self::SESSION_VALIDATOR);
@@ -504,7 +502,7 @@ class Syncroton_Registry extends ArrayObject
      * @param array $array data array
      * @param integer $flags ArrayObject flags
      */
-    public function __construct($array = array(), $flags = parent::ARRAY_AS_PROPS)
+    public function __construct($array = [], $flags = parent::ARRAY_AS_PROPS)
     {
         parent::__construct($array, $flags);
     }

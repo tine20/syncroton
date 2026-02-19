@@ -38,23 +38,23 @@ class Syncroton_Model_EmailFlag extends Syncroton_Model_AXMLEntry
 
     protected $_xmlBaseElement = 'Flag';
 
-    protected $_properties = array(
-        'Email' => array(
-            'completeTime'       => array('type' => 'datetime'),
-            'flagType'           => array('type' => 'string'),
-            'status'             => array('type' => 'number'),
-        ),
-        'Tasks' => array(
-            'dateCompleted'      => array('type' => 'datetime'),
-            'dueDate'            => array('type' => 'datetime'),
-            'ordinalDate'        => array('type' => 'datetime'),
-            'reminderSet'        => array('type' => 'number'),
-            'reminderTime'       => array('type' => 'datetime'),
-            'startDate'          => array('type' => 'datetime'),
-            'subject'            => array('type' => 'string'),
-            'subOrdinalDate'     => array('type' => 'string'),
-            'utcStartDate'       => array('type' => 'datetime'),
-            'utcDueDate'         => array('type' => 'datetime'),
-        ),
-    );
+    protected $_properties = [
+        'Email' => [
+            'completeTime'       => ['type' => 'datetime'],
+            'flagType'           => ['type' => 'string'],
+            'status'             => ['type' => 'number'],
+        ],
+        'Tasks' => [
+            'dateCompleted'      => ['type' => 'datetime'],
+            'dueDate'            => ['type' => 'datetime'],
+            'ordinalDate'        => ['type' => 'datetime'],
+            'reminderSet'        => ['type' => 'number'],
+            'reminderTime'       => ['type' => 'datetime'],
+            'startDate'          => ['type' => 'datetime'],
+            'subject'            => ['type' => 'string'],
+            'subOrdinalDate'     => ['type' => 'string'],
+            'utcStartDate'       => ['type' => 'datetime'],
+            'utcDueDate'         => ['type' => 'datetime'],
+        ],
+    ];
 }

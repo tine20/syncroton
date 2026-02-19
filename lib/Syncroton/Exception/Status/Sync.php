@@ -37,7 +37,7 @@ class Syncroton_Exception_Status_Sync extends Syncroton_Exception_Status
      *
      * @var array
      */
-    protected $_errorMessages = array(
+    protected $_errorMessages = [
         self::INVALID_SYNCKEY     => "Invalid synchronization key",
         self::PROTOCOL_ERROR      => "Protocol error",
         self::SYNC_SERVER_ERROR   => "Server error",
@@ -50,5 +50,5 @@ class Syncroton_Exception_Status_Sync extends Syncroton_Exception_Status
         self::INVALID_INTERVAL    => "Invalid Wait or HeartbeatInterval value",
         self::INVALID_REQUEST     => "Too many collections are included in the Sync request",
         self::SYNC_RETRY          => "Something on the server caused a retriable error",
-    );
+    ];
 }

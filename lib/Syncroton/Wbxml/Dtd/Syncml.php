@@ -27,16 +27,10 @@ class Syncroton_Wbxml_Dtd_Syncml
      */
     static public function factory ($_type)
     {
-        switch ($_type) {
-            case 'syncml:syncml1.1':
-            case 'syncml:syncml1.2':
-            case 'syncml:metinf1.1':
-            case 'syncml:metinf1.2':
-            case 'syncml:devinf1.1':
-            case 'syncml:devinf1.2':
-                throw new Syncroton_Wbxml_Exception('unsupported DTD: ' . $_type);
-                break;
-        }
+        match ($_type) {
+            'syncml:syncml1.1', 'syncml:syncml1.2', 'syncml:metinf1.1', 'syncml:metinf1.2', 'syncml:devinf1.1', 'syncml:devinf1.2' => throw new Syncroton_Wbxml_Exception('unsupported DTD: ' . $_type),
+            default => $instance,
+        };
         return $instance;
     }
 }    

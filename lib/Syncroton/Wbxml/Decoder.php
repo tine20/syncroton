@@ -31,7 +31,7 @@ class Syncroton_Wbxml_Decoder extends Syncroton_Wbxml_Abstract
      *
      * @var array
      */
-    protected $_stringTable = array();
+    protected $_stringTable = [];
     
     /**
      * the xml document
@@ -147,7 +147,7 @@ class Syncroton_Wbxml_Decoder extends Syncroton_Wbxml_Abstract
                                     $node->appendChild($newNode);
                                 }
                             }
-                        } catch (Exception $e) {
+                        } catch (Exception) {
                             // if not, just treat it as a string
                             $node->appendChild($this->_dom->createTextNode($opaque)); 
                         }
@@ -173,7 +173,7 @@ class Syncroton_Wbxml_Decoder extends Syncroton_Wbxml_Abstract
 
                     try {
                         $tag = $this->_codePage->getTag($tagHexCode);
-                    } catch (Syncroton_Wbxml_Exception $swe) {
+                    } catch (Syncroton_Wbxml_Exception) {
                         // tag can not be converted to ASCII name
                         $tag = sprintf('unknown tag 0x%x', $tagHexCode);
                     }
@@ -261,15 +261,10 @@ class Syncroton_Wbxml_Decoder extends Syncroton_Wbxml_Abstract
     {
         $uInt = $this->_getMultibyteUInt();
         
-        switch($uInt) {
-            case 106:
-                $this->_charSet = 'UTF-8';
-                break;
-                
-            default:
-                throw new Syncroton_Wbxml_Exception('unsuported charSet: ' . $uInt);
-                break;
-        }
+        $this->_charSet = match ($uInt) {
+            106 => 'UTF-8',
+            default => throw new Syncroton_Wbxml_Exception('unsuported charSet: ' . $uInt),
+        };
     }
     
     /**

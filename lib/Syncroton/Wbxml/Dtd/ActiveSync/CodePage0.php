@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage0 extends Syncroton_Wbxml_Dtd_Activ
     
     protected $_codePageName    = 'AirSync';
     
-    protected $_tags = array(
+    protected $_tags = [
         'Sync'              => 0x05,
         'Responses'         => 0x06,
         'Add'               => 0x07,
@@ -60,5 +60,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage0 extends Syncroton_Wbxml_Dtd_Activ
         'ConversationMode'  => 0x27,
         'MaxItems'          => 0x28,
         'HeartbeatInterval' => 0x29
-    );
+    ];
 }

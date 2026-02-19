@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage18 extends Syncroton_Wbxml_Dtd_Acti
     
     protected $_codePageName    = 'Settings';
         
-    protected $_tags = array(     
+    protected $_tags = [     
         'Settings'                  => 0x05,
         'Status'                    => 0x06,
         'Get'                       => 0x07,
@@ -61,5 +61,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage18 extends Syncroton_Wbxml_Dtd_Acti
         'UserDisplayName'           => 0x28,
         'SendDisabled'              => 0x29,
         'RightsManagementInformation' => 0x2b,
-    );
+    ];
 }

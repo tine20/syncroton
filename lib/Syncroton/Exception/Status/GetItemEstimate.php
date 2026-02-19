@@ -28,9 +28,9 @@ class Syncroton_Exception_Status_GetItemEstimate extends Syncroton_Exception_Sta
      *
      * @var array
      */
-    protected $_errorMessages = array(
+    protected $_errorMessages = [
         self::INVALID_COLLECTION   => "A collection was invalid or one of the specified collection IDs was invalid",
         self::SYNCSTATE_NOT_PRIMED => "The synchronization state has not been primed",
         self::INVALID_SYNCKEY      => "The specified synchronization key was invalid",
-    );
+    ];
 }

@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage2 extends Syncroton_Wbxml_Dtd_Activ
     
     protected $_codePageName    = 'Email';
         
-    protected $_tags = array(
+    protected $_tags = [
         'Attachment'            => 0x05,
         'Attachments'           => 0x06,
         'AttName'               => 0x07,
@@ -82,5 +82,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage2 extends Syncroton_Wbxml_Dtd_Activ
         'FlagType'                => 0x3d,
         'CompleteTime'            => 0x3e,
         'DisallowNewTimeProposal' => 0x3f
-    );
+    ];
 }

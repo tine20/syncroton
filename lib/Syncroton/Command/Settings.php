@@ -61,7 +61,7 @@ class Syncroton_Command_Settings extends Syncroton_Command_Wbxml
 
         if (isset($xml->Oof)) {
             if (isset($xml->Oof->Get)) {
-                $this->_OofGet = array('bodyType' => $xml->Oof->Get->BodyType);
+                $this->_OofGet = ['bodyType' => $xml->Oof->Get->BodyType];
             } else if (isset($xml->Oof->Set)) {
                 $this->_OofSet = new Syncroton_Model_Oof($xml->Oof->Set);
             }

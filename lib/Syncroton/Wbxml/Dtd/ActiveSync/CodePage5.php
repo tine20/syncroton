@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage5 extends Syncroton_Wbxml_Dtd_Activ
 
     protected $_codePageName    = 'Move';
 
-    protected $_tags = array(
+    protected $_tags = [
         'MoveItems'               => 0x05,
         'Move'                    => 0x06,
         'SrcMsgId'                => 0x07,
@@ -31,5 +31,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage5 extends Syncroton_Wbxml_Dtd_Activ
         'Response'                => 0x0a,
         'Status'                  => 0x0b,
         'DstMsgId'                => 0x0c
-    );
+    ];
 }

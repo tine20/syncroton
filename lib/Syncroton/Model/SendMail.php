@@ -19,16 +19,16 @@
  */
 class Syncroton_Model_SendMail extends Syncroton_Model_AXMLEntry
 {
-    protected $_properties = array(
-        'ComposeMail' => array(
-            'accountId'       => array('type' => 'string'),
-            'clientId'        => array('type' => 'string'),
-            'mime'            => array('type' => 'byteArray'),
-            'saveInSentItems' => array('type' => 'string'),
-            'status'          => array('type' => 'number'),
-        ),
-        'RightsManagement' => array(
-            'templateID'      => array('type' => 'string'),
-        )
-    );
+    protected $_properties = [
+        'ComposeMail' => [
+            'accountId'       => ['type' => 'string'],
+            'clientId'        => ['type' => 'string'],
+            'mime'            => ['type' => 'byteArray'],
+            'saveInSentItems' => ['type' => 'string'],
+            'status'          => ['type' => 'number'],
+        ],
+        'RightsManagement' => [
+            'templateID'      => ['type' => 'string'],
+        ]
+    ];
 }

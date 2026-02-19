@@ -17,6 +17,11 @@
  */
 abstract class Syncroton_Data_AData implements Syncroton_Data_IData
 {
+    protected $_device;
+    protected $_db;
+    protected $_tablePrefix;
+    protected $_ownerId;
+    protected $_supportedFolderTypes;
     const LONGID_DELIMITER = "\xe2\x87\x94"; # UTF-8 character ⇔
     
     /**
@@ -61,12 +66,12 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
             throw new Syncroton_Exception_NotFound("folder $id not found");
         }
         
-        return new Syncroton_Model_Folder(array(
+        return new Syncroton_Model_Folder([
             'serverId'    => $folder['id'],
             'displayName' => $folder['name'],
             'type'        => $folder['type'],
             'parentId'    => !empty($folder['parent_id']) ? $folder['parent_id'] : null
-        ));
+        ]);
     }
     
     /**
@@ -81,14 +86,14 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
         
         $id = !empty($folder->serverId) ? $folder->serverId : sha1(mt_rand(). microtime());
         
-        $this->_db->insert($this->_tablePrefix . 'data_folder', array(
+        $this->_db->insert($this->_tablePrefix . 'data_folder', [
             'id'            => $id,
             'type'          => $folder->type,
             'name'          => $folder->displayName,
             'owner_id'      => $this->_ownerId,
             'parent_id'     => $folder->parentId,
             'creation_time' => $this->_timeStamp->format("Y-m-d H:i:s")
-        ));
+        ]);
         
         return $this->getFolder($id);
     }
@@ -101,13 +106,13 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
     {
         $id = sha1(mt_rand(). microtime());
     
-        $this->_db->insert($this->_tablePrefix . 'data', array(
+        $this->_db->insert($this->_tablePrefix . 'data', [
             'id'            => $id,
-            'class'         => get_class($_entry),
+            'class'         => $_entry::class,
             'folder_id'     => $_folderId,
             'creation_time' => $this->_timeStamp->format("Y-m-d H:i:s"),
             'data'          => serialize($_entry)
-        ));
+        ]);
     
         return $id;
     }
@@ -120,7 +125,7 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
     {
         $folderId = $_folderId instanceof Syncroton_Model_IFolder ? $_folderId->serverId : $_folderId;
         
-        $result = $this->_db->delete($this->_tablePrefix . 'data', array('id = ?' => $_serverId));
+        $result = $this->_db->delete($this->_tablePrefix . 'data', ['id = ?' => $_serverId]);
         
         return (bool) $result;
     }
@@ -133,8 +138,8 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
     {
         $folderId = $_folderId instanceof Syncroton_Model_IFolder ? $_folderId->serverId : $_folderId;
         
-        $result = $this->_db->delete($this->_tablePrefix . 'data', array('folder_id = ?' => $folderId));
-        $result = $this->_db->delete($this->_tablePrefix . 'data_folder', array('id = ?' => $folderId));
+        $result = $this->_db->delete($this->_tablePrefix . 'data', ['folder_id = ?' => $folderId]);
+        $result = $this->_db->delete($this->_tablePrefix . 'data_folder', ['id = ?' => $folderId]);
         
         return (bool) $result;
     }
@@ -163,15 +168,15 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
         $folders = $stmt->fetchAll();
         $stmt = null; # see https://bugs.php.net/bug.php?id=44081
         
-        $result = array();
+        $result = [];
         
         foreach ((array) $folders as $folder) {
-            $result[$folder['id']] =  new Syncroton_Model_Folder(array(
+            $result[$folder['id']] =  new Syncroton_Model_Folder([
                 'serverId'    => $folder['id'],
                 'displayName' => $folder['name'],
                 'type'        => $folder['type'],
                 'parentId'    => $folder['parent_id']
-            ));
+            ]);
         }
         
         return $result;
@@ -186,7 +191,7 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
         $folderId = $_folderId instanceof Syncroton_Model_IFolder ? $_folderId->id : $_folderId;
     
         $select = $this->_db->select()
-            ->from($this->_tablePrefix . 'data', array('id'))
+            ->from($this->_tablePrefix . 'data', ['id'])
             ->where('folder_id = ?', $_folderId)
             ->where('last_modified_time > ?', $_startTimeStamp->format("Y-m-d H:i:s"));
         
@@ -194,7 +199,7 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
             $select->where('last_modified_time < ?', $_endTimeStamp->format("Y-m-d H:i:s"));
         }
         
-        $ids = array();
+        $ids = [];
         
         $stmt = $this->_db->query($select);
         while ($id = $stmt->fetchColumn()) {
@@ -224,15 +229,15 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
         $folders = $stmt->fetchAll();
         $stmt = null; # see https://bugs.php.net/bug.php?id=44081
         
-        $result = array();
+        $result = [];
         
         foreach ((array) $folders as $folder) {
-            $result[$folder['id']] =  new Syncroton_Model_Folder(array(
+            $result[$folder['id']] =  new Syncroton_Model_Folder([
                 'serverId'    => $folder['id'],
                 'displayName' => $folder['name'],
                 'type'        => $folder['type'],
                 'parentId'    => $folder['parent_id']
-            ));
+            ]);
         }
         
         return $result;
@@ -248,10 +253,10 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
         $folderId = $_folderId instanceof Syncroton_Model_IFolder ? $_folderId->id : $_folderId;
     
         $select = $this->_db->select()
-            ->from($this->_tablePrefix . 'data', array('id'))
+            ->from($this->_tablePrefix . 'data', ['id'])
             ->where('folder_id = ?', $_folderId);
         
-        $ids = array();
+        $ids = [];
         
         $stmt = $this->_db->query($select);
         while ($id = $stmt->fetchColumn()) {
@@ -293,7 +298,7 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
     public function getEntry(Syncroton_Model_SyncCollection $collection, $serverId)
     {
         $select = $this->_db->select()
-            ->from($this->_tablePrefix . 'data', array('data'))
+            ->from($this->_tablePrefix . 'data', ['data'])
             ->where('id = ?', $serverId);
         
         $stmt  = $this->_db->query($select);
@@ -321,11 +326,11 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
      */
     public function moveItem($_srcFolderId, $_serverId, $_dstFolderId)
     {
-        $this->_db->update($this->_tablePrefix . 'data', array(
+        $this->_db->update($this->_tablePrefix . 'data', [
             'folder_id' => $_dstFolderId,
-        ), array(
+        ], [
             'id = ?' => $_serverId
-        ));
+        ]);
         
         return $_serverId;
     }
@@ -336,13 +341,13 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
      */
     public function updateEntry($_folderId, $_serverId, Syncroton_Model_IEntry $_entry)
     {
-        $this->_db->update($this->_tablePrefix . 'data', array(
+        $this->_db->update($this->_tablePrefix . 'data', [
             'folder_id'          => $_folderId,
             'last_modified_time' => $this->_timeStamp->format("Y-m-d H:i:s"),
             'data'               => serialize($_entry)
-        ), array(
+        ], [
             'id = ?' => $_serverId
-        ));
+        ]);
     }
     
     /**
@@ -351,14 +356,14 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
      */
     public function updateFolder(Syncroton_Model_IFolder $folder)
     {
-        $this->_db->update($this->_tablePrefix . 'data_folder', array(
+        $this->_db->update($this->_tablePrefix . 'data_folder', [
             'name'               => $folder->displayName,
             'parent_id'          => $folder->parentId,
             'last_modified_time' => $this->_timeStamp->format("Y-m-d H:i:s"),
-        ), array(
+        ], [
             'id = ?'       => $folder->serverId,
             'owner_id = ?' => $this->_ownerId
-        ));
+        ]);
         
         return $this->getFolder($folder->serverId);
     }

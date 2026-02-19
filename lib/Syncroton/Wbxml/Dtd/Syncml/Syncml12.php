@@ -25,14 +25,14 @@ class Syncroton_Wbxml_Dtd_Syncml_Syncml12 extends Syncroton_Wbxml_Dtd_Syncml_Abs
      *
      * @var array
      */
-    protected $_codePages = array(
-        0x00 => array(
+    protected $_codePages = [
+        0x00 => [
             'codePageNumber'=> 0x00,
             'dtdname'       => 'SyncML',
             'dpi'           => '-//SYNCML//DTD SyncML 1.2//EN',
             'url'           => 'http://www.openmobilealliance.org/tech/DTD/OMA-TS-SyncML_RepPro_DTD-V1_2.dtd',
             'urn'           => 'SYNCML:SYNCML1.2',
-            'tags'          => array(     
+            'tags'          => [     
                 'Add'           => 0x05,
                 'Alert'         => 0x06,
                 'Archive'       => 0x07,
@@ -89,15 +89,15 @@ class Syncroton_Wbxml_Dtd_Syncml_Syncml12 extends Syncroton_Wbxml_Dtd_Syncml_Abs
                 'TargetParent'  =>  0x3a,
                 'Move'          =>  0x3b,
                 'Correlator'    =>  0x3c
-            )
-        ),
-        0x01 => array(
+            ]
+        ],
+        0x01 => [
             'codePageNumber'=> 0x01,
             'dtdname'       => 'MetInf',
             'dpi'           => '-//OMA//DTD SYNCML-METINF 1.2//EN',
             'url'           => 'http://www.openmobilealliance.org/tech/DTD/OMA-TS-SyncML_MetaInfo_DTD-V1_2.dtd',
             'urn'           => 'syncml:metinf1.2',
-            'tags'          => array(     
+            'tags'          => [     
                 'Anchor'       => 0x05,
                 'EMI'          => 0x06,
                 'Format'       => 0x07,
@@ -116,7 +116,7 @@ class Syncroton_Wbxml_Dtd_Syncml_Syncml12 extends Syncroton_Wbxml_Dtd_Syncml_Abs
                 'Version'      => 0x14,
                 'MaxObjSize'   => 0x15,
                 'FieldLevel'   => 0x16
-            )
-        ) 
-    );
+            ]
+        ] 
+    ];
 }

@@ -46,22 +46,22 @@ class Syncroton_Model_TaskRecurrence extends Syncroton_Model_AXMLEntry
     const RECUR_DOW_FRIDAY      = 32;
     const RECUR_DOW_SATURDAY    = 64;
         
-    protected $_properties = array(
-        'Tasks' => array(
-            'calendarType'            => array('type' => 'number'),
-            'dayOfMonth'              => array('type' => 'number'),
-            'dayOfWeek'               => array('type' => 'number'),
-            'deadOccur'               => array('type' => 'number'),
-            'firstDayOfWeek'          => array('type' => 'number'),
-            'interval'                => array('type' => 'number'),
-            'isLeapMonth'             => array('type' => 'number'),
-            'monthOfYear'             => array('type' => 'number'),
-            'occurrences'             => array('type' => 'number'),
-            'regenerate'              => array('type' => 'number'),
-            'start'                   => array('type' => 'datetime'),
-            'type'                    => array('type' => 'number'),
-            'until'                   => array('type' => 'datetime'),
-            'weekOfMonth'             => array('type' => 'number'),
-        )
-    );
+    protected $_properties = [
+        'Tasks' => [
+            'calendarType'            => ['type' => 'number'],
+            'dayOfMonth'              => ['type' => 'number'],
+            'dayOfWeek'               => ['type' => 'number'],
+            'deadOccur'               => ['type' => 'number'],
+            'firstDayOfWeek'          => ['type' => 'number'],
+            'interval'                => ['type' => 'number'],
+            'isLeapMonth'             => ['type' => 'number'],
+            'monthOfYear'             => ['type' => 'number'],
+            'occurrences'             => ['type' => 'number'],
+            'regenerate'              => ['type' => 'number'],
+            'start'                   => ['type' => 'datetime'],
+            'type'                    => ['type' => 'number'],
+            'until'                   => ['type' => 'datetime'],
+            'weekOfMonth'             => ['type' => 'number'],
+        ]
+    ];
 }

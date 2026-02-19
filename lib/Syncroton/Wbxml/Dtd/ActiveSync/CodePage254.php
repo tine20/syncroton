@@ -22,10 +22,10 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage254 extends Syncroton_Wbxml_Dtd_Act
     
     protected $_codePageName    = 'WindowsLive';
         
-    protected $_tags = array(
+    protected $_tags = [
         'Annotations'            => 0x05,
         'Annotation'             => 0x06,
         'Name'                   => 0x07,
         'Value'                  => 0x08
-    );
+    ];
 }

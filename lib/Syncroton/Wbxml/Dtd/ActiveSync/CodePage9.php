@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage9 extends Syncroton_Wbxml_Dtd_Activ
     
     protected $_codePageName    = 'Tasks';
         
-    protected $_tags = array(     
+    protected $_tags = [     
         'Body'                    => 0x05,
         'BodySize'                => 0x06,
         'BodyTruncated'           => 0x07,
@@ -57,5 +57,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage9 extends Syncroton_Wbxml_Dtd_Activ
         'CalendarType'            => 0x24,
         'IsLeapMonth'             => 0x25,
         'FirstDayOfWeek'          => 0x26,
-    );
+    ];
 }

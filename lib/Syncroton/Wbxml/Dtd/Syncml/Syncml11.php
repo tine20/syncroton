@@ -19,14 +19,14 @@
  
 class Syncroton_Wbxml_Dtd_Syncml_Syncml11 extends Syncroton_Wbxml_Dtd_Syncml_Abstract
 {     
-    protected $_codePages = array(
-        0x00 => array(
+    protected $_codePages = [
+        0x00 => [
             'codePageNumber'=> 0x00,
             'dtdname'       => 'SyncML',
             'dpi'           => '-//SYNCML//DTD SyncML 1.1//EN',
             'url'           => "http://www.syncml.org/docs/syncml_represent_v11_20020213.dtd",
             'urn'           => 'syncml:syncml1.1',
-            'tags'          => array(     
+            'tags'          => [     
                 'Add'               => 0x05,
                 'Alert'             => 0x06,
                 'Archive'           => 0x07,
@@ -75,15 +75,15 @@ class Syncroton_Wbxml_Dtd_Syncml_Syncml11 extends Syncroton_Wbxml_Dtd_Syncml_Abs
                 'VerProto'          => 0x32,
                 'NumberOfChanges'   => 0x33,
                 'MoreData'          => 0x34
-            )    
-        ),
-        0x01 => array(
+            ]    
+        ],
+        0x01 => [
             'codePageNumber'=> 0x01,
             'dtdname'       => 'MetInf',
             'dpi'           => '-//SYNCML//DTD MetInf 1.1//EN',
             'url'           => 'http://www.syncml.org/docs/syncml_metinf_v11_20020215.dtd ',
             'urn'           => 'syncml:metinf1.1',
-            'tags'          => array(     
+            'tags'          => [     
                 'Anchor'       => 0x05,
                 'EMI'          => 0x06,
                 'Format'       => 0x07,
@@ -101,7 +101,7 @@ class Syncroton_Wbxml_Dtd_Syncml_Syncml11 extends Syncroton_Wbxml_Dtd_Syncml_Abs
                 'Type'         => 0x13,
                 'Version'      => 0x14,
                 'MaxObjSize'   => 0x15
-            )
-        ) 
-    );    
+            ]
+        ] 
+    ];    
 }

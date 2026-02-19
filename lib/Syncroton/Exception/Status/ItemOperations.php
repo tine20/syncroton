@@ -41,7 +41,7 @@ class Syncroton_Exception_Status_ItemOperations extends Syncroton_Exception_Stat
      *
      * @var array
      */
-    protected $_errorMessages = array(
+    protected $_errorMessages = [
         self::PROTOCOL_ERROR         => "Protocol error - protocol violation/XML validation error",
         self::ITEM_SERVER_ERROR      => "Server error",
         self::DOCLIB_INVALID_URI     => "Document library access - The specified URI is bad",
@@ -58,5 +58,5 @@ class Syncroton_Exception_Status_ItemOperations extends Syncroton_Exception_Stat
         self::RESOURCE_ACCESS_DENIED => "Access to the resource is denied",
         self::PARTIAL_SUCCESS        => "Partial success; the command completed partially",
         self::CREDENTIALS_REQUIRED   => "Credentials required",
-    );
+    ];
 }

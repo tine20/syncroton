@@ -19,18 +19,18 @@
  */
 class Syncroton_Model_SmartReply extends Syncroton_Model_AXMLEntry
 {
-    protected $_properties = array(
-        'ComposeMail' => array(
-            'accountId'       => array('type' => 'string'),
-            'clientId'        => array('type' => 'string'),
-            'mime'            => array('type' => 'byteArray'),
-            'replaceMime'     => array('type' => 'string'),
-            'saveInSentItems' => array('type' => 'string'),
-            'source'          => array('type' => 'container'), // or string
-            'status'          => array('type' => 'number'),
-        ),
-        'RightsManagement' => array(
-            'templateID'      => array('type' => 'string'),
-        )
-    );
+    protected $_properties = [
+        'ComposeMail' => [
+            'accountId'       => ['type' => 'string'],
+            'clientId'        => ['type' => 'string'],
+            'mime'            => ['type' => 'byteArray'],
+            'replaceMime'     => ['type' => 'string'],
+            'saveInSentItems' => ['type' => 'string'],
+            'source'          => ['type' => 'container'], // or string
+            'status'          => ['type' => 'number'],
+        ],
+        'RightsManagement' => [
+            'templateID'      => ['type' => 'string'],
+        ]
+    ];
 }

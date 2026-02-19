@@ -33,7 +33,7 @@ class Syncroton_Backend_Policy extends Syncroton_Backend_ABackend #implements Sy
     {
         $policyValues = $model->getProperties('Provision');
         
-        $policy = array();
+        $policy = [];
         
         foreach ($policyValues as $policyName) {
             if ($model->$policyName !== NULL) { 

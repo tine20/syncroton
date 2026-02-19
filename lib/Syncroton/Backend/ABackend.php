@@ -24,8 +24,6 @@ abstract class Syncroton_Backend_ABackend implements Syncroton_Backend_IBackend
      */
     protected $_db;
     
-    protected $_tablePrefix;
-    
     protected $_tableName;
     
     protected $_modelClassName;
@@ -38,10 +36,9 @@ abstract class Syncroton_Backend_ABackend implements Syncroton_Backend_IBackend
      * @param  Zend_Db_Adapter_Abstract  $_db
      * @param  string                    $_tablePrefix
      */
-    public function __construct(Zend_Db_Adapter_Abstract $_db, $_tablePrefix = 'Syncroton_')
+    public function __construct(Zend_Db_Adapter_Abstract $_db, protected $_tablePrefix = 'Syncroton_')
     {
         $this->_db          = $_db;
-        $this->_tablePrefix = $_tablePrefix;
     }
 
     /**
@@ -73,7 +70,7 @@ abstract class Syncroton_Backend_ABackend implements Syncroton_Backend_IBackend
      */
     protected function _convertModelToArray($model)
     {
-        $data = array();
+        $data = [];
         
         foreach ($model as $key => $value) {
             if ($value instanceof DateTime) {
@@ -145,7 +142,7 @@ abstract class Syncroton_Backend_ABackend implements Syncroton_Backend_IBackend
     {
         $id = $id instanceof $this->_modelInterfaceName ? $id->id : $id;
         
-        $result = $this->_db->delete($this->_tablePrefix . $this->_tableName, array('id = ?' => $id));
+        $result = $this->_db->delete($this->_tablePrefix . $this->_tableName, ['id = ?' => $id]);
         
         return (bool) $result;
     }
@@ -162,9 +159,9 @@ abstract class Syncroton_Backend_ABackend implements Syncroton_Backend_IBackend
         
         $data = $this->_convertModelToArray($model);
         
-        $this->_db->update($this->_tablePrefix . $this->_tableName, $data, array(
+        $this->_db->update($this->_tablePrefix . $this->_tableName, $data, [
             'id = ?' => $model->id
-        ));
+        ]);
         
         return $this->get($model->id);
     }
@@ -178,7 +175,7 @@ abstract class Syncroton_Backend_ABackend implements Syncroton_Backend_IBackend
      */
     public function userAccounts($device)
     {
-        return array();
+        return [];
     }
 
     /**
@@ -190,7 +187,7 @@ abstract class Syncroton_Backend_ABackend implements Syncroton_Backend_IBackend
     {
         $string = lcfirst($string);
         
-        return preg_replace_callback('/([A-Z])/', function ($string) {return '_' . strtolower($string[0]);}, $string);
+        return preg_replace_callback('/([A-Z])/', fn($string) => '_' . strtolower($string[0]), $string);
     }
     
     /**
@@ -206,6 +203,6 @@ abstract class Syncroton_Backend_ABackend implements Syncroton_Backend_IBackend
             $string = ucfirst($string);
         }
         
-        return preg_replace_callback('/_([a-z])/', function ($string) {return strtoupper($string[1]);}, $string);
+        return preg_replace_callback('/_([a-z])/', fn($string) => strtoupper($string[1]), $string);
     }
 }

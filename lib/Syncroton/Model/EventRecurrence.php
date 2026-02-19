@@ -54,19 +54,19 @@ class Syncroton_Model_EventRecurrence extends Syncroton_Model_AXMLEntry
     
     protected $_dateTimeFormat = "Ymd\THis\Z";
     
-    protected $_properties = array(
-        'Calendar' => array(
-            'calendarType'            => array('type' => 'number'),
-            'dayOfMonth'              => array('type' => 'number'),
-            'dayOfWeek'               => array('type' => 'number'),
-            'firstDayOfWeek'          => array('type' => 'number'),
-            'interval'                => array('type' => 'number'),
-            'isLeapMonth'             => array('type' => 'number'),
-            'monthOfYear'             => array('type' => 'number'),
-            'occurrences'             => array('type' => 'number'),
-            'type'                    => array('type' => 'number'),
-            'until'                   => array('type' => 'datetime'),
-            'weekOfMonth'             => array('type' => 'number'),
-        )
-    );
+    protected $_properties = [
+        'Calendar' => [
+            'calendarType'            => ['type' => 'number'],
+            'dayOfMonth'              => ['type' => 'number'],
+            'dayOfWeek'               => ['type' => 'number'],
+            'firstDayOfWeek'          => ['type' => 'number'],
+            'interval'                => ['type' => 'number'],
+            'isLeapMonth'             => ['type' => 'number'],
+            'monthOfYear'             => ['type' => 'number'],
+            'occurrences'             => ['type' => 'number'],
+            'type'                    => ['type' => 'number'],
+            'until'                   => ['type' => 'datetime'],
+            'weekOfMonth'             => ['type' => 'number'],
+        ]
+    ];
 }

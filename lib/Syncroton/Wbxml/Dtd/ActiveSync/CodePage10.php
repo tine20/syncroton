@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage10 extends Syncroton_Wbxml_Dtd_Acti
     
     protected $_codePageName    = 'ResolveRecipients';
         
-    protected $_tags = array(     
+    protected $_tags = [     
         'ResolveRecipients'       => 0x05,
         'Response'                => 0x06,
         'Status'                  => 0x07,
@@ -48,5 +48,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage10 extends Syncroton_Wbxml_Dtd_Acti
         'MaxSize'                 => 0x1b,
         'Data'                    => 0x1c,
         'MaxPictures'             => 0x1d
-    );
+    ];
 }

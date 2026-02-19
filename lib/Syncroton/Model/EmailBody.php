@@ -31,14 +31,14 @@ class Syncroton_Model_EmailBody extends Syncroton_Model_AXMLEntry
     
     protected $_xmlBaseElement = 'Body';
     
-    protected $_properties = array(
-        'AirSyncBase' => array(
-            'type'              => array('type' => 'string'),
-            'estimatedDataSize' => array('type' => 'string'),
-            'data'              => array('type' => 'string'),
-            'truncated'         => array('type' => 'number'),
-            'part'              => array('type' => 'number'),
-            'preview'           => array('type' => 'string', 'supportedSince' => '14.0'),
-        ),
-    );
+    protected $_properties = [
+        'AirSyncBase' => [
+            'type'              => ['type' => 'string'],
+            'estimatedDataSize' => ['type' => 'string'],
+            'data'              => ['type' => 'string'],
+            'truncated'         => ['type' => 'number'],
+            'part'              => ['type' => 'number'],
+            'preview'           => ['type' => 'string', 'supportedSince' => '14.0'],
+        ],
+    ];
 }

@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage7 extends Syncroton_Wbxml_Dtd_Activ
     
     protected $_codePageName    = 'FolderHierarchy';
         
-    protected $_tags = array(     
+    protected $_tags = [     
         'Folders'                => 0x05,
         'Folder'                 => 0x06,
         'DisplayName'            => 0x07,
@@ -43,5 +43,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage7 extends Syncroton_Wbxml_Dtd_Activ
         'FolderSync'             => 0x16,
         'Count'                  => 0x17,
         'Version'                => 0x18   // not used anymore
-    );
+    ];
 }

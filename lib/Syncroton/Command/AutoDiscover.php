@@ -17,13 +17,6 @@
  */
 class Syncroton_Command_AutoDiscover implements Syncroton_Command_ICommand
 {
-    /**
-     * the domDocucment containing the xml request from the client
-     *
-     * @var DOMDocument
-     */
-    protected $requestBody;
-    
     protected $emailAddress;
     
     public    $mobileSyncUrl;
@@ -32,14 +25,21 @@ class Syncroton_Command_AutoDiscover implements Syncroton_Command_ICommand
     
     /**
      * constructor of this class
-     * 
+     *
      * @param DOMDocument              $_requestBody
      * @param Syncroton_Model_IDevice  $_device
      * @param string                   $_policyKey
+     * @param \DOMDocument $requestBody
      */
-    public function __construct($requestBody, Syncroton_Model_IDevice $device = null, $policyKey = null)
+    public function __construct(
+        /**
+         * the domDocucment containing the xml request from the client
+         */
+        protected $requestBody,
+        Syncroton_Model_IDevice $device = null,
+        $policyKey = null
+    )
     {
-        $this->requestBody = $requestBody;
     }
     
     /**
@@ -119,8 +119,8 @@ class Syncroton_Command_AutoDiscover implements Syncroton_Command_ICommand
      */
     public function getHeaders()
     {
-        return array(
+        return [
             'Content-Type'  => 'text/xml;charset=utf-8'
-        );
+        ];
     }
 }

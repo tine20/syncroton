@@ -54,13 +54,13 @@ class Syncroton_Command_FolderSync extends Syncroton_Command_Wbxml
     protected $_defaultNameSpace    = 'uri:FolderHierarchy';
     protected $_documentElement     = 'FolderSync';
     
-    protected $_classes             = array(
+    protected $_classes             = [
         Syncroton_Data_Factory::CLASS_CALENDAR,
         Syncroton_Data_Factory::CLASS_CONTACTS,
         Syncroton_Data_Factory::CLASS_EMAIL,
         Syncroton_Data_Factory::CLASS_NOTES,
         Syncroton_Data_Factory::CLASS_TASKS
-    );
+    ];
 
     /**
      * @var string
@@ -80,12 +80,12 @@ class Syncroton_Command_FolderSync extends Syncroton_Command_Wbxml
             $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " synckey is $syncKey");
         
         if ($syncKey === 0) {
-            $this->_syncState = new Syncroton_Model_SyncState(array(
+            $this->_syncState = new Syncroton_Model_SyncState([
                 'device_id' => $this->_device,
                 'counter'   => 0,
                 'type'      => 'FolderSync',
                 'lastsync'  => $this->_syncTimeStamp
-            ));
+            ]);
             
             // reset state of foldersync
             $this->_syncStateBackend->resetState($this->_device, 'FolderSync');
@@ -122,9 +122,9 @@ class Syncroton_Command_FolderSync extends Syncroton_Command_Wbxml
             $this->_headers = array_merge($this->_headers, $optionsCommand->getHeaders());
         }
         
-        $adds    = array();
-        $updates = array();
-        $deletes = array();
+        $adds    = [];
+        $updates = [];
+        $deletes = [];
 
         foreach($this->_classes as $class) {
             try {
@@ -147,7 +147,7 @@ class Syncroton_Command_FolderSync extends Syncroton_Command_Wbxml
                     // retrieve all folders changed since last sync
                     $changedFolders = $dataController->getChangedFolders($this->_syncState->lastsync, $this->_syncTimeStamp);
                 } else {
-                    $changedFolders = array();
+                    $changedFolders = [];
                 }
                 
                 // only folders which were sent to the client already are allowed to be in $changedFolders
@@ -176,7 +176,7 @@ class Syncroton_Command_FolderSync extends Syncroton_Command_Wbxml
 
             // is this the first sync?
             if ($this->_syncState->counter == 0) {
-                $clientFoldersIds = array();
+                $clientFoldersIds = [];
             } else {
                 $clientFoldersIds = array_keys($clientFolders);
             }

@@ -64,7 +64,7 @@ class Syncroton_Backend_Device extends Syncroton_Backend_ABackend implements Syn
      */
     public function userAccounts($device)
     {
-        return array();
+        return [];
     }
 
     /**

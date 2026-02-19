@@ -29,12 +29,12 @@ class Syncroton_Model_GALPicture extends Syncroton_Model_AXMLEntry
 
     protected $_xmlBaseElement = 'ApplicationData';
 
-    protected $_properties = array(
-        'AirSync' => array(
-            'status'       => array('type' => 'number'),
-        ),
-        'GAL' => array(
-            'data'         => array('type' => 'byteArray'),
-        ),
-    );
+    protected $_properties = [
+        'AirSync' => [
+            'status'       => ['type' => 'number'],
+        ],
+        'GAL' => [
+            'data'         => ['type' => 'byteArray'],
+        ],
+    ];
 }

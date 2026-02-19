@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage15 extends Syncroton_Wbxml_Dtd_Acti
     
     protected $_codePageName    = 'Search';
         
-    protected $_tags = array(     
+    protected $_tags = [     
         'Search'            => 0x05,
         'Store'             => 0x07,
         'Name'              => 0x08,
@@ -52,5 +52,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage15 extends Syncroton_Wbxml_Dtd_Acti
         'Picture'           => 0x21,
         'MaxSize'           => 0x22,
         'MaxPictures'       => 0x23
-    );
+    ];
 }

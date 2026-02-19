@@ -63,13 +63,6 @@ abstract class Syncroton_Command_Wbxml implements Syncroton_Command_ICommand
     protected $_outputDom;
     
     /**
-     * the domDocucment containing the xml request from the client
-     *
-     * @var DOMDocument
-     */
-    protected $_requestBody;
-    
-    /**
      * the default namespace
      *
      * @var string
@@ -82,11 +75,6 @@ abstract class Syncroton_Command_Wbxml implements Syncroton_Command_ICommand
      * @var string
      */
     protected $_documentElement;
-    
-    /**
-     * @var array
-     */
-    protected $_requestParameters;
     
     /**
      * @var Syncroton_Model_SyncState
@@ -122,28 +110,29 @@ abstract class Syncroton_Command_Wbxml implements Syncroton_Command_ICommand
      * 
      * @var array
      */
-    protected $_parts = array();
+    protected $_parts = [];
     
     /**
      * list of headers
      * 
      * @var array
      */
-    protected $_headers = array();
+    protected $_headers = [];
     
     /**
      * the constructor
      *
-     * @param  mixed                   $requestBody
+     * @param mixed $_requestBody
      * @param  Syncroton_Model_Device  $device
-     * @param  array                   $requestParameters
+     * @param array $_requestParameters
      */
-    public function __construct($requestBody, Syncroton_Model_IDevice $device, $requestParameters)
+    public function __construct(/**
+     * the domDocucment containing the xml request from the client
+     */
+    protected $_requestBody, Syncroton_Model_IDevice $device, protected $_requestParameters)
     {
-        $this->_requestBody       = $requestBody;
         $this->_device            = $device;
-        $this->_requestParameters = $requestParameters;
-        $this->_policyKey         = isset($requestParameters['policyKey']) ? $requestParameters['policyKey'] : null;
+        $this->_policyKey         = $this->_requestParameters['policyKey'] ?? null;
         
         $this->_deviceBackend       = Syncroton_Registry::getDeviceBackend();
         $this->_folderBackend       = Syncroton_Registry::getFolderBackend();

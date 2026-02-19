@@ -31,14 +31,14 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
      * 
      * @var array
      */
-    protected $_fetches = array();
+    protected $_fetches = [];
     
     /**
      * list of folder to empty
      * 
      * @var array
      */
-    protected $_emptyFolderContents = array();
+    protected $_emptyFolderContents = [];
     
     /**
      * parse MoveItems request
@@ -95,7 +95,7 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
                     
                     $properties = $this->_outputDom->createElementNS('uri:ItemOperations', 'Properties');
                     $dataController
-                        ->getEntry(new Syncroton_Model_SyncCollection(array('collectionId' => $fetch['collectionId'], 'options' => $fetch['options'])), $fetch['serverId'])
+                        ->getEntry(new Syncroton_Model_SyncCollection(['collectionId' => $fetch['collectionId'], 'options' => $fetch['options']]), $fetch['serverId'])
                         ->appendXML($properties, $this->_device);
                     $fetchTag->appendChild($properties);
                     
@@ -105,7 +105,7 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
                     
                     $properties = $this->_outputDom->createElementNS('uri:ItemOperations', 'Properties');
                     $dataController
-                        ->getEntry(new Syncroton_Model_SyncCollection(array('collectionId' => $fetch['longId'], 'options' => $fetch['options'])), $fetch['longId'])
+                        ->getEntry(new Syncroton_Model_SyncCollection(['collectionId' => $fetch['longId'], 'options' => $fetch['options']]), $fetch['longId'])
                         ->appendXML($properties, $this->_device);
                     $fetchTag->appendChild($properties);
                     
@@ -158,9 +158,9 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
                     
                     $fetchTag->appendChild($properties);
                 }
-            } catch (Syncroton_Exception_NotFound $e) {
+            } catch (Syncroton_Exception_NotFound) {
                 $response->appendChild($this->_outputDom->createElementNS('uri:ItemOperations', 'Status', Syncroton_Command_ItemOperations::STATUS_ITEM_FAILED_CONVERSION));
-            } catch (Exception $e) {
+            } catch (Exception) {
                 //echo __LINE__; echo $e->getMessage(); echo $e->getTraceAsString();
                 $response->appendChild($this->_outputDom->createElementNS('uri:ItemOperations', 'Status', Syncroton_Command_ItemOperations::STATUS_SERVER_ERROR));
             }
@@ -179,7 +179,7 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
             catch (Syncroton_Exception_Status_ItemOperations $e) {
                 $status = $e->getCode();
             }
-            catch (Exception $e) {
+            catch (Exception) {
                 $status = Syncroton_Exception_Status_ItemOperations::ITEM_SERVER_ERROR;
             }
 
@@ -202,10 +202,10 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
      */
     protected function _handleFetch(SimpleXMLElement $fetch)
     {
-        $fetchArray = array(
+        $fetchArray = [
             'store'   => (string)$fetch->Store,
-            'options' => array()
-        );
+            'options' => []
+        ];
         
         // try to fetch element from namespace AirSync
         $airSync = $fetch->children('uri:AirSync');
@@ -236,9 +236,9 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
             if (isset($airSyncBase->BodyPreference)) {
                 foreach ($airSyncBase->BodyPreference as $bodyPreference) {
                     $type = (int) $bodyPreference->Type;
-                    $fetchArray['options']['bodyPreferences'][$type] = array(
+                    $fetchArray['options']['bodyPreferences'][$type] = [
                         'type' => $type
-                    );
+                    ];
                     
                     // optional
                     if (isset($bodyPreference->TruncationSize)) {
@@ -273,10 +273,10 @@ class Syncroton_Command_ItemOperations extends Syncroton_Command_Wbxml
      */
     protected function _handleEmptyFolderContents(SimpleXMLElement $emptyFolderContent)
     {
-        $folderArray = array(
+        $folderArray = [
             'collectiondId' => null,
-            'options'       => array('deleteSubFolders' => FALSE)
-        );
+            'options'       => ['deleteSubFolders' => FALSE]
+        ];
         
         // try to fetch element from namespace AirSync
         $airSync = $emptyFolderContent->children('uri:AirSync');

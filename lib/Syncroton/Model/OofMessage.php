@@ -18,16 +18,16 @@
  */
 class Syncroton_Model_OofMessage extends Syncroton_Model_AXMLEntry
 {
-    protected $_xmlBaseElement = array('OofMessage');
+    protected $_xmlBaseElement = ['OofMessage'];
 
-    protected $_properties = array(
-        'Settings' => array(
-            'appliesToInternal'        => array('type' => 'none'),
-            'appliesToExternalKnown'   => array('type' => 'none'),
-            'appliesToExternalUnknown' => array('type' => 'none'),
-            'bodyType'                 => array('type' => 'string'),
-            'enabled'                  => array('type' => 'string'),
-            'replyMessage'             => array('type' => 'string'),
-        )
-    );
+    protected $_properties = [
+        'Settings' => [
+            'appliesToInternal'        => ['type' => 'none'],
+            'appliesToExternalKnown'   => ['type' => 'none'],
+            'appliesToExternalUnknown' => ['type' => 'none'],
+            'bodyType'                 => ['type' => 'string'],
+            'enabled'                  => ['type' => 'string'],
+            'replyMessage'             => ['type' => 'string'],
+        ]
+    ];
 }

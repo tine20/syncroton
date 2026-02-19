@@ -28,9 +28,9 @@ class Syncroton_Exception_Status_MeetingResponse extends Syncroton_Exception_Sta
      *
      * @var array
      */
-    protected $_errorMessages = array(
+    protected $_errorMessages = [
         self::INVALID_REQUEST       => "Invalid meeting request",
         self::MEETING_SERVER_ERROR  => "An error occurred on the server mailbox",
         self::MEETING_ERROR         => "An error occurred on the server",
-    );
+    ];
 }

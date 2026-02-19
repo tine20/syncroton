@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage1 extends Syncroton_Wbxml_Dtd_Activ
     
     protected $_codePageName    = 'Contacts';
         
-    protected $_tags = array(     
+    protected $_tags = [     
         'Anniversary'               => 0x05,
         'AssistantName'             => 0x06,
         'AssistantPhoneNumber'      => 0x07,
@@ -81,5 +81,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage1 extends Syncroton_Wbxml_Dtd_Activ
         'Picture'                => 0x3c,
         'Alias'                  => 0x3d,
         'WeightedRank'           => 0x3e
-    );
+    ];
 }
