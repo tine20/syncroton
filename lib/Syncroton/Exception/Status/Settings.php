@@ -32,11 +32,11 @@ class Syncroton_Exception_Status_Settings extends Syncroton_Exception_Status
      * @var array
      */
     protected $_errorMessages = array(
-        self::PROTOCOL_ERROR        => "Protocol error";
-        self::ACCESS_DENIED         => "Access denied";
-        self::SERVICE_UNAVAILABLE   => "Server unavailable";
-        self::INVALID_ARGUMENTS     => "Invalid arguments";
-        self::CONFLICTING_ARGUMENTS => "Conflicting arguments";
-        self::DENIED_BY_POLICY      => "Denied by policy. Disabled by administrator";
+        self::PROTOCOL_ERROR        => "Protocol error",
+        self::ACCESS_DENIED         => "Access denied",
+        self::SERVICE_UNAVAILABLE   => "Server unavailable",
+        self::INVALID_ARGUMENTS     => "Invalid arguments",
+        self::CONFLICTING_ARGUMENTS => "Conflicting arguments",
+        self::DENIED_BY_POLICY      => "Denied by policy. Disabled by administrator",
     );
 }

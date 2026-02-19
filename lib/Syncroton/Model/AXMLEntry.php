@@ -254,7 +254,7 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
                 continue;
             }
             
-            list (, $elementProperties) = $this->_getElementProperties($elementName);
+            [, $elementProperties] = $this->_getElementProperties($elementName);
             
             switch ($elementProperties['type']) {
                 case 'container':
