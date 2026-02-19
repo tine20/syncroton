@@ -12,13 +12,14 @@
         "url": "https://github.com/tine20/zendframework1.git"
     }],
     "require": {
-        "php": ">=7.4.0",
+        "php": ">=8.0",
         "ext-ctype": "*",
         "zendframework/zendframework1": "1.12.20.*"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5",
-        "phing/phing": "2.6.1-p0"
+        "phing/phing": "2.6.1-p0",
+        "rector/rector": "^2.3"
     },
     "autoload": {
         "psr-0": {
@@ -33,6 +34,8 @@
     },
     "scripts": {
         "php8test": "cd tests/docker; docker-compose run cli8 ash -c 'cd /src/tests; ../vendor/bin/phpunit --color Syncroton/AllTests.php'; cd ../..;",
-        "php81test": "cd tests/docker; docker-compose run cli81 ash -c 'cd /src/tests; ../vendor/bin/phpunit --color Syncroton/AllTests.php'; cd ../..;"
+        "php81test": "cd tests/docker; docker-compose run cli81 ash -c 'cd /src/tests; ../vendor/bin/phpunit --color Syncroton/AllTests.php'; cd ../..;",
+        "rector:test": "vendor/bin/rector process --config .rector.php --dry-run",
+        "rector:fix": "vendor/bin/rector process --config .rector.php"
     }
 }
