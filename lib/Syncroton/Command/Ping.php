@@ -40,7 +40,7 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
     protected $_defaultNameSpace = 'uri:Ping';
     protected $_documentElement  = 'Ping';
     
-    protected $_foldersWithChanges = array();
+    protected $_foldersWithChanges = [];
     
     /**
      * process the XML file and add, change, delete or fetches data 
@@ -72,7 +72,7 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
                     return;
                 }
 
-                $folders = array();
+                $folders = [];
                 foreach ($xml->Folders->Folder as $folderXml) {
                     try {
                         // does the folder exist?
@@ -190,17 +190,17 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
                 }
 
                 $now = new DateTime('now', new DateTimeZone('UTC'));
-                
+
                 foreach ($folders as $folderId) {
                     try {
                         $folder         = $this->_folderBackend->get($folderId);
                         $dataController = Syncroton_Data_Factory::factory($folder->class, $this->_device, $this->_syncTimeStamp);
-                        
+
                     } catch (Syncroton_Exception_NotFound $e) {
                         if ($this->_logger instanceof Zend_Log)
                             $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " " . $e->getMessage());
                         $status = self::STATUS_FOLDER_NOT_FOUND;
-                        
+
                         break;
 
                     } catch (Zend_Db_Exception $e) {
@@ -214,52 +214,52 @@ class Syncroton_Command_Ping extends Syncroton_Command_Wbxml
                     } catch (Exception $e) {
                         if ($this->_logger instanceof Zend_Log)
                             $this->_logger->err(__METHOD__ . '::' . __LINE__ . " " . $e->getMessage());
-                        
+
                         // do nothing, maybe temporal issue, should we stop?
                         continue;
                     }
 
                     try {
                         $syncState = $this->_syncStateBackend->getSyncState($this->_device, $folder);
-                        
+
                         // another process synchronized data of this folder already. let's skip it
                         if ($syncState->lastsync > $this->_syncTimeStamp) {
                             continue;
                         }
-                        
+
                         // safe battery time by skipping folders which got synchronied less than Syncroton_Registry::getQuietTime() seconds ago
                         if (($now->getTimestamp() - $syncState->lastsync->getTimestamp()) < Syncroton_Registry::getQuietTime()) {
                             continue;
                         }
-                        
+
                         $foundChanges = $dataController->hasChanges($this->_contentStateBackend, $folder, $syncState);
-                        
+
                     } catch (Syncroton_Exception_NotFound $e) {
                         // folder got never synchronized to client
                         if ($this->_logger instanceof Zend_Log) 
                             $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " " . $e->getMessage());
                         if ($this->_logger instanceof Zend_Log) 
                             $this->_logger->info(__METHOD__ . '::' . __LINE__ . ' syncstate not found. enforce sync for folder: ' . $folder->serverId);
-                        
+
                         $foundChanges = true;
                     }
-                    
+
                     if ($foundChanges == true) {
                         $this->_foldersWithChanges[] = $folder;
                         $status = self::STATUS_CHANGES_FOUND;
                     }
                 }
-                
+
                 if ($status != self::STATUS_NO_CHANGES_FOUND) {
                     break;
                 }
 
                 // Update secondsLeft (again)
                 $secondsLeft = $intervalEnd - time();
-                
+
                 if ($this->_logger instanceof Zend_Log)
                     $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " DeviceId: " . $this->_device->deviceid . " seconds left: " . $secondsLeft);
-            
+
             // See: http://www.tine20.org/forum/viewtopic.php?f=12&t=12146
             //
             // break if there are less than PingTimeout + 10 seconds left for the next loop

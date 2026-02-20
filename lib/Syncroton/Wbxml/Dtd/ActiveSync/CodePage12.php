@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage12 extends Syncroton_Wbxml_Dtd_Acti
     
     protected $_codePageName    = 'Contacts2';
         
-    protected $_tags = array(     
+    protected $_tags = [     
         'CustomerId'              => 0x05,
         'GovernmentId'            => 0x06,
         'IMAddress'               => 0x07,
@@ -33,5 +33,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage12 extends Syncroton_Wbxml_Dtd_Acti
         'AccountName'             => 0x0c,
         'NickName'                => 0x0d,
         'MMS'                     => 0x0e
-    );
+    ];
 }

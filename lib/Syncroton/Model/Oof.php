@@ -22,14 +22,14 @@ class Syncroton_Model_Oof extends Syncroton_Model_AXMLEntry
     const STATUS_GLOBAL     = 1;
     const STATUS_TIME_BASED = 2;
 
-    protected $_xmlBaseElement = array('Get', 'Set');
+    protected $_xmlBaseElement = ['Get', 'Set'];
 
-    protected $_properties = array(
-        'Settings' => array(
-            'endTime'    => array('type' => 'datetime'),
-            'oofMessage' => array('type' => 'container', 'multiple' => true, 'class' => 'Syncroton_Model_OofMessage'),
-            'oofState'   => array('type' => 'number'),
-            'startTime'  => array('type' => 'datetime'),
-        )
-    );
+    protected $_properties = [
+        'Settings' => [
+            'endTime'    => ['type' => 'datetime'],
+            'oofMessage' => ['type' => 'container', 'multiple' => true, 'class' => 'Syncroton_Model_OofMessage'],
+            'oofState'   => ['type' => 'number'],
+            'startTime'  => ['type' => 'datetime'],
+        ]
+    ];
 }

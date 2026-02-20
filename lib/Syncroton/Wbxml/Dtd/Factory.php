@@ -31,19 +31,11 @@ class Syncroton_Wbxml_Dtd_Factory
      */
     static public function factory ($_type)
     {
-        switch ($_type) {
-            case self::ACTIVESYNC:
-                $instance = new Syncroton_Wbxml_Dtd_ActiveSync();
-                break;
-                
-            case self::SYNCML:
-                $instance = new Syncroton_Wbxml_Dtd_Syncml();
-                break;
-                                
-            default:
-                throw new Syncroton_Wbxml_Exception('unsupported DTD: ' . $_type);
-                break;
-        }
+        $instance = match ($_type) {
+            self::ACTIVESYNC => new Syncroton_Wbxml_Dtd_ActiveSync(),
+            self::SYNCML => new Syncroton_Wbxml_Dtd_Syncml(),
+            default => throw new Syncroton_Wbxml_Exception('unsupported DTD: ' . $_type),
+        };
         return $instance;
     }
 }    

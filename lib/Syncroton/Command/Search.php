@@ -72,9 +72,9 @@ class Syncroton_Command_Search extends Syncroton_Command_Wbxml
             if ($this->_logger instanceof Zend_Log)
                 $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " saerch exception trace : " . $e->getTraceAsString());
             
-            $storeResponse = new Syncroton_Model_StoreResponse(array(
+            $storeResponse = new Syncroton_Model_StoreResponse([
                'status' => self::STATUS_SERVER_ERROR
-            ));
+            ]);
         }
 
         $search = $this->_outputDom->documentElement;

@@ -24,15 +24,15 @@ class Syncroton_Model_Note extends Syncroton_Model_AXMLEntry
 {
     protected $_xmlBaseElement = 'ApplicationData';
 
-    protected $_properties = array(
-        'AirSyncBase' => array(
-            'body'             => array('type' => 'container', 'class' => 'Syncroton_Model_EmailBody')
-        ),
-        'Notes' => array(
-            'categories'       => array('type' => 'container', 'childElement' => 'category'),
-            'lastModifiedDate' => array('type' => 'datetime'),
-            'messageClass'     => array('type' => 'string'),
-            'subject'          => array('type' => 'string'),
-        )
-    );
+    protected $_properties = [
+        'AirSyncBase' => [
+            'body'             => ['type' => 'container', 'class' => 'Syncroton_Model_EmailBody']
+        ],
+        'Notes' => [
+            'categories'       => ['type' => 'container', 'childElement' => 'category'],
+            'lastModifiedDate' => ['type' => 'datetime'],
+            'messageClass'     => ['type' => 'string'],
+            'subject'          => ['type' => 'string'],
+        ]
+    ];
 }

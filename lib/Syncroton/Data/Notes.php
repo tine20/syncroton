@@ -17,8 +17,8 @@
  */
 class Syncroton_Data_Notes extends Syncroton_Data_AData
 {
-    protected $_supportedFolderTypes = array(
+    protected $_supportedFolderTypes = [
         Syncroton_Command_FolderSync::FOLDERTYPE_NOTE,
         Syncroton_Command_FolderSync::FOLDERTYPE_NOTE_USER_CREATED
-    );
+    ];
 }

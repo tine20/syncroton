@@ -30,7 +30,7 @@ class Syncroton_Command_MoveItems extends Syncroton_Command_Wbxml
      *
      * @var array
      */
-    protected $_moves = array();
+    protected $_moves = [];
 
     /**
      * parse MoveItems request
@@ -40,11 +40,11 @@ class Syncroton_Command_MoveItems extends Syncroton_Command_Wbxml
         $xml = simplexml_import_dom($this->_requestBody);
 
         foreach ($xml->Move as $move) {
-            $this->_moves[] = array(
+            $this->_moves[] = [
                 'srcMsgId' => (string)$move->SrcMsgId,
                 'srcFldId' => (string)$move->SrcFldId,
                 'dstFldId' => (string)$move->DstFldId
-            );
+            ];
         }
 
         if ($this->_logger instanceof Zend_Log)
@@ -75,7 +75,7 @@ class Syncroton_Command_MoveItems extends Syncroton_Command_Wbxml
 
                 try {
                     $destinationFolder = $this->_folderBackend->getFolder($this->_device, $move['dstFldId']);
-                } catch (Syncroton_Exception_NotFound $senf) {
+                } catch (Syncroton_Exception_NotFound) {
                     throw new Syncroton_Exception_Status_MoveItems(Syncroton_Exception_Status_MoveItems::INVALID_DESTINATION);
                 }
 
@@ -89,7 +89,7 @@ class Syncroton_Command_MoveItems extends Syncroton_Command_Wbxml
                 }
             } catch (Syncroton_Exception_Status $e) {
                 $response->appendChild($this->_outputDom->createElementNS('uri:Move', 'Status', $e->getCode()));
-            } catch (Exception $e) {
+            } catch (Exception) {
                 $response->appendChild($this->_outputDom->createElementNS('uri:Move', 'Status', Syncroton_Exception_Status::SERVER_ERROR));
             }
         }

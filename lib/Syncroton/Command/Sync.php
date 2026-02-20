@@ -80,9 +80,9 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
      *
      * @var array
      */
-    protected $_collections = array();
+    protected $_collections = [];
     
-    protected $_modifications = array();
+    protected $_modifications = [];
     
     /**
      * the global WindowSize
@@ -156,11 +156,11 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
         }
         
         // load options from lastsynccollection
-        $lastSyncCollection = array('options' => array());
+        $lastSyncCollection = ['options' => []];
         if (!empty($this->_device->lastsynccollection)) {
             $lastSyncCollection = Zend_Json::decode($this->_device->lastsynccollection);
             if (!array_key_exists('options', $lastSyncCollection) || !is_array($lastSyncCollection['options'])) {
-                $lastSyncCollection['options'] = array();
+                $lastSyncCollection['options'] = [];
             }
         }
 
@@ -172,7 +172,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
             return;
         }
 
-        $collections = array();
+        $collections = [];
         
         foreach ($requestXML->Collections->Collection as $xmlCollection) {
             $collectionId = (string)$xmlCollection->CollectionId;
@@ -201,17 +201,17 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
             try {
                 $collectionData->folder = $this->_folderBackend->getFolder($this->_device, $collectionData->collectionId);
                 
-            } catch (Syncroton_Exception_NotFound $senf) {
+            } catch (Syncroton_Exception_NotFound) {
                 if ($this->_logger instanceof Zend_Log) 
                     $this->_logger->warn(__METHOD__ . '::' . __LINE__ . " folder {$collectionData->collectionId} not found");
                 
                 // trigger INVALID_SYNCKEY instead of OBJECT_NOTFOUND when synckey is higher than 0
                 // to avoid a syncloop for the iPhone
                 if ($collectionData->syncKey > 0) {
-                    $collectionData->folder    = new Syncroton_Model_Folder(array(
+                    $collectionData->folder    = new Syncroton_Model_Folder([
                         'deviceId' => $this->_device,
                         'serverId' => $collectionData->collectionId
-                    ));
+                    ]);
                 }
                 
                 $this->_collections[$collectionData->collectionId] = $collectionData;
@@ -231,12 +231,12 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                 $this->_syncStateBackend->resetState($this->_device, $collectionData->folder);
                 $this->_contentStateBackend->resetState($this->_device, $collectionData->folder);
             
-                $collectionData->syncState    = new Syncroton_Model_SyncState(array(
+                $collectionData->syncState    = new Syncroton_Model_SyncState([
                     'device_id' => $this->_device,
                     'counter'   => 0,
                     'type'      => $collectionData->folder,
                     'lastsync'  => $this->_syncTimeStamp
-                ));
+                ]);
                 
                 $this->_collections[$collectionData->collectionId] = $collectionData;
                 
@@ -259,40 +259,23 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
             
             $dataController = Syncroton_Data_Factory::factory($collectionData->folder->class, $this->_device, $collectionData->syncState->lastsync);
             
-            switch($collectionData->folder->class) {
-                case Syncroton_Data_Factory::CLASS_CALENDAR:
-                    $dataClass = 'Syncroton_Model_Event';
-                    break;
-                    
-                case Syncroton_Data_Factory::CLASS_CONTACTS:
-                    $dataClass = 'Syncroton_Model_Contact';
-                    break;
-                    
-                case Syncroton_Data_Factory::CLASS_EMAIL:
-                    $dataClass = 'Syncroton_Model_Email';
-                    break;
-                    
-                case Syncroton_Data_Factory::CLASS_NOTES:
-                    $dataClass = 'Syncroton_Model_Note';
-                    break;
-
-                case Syncroton_Data_Factory::CLASS_TASKS:
-                    $dataClass = 'Syncroton_Model_Task';
-                    break;
-                    
-                default:
-                    throw new Syncroton_Exception_UnexpectedValue('invalid class provided');
-                    break;
-            }
+            $dataClass = match ($collectionData->folder->class) {
+                Syncroton_Data_Factory::CLASS_CALENDAR => 'Syncroton_Model_Event',
+                Syncroton_Data_Factory::CLASS_CONTACTS => 'Syncroton_Model_Contact',
+                Syncroton_Data_Factory::CLASS_EMAIL => 'Syncroton_Model_Email',
+                Syncroton_Data_Factory::CLASS_NOTES => 'Syncroton_Model_Note',
+                Syncroton_Data_Factory::CLASS_TASKS => 'Syncroton_Model_Task',
+                default => throw new Syncroton_Exception_UnexpectedValue('invalid class provided'),
+            };
             
-            $clientModifications = array(
-                'added'            => array(),
-                'changed'          => array(),
-                'deleted'          => array(),
-                'forceAdd'         => array(),
-                'forceChange'      => array(),
-                'toBeFetched'      => array(),
-            );
+            $clientModifications = [
+                'added'            => [],
+                'changed'          => [],
+                'deleted'          => [],
+                'forceAdd'         => [],
+                'forceChange'      => [],
+                'toBeFetched'      => [],
+            ];
             
             // handle incoming data
             if($collectionData->hasClientAdds()) {
@@ -311,26 +294,26 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                         
                         $serverId = $dataController->createEntry($collectionData->collectionId, new $dataClass($add->ApplicationData));
                         
-                        $clientModifications['added'][$serverId] = array(
+                        $clientModifications['added'][$serverId] = [
                             'clientId'     => (string)$add->ClientId,
                             'serverId'     => $serverId,
                             'status'       => self::STATUS_SUCCESS,
-                            'contentState' => $this->_contentStateBackend->create(new Syncroton_Model_Content(array(
+                            'contentState' => $this->_contentStateBackend->create(new Syncroton_Model_Content([
                                 'device_id'        => $this->_device,
                                 'folder_id'        => $collectionData->folder,
                                 'contentid'        => $serverId,
                                 'creation_time'    => $this->_syncTimeStamp,
                                 'creation_synckey' => $collectionData->syncKey + 1
-                            )))
-                        );
+                            ]))
+                        ];
                         
                     } catch (Exception $e) {
                         if ($this->_logger instanceof Zend_Log) 
                             $this->_logger->warn(__METHOD__ . '::' . __LINE__ . " failed to add entry " . $e->getMessage());
-                        $clientModifications['added'][] = array(
+                        $clientModifications['added'][] = [
                             'clientId' => (string)$add->ClientId,
                             'status'   => self::STATUS_SERVER_ERROR
-                        );
+                        ];
                     }
                 }
             }
@@ -349,11 +332,11 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                         $dataController->updateEntry($collectionData->collectionId, $serverId, new $dataClass($change->ApplicationData));
                         $clientModifications['changed'][$serverId] = self::STATUS_SUCCESS;
                         
-                    } catch (Syncroton_Exception_AccessDenied $e) {
+                    } catch (Syncroton_Exception_AccessDenied) {
                         $clientModifications['changed'][$serverId] = self::STATUS_CONFLICT_MATCHING_THE_CLIENT_AND_SERVER_OBJECT;
                         $clientModifications['forceChange'][$serverId] = $serverId;
                         
-                    } catch (Syncroton_Exception_NotFound $e) {
+                    } catch (Syncroton_Exception_NotFound) {
                         // entry does not exist anymore, will get deleted automaticaly
                         $clientModifications['changed'][$serverId] = self::STATUS_OBJECT_NOT_FOUND;
                         
@@ -382,7 +365,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                         try {
                             $dataController->deleteEntry($collectionData->collectionId, $serverId, $collectionData);
                             
-                        } catch(Syncroton_Exception_NotFound $e) {
+                        } catch(Syncroton_Exception_NotFound) {
                             if ($this->_logger instanceof Zend_Log) 
                                 $this->_logger->crit(__METHOD__ . '::' . __LINE__ . ' tried to delete entry ' . $serverId . ' but entry was not found');
                             
@@ -393,7 +376,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                         }
                         $this->_contentStateBackend->delete($state);
                         
-                    } catch (Syncroton_Exception_NotFound $senf) {
+                    } catch (Syncroton_Exception_NotFound) {
                         if ($this->_logger instanceof Zend_Log) 
                             $this->_logger->info(__METHOD__ . '::' . __LINE__ . ' ' . $serverId . ' should have been removed from client already');
                         // should we send a special status???
@@ -414,7 +397,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                 if ($this->_logger instanceof Zend_Log) 
                     $this->_logger->info(__METHOD__ . '::' . __LINE__ . " found " . count($fetches) . " entries to be fetched from server");
                 
-                $toBeFecthed = array();
+                $toBeFecthed = [];
                 
                 foreach ($fetches as $fetch) {
                     $serverId = (string)$fetch->ServerId;
@@ -464,79 +447,79 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                 }
 
                 $wakeupCallback();
-                
+
                 $now = new DateTime('now', new DateTimeZone('UTC'));
 
                 foreach($this->_collections as $collectionData) {
                     // continue immediately if folder does not exist 
                     if (! ($collectionData->folder instanceof Syncroton_Model_IFolder)) {
                         break 2;
-                        
+
                     // countinue immediately if syncstate is invalid
                     } elseif (! ($collectionData->syncState instanceof Syncroton_Model_ISyncState)) {
                         break 2;
-                        
+
                     } else {
                         if ($collectionData->getChanges !== true) {
                             continue;
                         }
-                        
+
                         try {
                             // just check if the folder still exists
                             $this->_folderBackend->get($collectionData->folder);
                         } catch (Syncroton_Exception_NotFound $senf) {
                             if ($this->_logger instanceof Zend_Log)
                                 $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " collection does not exist anymore: " . $collectionData->collectionId);
-                            
+
                             $collectionData->getChanges = false;
-                            
+
                             // make sure this is the last while loop
                             // no break 2 here, as we like to check the other folders too
                             $intervalStart -= $this->_heartbeatInterval;
                         }
-                        
+
                         // check that the syncstate still exists and is still valid
                         try {
                             $syncState = $this->_syncStateBackend->getSyncState($this->_device, $collectionData->folder);
-                            
+
                             // another process synchronized data of this folder already. let's skip it
                             if ($syncState->id !== $collectionData->syncState->id) {
                                 if ($this->_logger instanceof Zend_Log)
                                     $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " syncstate changed during heartbeat interval for collection: " . $collectionData->folder->serverId);
-                                
+
                                 $collectionData->getChanges = false;
-                                
+
                                 // make sure this is the last while loop
                                 // no break 2 here, as we like to check the other folders too
                                 $intervalStart -= $this->_heartbeatInterval;
                             }
-                        } catch (Syncroton_Exception_NotFound $senf) {
+                        } catch (Syncroton_Exception_NotFound) {
                             if ($this->_logger instanceof Zend_Log)
                                 $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " no syncstate found anymore for collection: " . $collectionData->folder->serverId);
-                            
+
                             $collectionData->syncState = null;
-                            
+
                             // make sure this is the last while loop
                             // no break 2 here, as we like to check the other folders too
                             $intervalStart -= $this->_heartbeatInterval;
                         }
-                        
-                        
+
+
                         // safe battery time by skipping folders which got synchronied less than Syncroton_Command_Ping::$quietTime seconds ago
                         if ( ! $collectionData->syncState instanceof Syncroton_Model_SyncState ||
                              ($now->getTimestamp() - $collectionData->syncState->lastsync->getTimestamp()) < Syncroton_Registry::getQuietTime()) {
                             continue;
                         }
-                        
+
                         $dataController = Syncroton_Data_Factory::factory($collectionData->folder->class , $this->_device, $collectionData->syncState->lastsync);
-                        
+
                         // countinue immediately if there are any changes available
                         if($dataController->hasChanges($this->_contentStateBackend, $collectionData->folder, $collectionData->syncState)) {
                             break 2;
                         }
                     }
                 }
-                
+
             // See: http://www.tine20.org/forum/viewtopic.php?f=12&t=12146
             //
             // break if there are less than PingTimeout + 10 seconds left for the next loop
@@ -551,12 +534,12 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
             /**
              * keep track of entries added on server side
              */
-            $newContentStates = array();
+            $newContentStates = [];
             
             /**
              * keep track of entries deleted on server side
              */
-            $deletedContentStates = array();
+            $deletedContentStates = [];
             
             // invalid collectionid provided
             if (! ($collectionData->folder instanceof Syncroton_Model_IFolder)) {
@@ -575,7 +558,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                 $collection->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'SyncKey', 0));
                 $collection->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'CollectionId', $collectionData->collectionId));
                 $collection->appendChild($this->_outputDom->createElementNS('uri:AirSync', 'Status', self::STATUS_INVALID_SYNC_KEY));
-                
+
             // initial sync
             } elseif ($collectionData->syncState->counter === 0) {
                 $collectionData->syncState->counter++;
@@ -595,11 +578,11 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                 $dataController = Syncroton_Data_Factory::factory($collectionData->folder->class , $this->_device, $this->_syncTimeStamp);
                 
                 $clientModifications = $this->_modifications[$collectionData->collectionId];
-                $serverModifications = array(
-                    'added'   => array(),
-                    'changed' => array(),
-                    'deleted' => array(),
-                );
+                $serverModifications = [
+                    'added'   => [],
+                    'changed' => [],
+                    'deleted' => [],
+                ];
 
                 $status = self::STATUS_SUCCESS;
                 $hasChanges = 0;
@@ -785,7 +768,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                             if ($this->_logger instanceof Zend_Log) {
                                 $this->_logger->warn(__METHOD__ . '::' . __LINE__
                                     . ' Unable to convert entry ("' . $serverId . '") to xml: ' . $e->getMessage()
-                                    . ' ' . get_class($e) . ' for data controller: ' . get_class($dataController));
+                                    . ' ' . $e::class . ' for data controller: ' . $dataController::class);
                                 $this->_logger->debug(__METHOD__ . '::' . __LINE__ . ' ' . $e->getTraceAsString());
                             }
                             $fetch->appendChild($this->_outputDom->createElementNS('uri:AirSync',
@@ -838,7 +821,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                         $commands->appendChild($add);
                         
                         $collectionChanges++;
-                    } catch (Syncroton_Exception_MemoryExhausted $seme) {
+                    } catch (Syncroton_Exception_MemoryExhausted) {
                         // continue to next entry, as there is not enough memory left for the current entry
                         // this will lead to MoreAvailable at the end and the entry will be synced during the next Sync command
                         if ($this->_logger instanceof Zend_Log)
@@ -861,13 +844,13 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                     }
                     
                     // mark as sent to the client, even the conversion to xml might have failed 
-                    $newContentStates[] = new Syncroton_Model_Content(array(
+                    $newContentStates[] = new Syncroton_Model_Content([
                         'device_id'        => $this->_device,
                         'folder_id'        => $collectionData->folder,
                         'contentid'        => $serverId,
                         'creation_time'    => $this->_syncTimeStamp,
                         'creation_synckey' => $collectionData->syncState->counter + 1
-                    ));
+                    ]);
                     unset($serverModifications['added'][$id]);
                 }
 
@@ -893,7 +876,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                         $commands->appendChild($change);
                         
                         $collectionChanges++;
-                    } catch (Syncroton_Exception_MemoryExhausted $seme) {
+                    } catch (Syncroton_Exception_MemoryExhausted) {
                         // continue to next entry, as there is not enough memory left for the current entry
                         // this will lead to MoreAvailable at the end and the entry will be synced during the next Sync command
                         if ($this->_logger instanceof Zend_Log)
@@ -984,11 +967,11 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                 
                 // store pending data in sync state when needed
                 if(isset($countOfPendingChanges) && $countOfPendingChanges > 0) {
-                    $collectionData->syncState->pendingdata = array(
+                    $collectionData->syncState->pendingdata = [
                         'added'   => (array)$serverModifications['added'],
                         'changed' => (array)$serverModifications['changed'],
                         'deleted' => (array)$serverModifications['deleted']
-                    );
+                    ];
                 } else {
                     $collectionData->syncState->pendingdata = null;
                 }
@@ -1030,7 +1013,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                     if (!empty($clientModifications['added'])) {
                         foreach ($clientModifications['added'] as $added) {
                             $this->_contentStateBackend->delete($added['contentState']);
-                            $dataController->deleteEntry($collectionData->collectionId, $added['serverId'], array());
+                            $dataController->deleteEntry($collectionData->collectionId, $added['serverId'], []);
                         }
                     }
                     
@@ -1047,7 +1030,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
                 if ($folderState->isDirty()) {
                     $this->_folderBackend->update($folderState);
                 }
-            } catch (Syncroton_Exception_NotFound $senf) {
+            } catch (Syncroton_Exception_NotFound) {
                 // failed to get folderstate => should not happen but is also no problem in this state
                 if ($this->_logger instanceof Zend_Log) 
                     $this->_logger->warn(__METHOD__ . '::' . __LINE__ . ' failed to get folder state for: ' . $collectionData->collectionId);
@@ -1082,7 +1065,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
         
         // remove Commands and Supported elements
         foreach ($collections as $collection) {
-            foreach (array('Commands', 'Supported') as $element) {
+            foreach (['Commands', 'Supported'] as $element) {
                 $childrenToRemove = $collection->getElementsByTagName($element);
                 
                 foreach ($childrenToRemove as $childToRemove) {
@@ -1102,7 +1085,7 @@ class Syncroton_Command_Sync extends Syncroton_Command_Wbxml
      */
     protected function _mergeSyncRequest($requestBody, Syncroton_Model_Device $device)
     {
-        $lastSyncCollection = array();
+        $lastSyncCollection = [];
         
         if (!empty($device->lastsynccollection)) {
             $lastSyncCollection = Zend_Json::decode($device->lastsynccollection);

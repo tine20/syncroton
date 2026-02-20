@@ -22,7 +22,7 @@
  */
 class Syncroton_Model_StoreRequest
 {
-    protected $_store = array();
+    protected $_store = [];
 
     protected $_xmlStore;
 
@@ -37,17 +37,17 @@ class Syncroton_Model_StoreRequest
 
     public function setFromArray(array $properties)
     {
-        $this->_store = array(
-            'options' => array(
+        $this->_store = [
+            'options' => [
                 'mimeSupport'     => Syncroton_Command_Sync::MIMESUPPORT_DONT_SEND_MIME,
-                'bodyPreferences' => array()
-            ),
-        );
+                'bodyPreferences' => []
+            ],
+        ];
 
         foreach ($properties as $key => $value) {
             try {
                 $this->$key = $value; //echo __LINE__ . PHP_EOL;
-            } catch (InvalidArgumentException $iae) {
+            } catch (InvalidArgumentException) {
                 //ignore invalid properties
                 //echo __LINE__ . PHP_EOL;
             }
@@ -67,13 +67,13 @@ class Syncroton_Model_StoreRequest
 
         $this->_xmlStore = $xmlStore;
 
-        $this->_store = array(
+        $this->_store = [
             'name'             => (string) $xmlStore->Name,
-            'options'          => array(
+            'options'          => [
                 'mimeSupport'     => Syncroton_Command_Sync::MIMESUPPORT_DONT_SEND_MIME,
-                'bodyPreferences' => array(),
-            ),
-        );
+                'bodyPreferences' => [],
+            ],
+        ];
 
         // Process Query
         if ($this->_store['name'] == 'GAL') {
@@ -175,17 +175,11 @@ class Syncroton_Model_StoreRequest
             if (!empty($xmlStore->Options->Range)) {
                 $this->_store['options']['range'] = (string) $xmlStore->Options->Range;
             } else {
-                switch ($this->_store['name']) {
-                case 'DocumentLibrary':
-                case 'Document Library': //?
-                    '0-999';
-                    break;
-                case 'Mailbox':
-                case 'GAL':
-                default:
-                    '0-99';
-                    break;
-                }
+                match ($this->_store['name']) {
+                    //?
+                    'DocumentLibrary', 'Document Library' => '0-999',
+                    default => '0-99',
+                };
             }
 
             $this->_store['options']['range'] = isset($this->_store['options']['range'])
@@ -206,9 +200,9 @@ class Syncroton_Model_StoreRequest
             if (isset($airSyncBase->BodyPreference)) {
                 foreach ($airSyncBase->BodyPreference as $bodyPreference) {
                     $type = (int) $bodyPreference->Type;
-                    $this->_store['options']['bodyPreferences'][$type] = array(
+                    $this->_store['options']['bodyPreferences'][$type] = [
                         'type' => $type
-                    );
+                    ];
 
                     // optional
                     if (isset($bodyPreference->TruncationSize)) {

@@ -32,16 +32,16 @@ class Syncroton_Model_MeetingResponse extends Syncroton_Model_AXMLEntry
     const RESPONSE_TENTATIVE = 2;
     const RESPONSE_DECLINED  = 3;
     
-    protected $_properties = array(
-        'MeetingResponse' => array(
-            'userResponse'  => array('type' => 'number'),
-            'collectionId'  => array('type' => 'string'),
-            'calendarId'    => array('type' => 'string'),
-            'requestId'     => array('type' => 'string'),
-            'instanceId'    => array('type' => 'datetime'),
-        ),
-        'Search' => array(
-            'longId'        => array('type' => 'string')
-        )
-    );
+    protected $_properties = [
+        'MeetingResponse' => [
+            'userResponse'  => ['type' => 'number'],
+            'collectionId'  => ['type' => 'string'],
+            'calendarId'    => ['type' => 'string'],
+            'requestId'     => ['type' => 'string'],
+            'instanceId'    => ['type' => 'datetime'],
+        ],
+        'Search' => [
+            'longId'        => ['type' => 'string']
+        ]
+    ];
 }

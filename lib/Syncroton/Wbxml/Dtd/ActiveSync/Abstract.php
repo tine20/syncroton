@@ -46,7 +46,7 @@ abstract class Syncroton_Wbxml_Dtd_ActiveSync_Abstract
      *
      * @var array
      */
-    protected $_tags            = array();
+    protected $_tags            = [];
     
     /**
      * return document page identifier

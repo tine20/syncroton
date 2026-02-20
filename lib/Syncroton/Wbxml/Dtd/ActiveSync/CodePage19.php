@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage19 extends Syncroton_Wbxml_Dtd_Acti
     
     protected $_codePageName    = 'DocumentLibrary';
         
-    protected $_tags = array(
+    protected $_tags = [
         'LinkId'                => 0x05,
         'DisplayName'           => 0x06,
         'IsFolder'              => 0x07,
@@ -31,5 +31,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage19 extends Syncroton_Wbxml_Dtd_Acti
         'IsHidden'              => 0x0a,
         'ContentLength'         => 0x0b,
         'ContentType'           => 0x0c
-    );
+    ];
 }

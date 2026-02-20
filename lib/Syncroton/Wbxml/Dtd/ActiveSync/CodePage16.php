@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage16 extends Syncroton_Wbxml_Dtd_Acti
     
     protected $_codePageName    = 'GAL';
         
-    protected $_tags = array(
+    protected $_tags = [
         'DisplayName'           => 0x05,
         'Phone'                 => 0x06,
         'Office'                => 0x07,
@@ -37,5 +37,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage16 extends Syncroton_Wbxml_Dtd_Acti
         'Picture'               => 0x10,
         'Status'                => 0x11,
         'Data'                  => 0x12,
-    );
+    ];
 }

@@ -26,7 +26,7 @@ class Syncroton_Data_Factory
     const STORE_EMAIL    = 'Mailbox';
     const STORE_GAL      = 'GAL';
     
-    protected static $_classMap = array();
+    protected static $_classMap = [];
     
     /**
      * @param mixed $_class
@@ -65,7 +65,7 @@ class Syncroton_Data_Factory
 
             default:
                 throw new Syncroton_Exception_UnexpectedValue('invalid class type provided');
-                breeak;
+                \BREEAK;
         }
         
         $class = new $className($_device, $_timeStamp);

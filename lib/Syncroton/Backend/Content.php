@@ -34,11 +34,11 @@ class Syncroton_Backend_Content extends Syncroton_Backend_ABackend implements Sy
     {
         $id = $id instanceof $this->_modelInterfaceName ? $id->id : $id;
         
-        $this->_db->update($this->_tablePrefix . 'content', array(
+        $this->_db->update($this->_tablePrefix . 'content', [
             'is_deleted' => 1
-        ), array(
+        ], [
             'id = ?' => $id
-        ));
+        ]);
         
     }
     
@@ -106,10 +106,10 @@ class Syncroton_Backend_Content extends Syncroton_Backend_ABackend implements Sy
         $deviceId = $deviceId instanceof Syncroton_Model_IDevice ? $deviceId->id : $deviceId;
         $folderId = $folderId instanceof Syncroton_Model_IFolder ? $folderId->id : $folderId;
          
-        $where = array(
+        $where = [
             $this->_db->quoteInto($this->_db->quoteIdentifier('device_id') . ' = ?', $deviceId),
             $this->_db->quoteInto($this->_db->quoteIdentifier('folder_id') . ' = ?', $folderId)
-        );
+        ];
         
         $this->_db->delete($this->_tablePrefix . 'content', $where);
     }

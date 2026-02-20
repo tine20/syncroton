@@ -19,14 +19,14 @@
  
 class Syncroton_Wbxml_Dtd_Syncml_DevInfo12 extends Syncroton_Wbxml_Dtd_Syncml_Abstract
 {    
-    protected $_codePages = array(
-        0x00 => array(
+    protected $_codePages = [
+        0x00 => [
             'codePageNumber'=> 0x00,
             'dtdname'       => 'DevInf',
             'dpi'           => '-//OMA//DTD SYNCML-DEVINF 1.2//EN',
             'url'           => 'http://www.openmobilealliance.org/tech/DTD/OMA-SyncML-Device_Information-DTD-1.2.dtd',
             'urn'           => 'syncml:devinf1.2',
-            'tags'          => array(     
+            'tags'          => [     
                 "CTCap"             => 0x05, 
                 "CTType"            => 0x06, 
                 "DataStore"         => 0x07, 
@@ -74,7 +74,7 @@ class Syncroton_Wbxml_Dtd_Syncml_DevInfo12 extends Syncroton_Wbxml_Dtd_Syncml_Ab
                 "FilterKeyword"     => 0x32, 
                 "FieldLevel"        => 0x33, 
                 "SupportHierarchicalSync"=> 0x34
-            )
-        )
-    );
+            ]
+        ]
+    ];
 }

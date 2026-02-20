@@ -17,10 +17,10 @@
  */
 class Syncroton_Data_Calendar extends Syncroton_Data_AData implements Syncroton_Data_IDataCalendar
 {
-    protected $_supportedFolderTypes = array(
+    protected $_supportedFolderTypes = [
         Syncroton_Command_FolderSync::FOLDERTYPE_CALENDAR,
         Syncroton_Command_FolderSync::FOLDERTYPE_CALENDAR_USER_CREATED
-    );
+    ];
     
     /**
      * set attendee status for meeting

@@ -142,7 +142,7 @@ class Syncroton_Command_Provision extends Syncroton_Command_Wbxml
         } elseif (empty($this->_device->policyId)) {
             $policy->appendChild($this->_outputDom->createElementNS('uri:Provision', 'Status', self::STATUS_POLICY_NOPOLICY));
         } else {
-            $this->_device->policykey = $this->generatePolicyKey();
+            $this->_device->policykey = static::generatePolicyKey();
             
             $policy->appendChild($this->_outputDom->createElementNS('uri:Provision', 'Status', self::STATUS_POLICY_SUCCESS));
             $policy->appendChild($this->_outputDom->createElementNS('uri:Provision', 'PolicyKey', $this->_device->policykey));

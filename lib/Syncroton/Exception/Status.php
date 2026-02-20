@@ -100,7 +100,7 @@ class Syncroton_Exception_Status extends Syncroton_Exception
      *
      * @var array
      */
-    protected $_commonMessages = array(
+    protected $_commonMessages = [
         self::INVALID_CONTENT                    => "Invalid request body",
         self::INVALID_WBXML                      => "Invalid WBXML request",
         self::INVALID_XML                        => "Invalid XML request",
@@ -175,14 +175,14 @@ class Syncroton_Exception_Status extends Syncroton_Exception
         self::PICTURE_LIMIT_REACHED              => "The number of contact photos returned exceeds the size limit set by the MaxPictures element",
         self::BODY_PART_CONVERSATION_TOO_LARGE   => "The conversation is too large to compute the body parts",
         self::MAXIMUM_DEVICES_REACHED            => "The user's account has too many device partnerships",
-    );
+    ];
 
     /**
      * Error messages assigned to class-specific error codes
      *
      * @var array
      */
-    protected $_errorMessages = array();
+    protected $_errorMessages = [];
 
 
     /**

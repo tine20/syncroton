@@ -40,17 +40,13 @@ class Syncroton_Server
      */
     protected $_request;
     
-    protected $_userId;
-    
-    public function __construct($userId, Zend_Controller_Request_Http $request = null, $body = null)
+    public function __construct(protected $_userId, Zend_Controller_Request_Http $request = null, $body = null)
     {
         if (Syncroton_Registry::isRegistered('loggerBackend')) {
             $this->_logger = Syncroton_Registry::get('loggerBackend');
         }
-        
-        $this->_userId  = $userId;
         $this->_request = $request instanceof Zend_Controller_Request_Http ? $request : new Zend_Controller_Request_Http();
-        $this->_body    = $body !== null ? $body : fopen('php://input', 'r');
+        $this->_body    = $body ?? fopen('php://input', 'r');
         
         $this->_deviceBackend = Syncroton_Registry::getDeviceBackend();
         
@@ -126,7 +122,7 @@ class Syncroton_Server
                     $requestBody->formatOutput = true;
                     $this->_logger->debug(__METHOD__ . '::' . __LINE__ . " xml request:\n" . $requestBody->saveXML());
                 }
-            } catch(Syncroton_Wbxml_Exception_UnexpectedEndOfFile $e) {
+            } catch(Syncroton_Wbxml_Exception_UnexpectedEndOfFile) {
                 $requestBody = NULL;
             }
         } else {
@@ -161,7 +157,7 @@ class Syncroton_Server
             
         } catch (Exception $e) {
             if ($this->_logger instanceof Zend_Log)
-                $this->_logger->err(__METHOD__ . '::' . __LINE__ . " unexpected exception occured: " . get_class($e));
+                $this->_logger->err(__METHOD__ . '::' . __LINE__ . " unexpected exception occured: " . $e::class);
             if ($this->_logger instanceof Zend_Log)
                 $this->_logger->err(__METHOD__ . '::' . __LINE__ . " exception message: " . $e->getMessage());
             if ($this->_logger instanceof Zend_Log)
@@ -272,8 +268,8 @@ class Syncroton_Server
      */
     protected function _getRequestParameters(Zend_Controller_Request_Http $request)
     {
-        if (strpos($request->getRequestUri(), '&') === false) {
-            $commands = array(
+        if (!str_contains($request->getRequestUri(), '&')) {
+            $commands = [
                 0  => 'Sync',
                 1  => 'SendMail',
                 2  => 'SmartForward',
@@ -293,7 +289,7 @@ class Syncroton_Server
                 20 => 'Provision',
                 21 => 'ResolveRecipients',
                 22 => 'ValidateCert'
-            );
+            ];
             
             $requestParameters = substr($request->getRequestUri(), strpos($request->getRequestUri(), '?'));
 
@@ -363,20 +359,20 @@ class Syncroton_Server
                 }
             }
              
-            $result = array(
+            $result = [
                 'protocolVersion' => $protocolVersion,
                 'command'         => $command,
                 'deviceId'        => $deviceId,
-                'deviceType'      => isset($deviceType)      ? $deviceType      : null,
-                'policyKey'       => isset($policyKey)       ? $policyKey       : null,
-                'saveInSent'      => isset($saveInSent)      ? $saveInSent      : false,
-                'collectionId'    => isset($collectionId)    ? $collectionId    : null,
-                'itemId'          => isset($itemId)          ? $itemId          : null,
-                'attachmentName'  => isset($attachmentName)  ? $attachmentName  : null,
-                'acceptMultipart' => isset($acceptMultiPart) ? $acceptMultiPart : false
-            );
+                'deviceType'      => $deviceType ?? null,
+                'policyKey'       => $policyKey ?? null,
+                'saveInSent'      => $saveInSent ?? false,
+                'collectionId'    => $collectionId ?? null,
+                'itemId'          => $itemId ?? null,
+                'attachmentName'  => $attachmentName ?? null,
+                'acceptMultipart' => $acceptMultiPart ?? false
+            ];
         } else {
-            $result = array(
+            $result = [
                 'protocolVersion' => $request->getServer('HTTP_MS_ASPROTOCOLVERSION'),
                 'command'         => $request->getQuery('Cmd'),
                 'deviceId'        => $request->getQuery('DeviceId'),
@@ -387,7 +383,7 @@ class Syncroton_Server
                 'itemId'          => $request->getQuery('ItemId'),
                 'attachmentName'  => $request->getQuery('AttachmentName'),
                 'acceptMultipart' => $request->getServer('HTTP_MS_ASACCEPTMULTIPART') == 'T'
-            );
+            ];
         }
         
         $result['userAgent']   = $request->getServer('HTTP_USER_AGENT', $result['deviceType']);
@@ -439,15 +435,15 @@ class Syncroton_Server
                 $device = $this->_deviceBackend->update($device);
             }
         
-        } catch (Syncroton_Exception_NotFound $senf) {
-            $device = $this->_deviceBackend->create(new Syncroton_Model_Device(array(
+        } catch (Syncroton_Exception_NotFound) {
+            $device = $this->_deviceBackend->create(new Syncroton_Model_Device([
                 'owner_id'   => $ownerId,
                 'deviceid'   => $requestParameters['deviceId'],
                 'devicetype' => $requestParameters['deviceType'],
                 'useragent'  => $requestParameters['userAgent'],
                 'acsversion' => $requestParameters['protocolVersion'],
                 'policyId'   => Syncroton_Registry::isRegistered(Syncroton_Registry::DEFAULT_POLICY) ? Syncroton_Registry::get(Syncroton_Registry::DEFAULT_POLICY) : null
-            )));
+            ]));
         }
 
         return $device;

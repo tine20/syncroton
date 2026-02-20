@@ -19,14 +19,14 @@ class Syncroton_Model_StoreResponseResult extends Syncroton_Model_AXMLEntry
 {
     protected $_xmlBaseElement = 'Result';
 
-    protected $_properties = array(
-        'AirSync' => array(
-            'class'        => array('type' => 'string'),
-            'collectionId' => array('type' => 'string'),
-        ),
-        'Search' => array(
-            'longId'     => array('type' => 'string', 'supportedSince' => '2.5'),
-            'properties' => array('type' => 'container', 'supportedSince' => '2.5'),
-        )
-    );
+    protected $_properties = [
+        'AirSync' => [
+            'class'        => ['type' => 'string'],
+            'collectionId' => ['type' => 'string'],
+        ],
+        'Search' => [
+            'longId'     => ['type' => 'string', 'supportedSince' => '2.5'],
+            'properties' => ['type' => 'container', 'supportedSince' => '2.5'],
+        ]
+    ];
 }

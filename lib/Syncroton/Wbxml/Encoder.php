@@ -24,21 +24,21 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
      *
      * @var array
      */
-    protected $_dtdStack = array();
+    protected $_dtdStack = [];
     
     /**
      * stack of stream resources
      *
      * @var array
      */
-    protected $_streamStack = array();
+    protected $_streamStack = [];
     
     /**
      * stack of levels when to pop data from the other stacks
      *
      * @var array
      */
-    protected $_popStack = array();
+    protected $_popStack = [];
         
     /**
      * count level of tags
@@ -131,15 +131,10 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
      */
     protected function _writeCharSet($_charSet)
     {
-        switch(strtoupper($_charSet)) {
-            case 'UTF-8':
-                $this->_writeMultibyteUInt(106);
-                break;
-                
-            default:
-                throw new Syncroton_Wbxml_Exception('unsuported charSet ' . strtoupper($_charSet));
-                break;
-        }
+        match (strtoupper($_charSet)) {
+            'UTF-8' => $this->_writeMultibyteUInt(106),
+            default => throw new Syncroton_Wbxml_Exception('unsuported charSet ' . strtoupper($_charSet)),
+        };
         
     }
     
@@ -181,7 +176,6 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
         }
 
         fclose($tempStream);
-        xml_parser_free($parser);
     }
 
     /**
@@ -201,7 +195,7 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
             $this->_writeTag($this->_currentTag, $this->_attributes, true);
         }
 
-        list($nameSpace, $this->_currentTag) = explode(';', $_tag);
+        [$nameSpace, $this->_currentTag] = explode(';', $_tag);
 
         if($this->_codePage->getNameSpace() != $nameSpace) {
             $this->_switchCodePage($nameSpace);
@@ -234,20 +228,20 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
         if($this->_nextStackPop !== NULL && $this->_nextStackPop == $this->_level) {
             #echo "TAG: $_tag\n";
             $this->_writeByte(Syncroton_Wbxml_Abstract::END);
-            
+
             $subStream = $this->_stream;
             $subStreamLength = ftell($subStream);
-            
+
             $this->_dtd             = array_pop($this->_dtdStack);
             $this->_stream          = array_pop($this->_streamStack);
             $this->_nextStackPop    = array_pop($this->_popStack);
             $this->_codePage        = $this->_dtd->getCurrentCodePage();
-            
+
             rewind($subStream);
             #while (!feof($subStream)) {$buffer = fgets($subStream, 4096);echo $buffer;}
             $this->_writeByte(Syncroton_Wbxml_Abstract::OPAQUE);
             $this->_writeMultibyteUInt($subStreamLength);
-            
+
             $writenBytes = stream_copy_to_stream($subStream, $this->_stream);
             if($writenBytes !== $subStreamLength) {
                 //echo "$writenBytes !== $subStreamLength\n";
@@ -353,7 +347,7 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
             
             $this->_writeByte(Syncroton_Wbxml_Abstract::SWITCH_PAGE);
             $this->_writeByte($codePageId);
-        } catch (Syncroton_Wbxml_Dtd_Exception_CodePageNotFound $e) {
+        } catch (Syncroton_Wbxml_Dtd_Exception_CodePageNotFound) {
             // switch to another dtd
             // need to write the wbxml header again
             // put old dtd and stream on stack

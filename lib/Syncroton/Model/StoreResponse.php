@@ -40,14 +40,14 @@ class Syncroton_Model_StoreResponse extends Syncroton_Model_AXMLEntry
 
     protected $_xmlBaseElement = 'Store';
 
-    protected $_properties = array(
-        'Search' => array(
-            'status'    => array('type' => 'number'),
-            'result'    => array('type' => 'container', 'multiple' => true),
-            'range'     => array('type' => 'string'),
-            'total'     => array('type' => 'number'),
-        )
-    );
+    protected $_properties = [
+        'Search' => [
+            'status'    => ['type' => 'number'],
+            'result'    => ['type' => 'container', 'multiple' => true],
+            'range'     => ['type' => 'string'],
+            'total'     => ['type' => 'number'],
+        ]
+    ];
 
     /**
      * (non-PHPdoc)
@@ -63,7 +63,7 @@ class Syncroton_Model_StoreResponse extends Syncroton_Model_AXMLEntry
                 continue;
             }
 
-            list ($nameSpace, $elementProperties) = $this->_getElementProperties($elementName);
+            [$nameSpace, $elementProperties] = $this->_getElementProperties($elementName);
 
             $nameSpace = 'uri:' . $nameSpace;
 

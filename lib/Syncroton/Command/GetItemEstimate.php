@@ -30,7 +30,7 @@ class Syncroton_Command_GetItemEstimate extends Syncroton_Command_Wbxml
      *
      * @var array
      */
-    protected $_collections = array();
+    protected $_collections = [];
     
     /**
      */
@@ -43,12 +43,12 @@ class Syncroton_Command_GetItemEstimate extends Syncroton_Command_Wbxml
             // fetch values from a different namespace
             $airSyncValues  = $xmlCollection->children('uri:AirSync');
             
-            $collectionData = array(
+            $collectionData = [
                 'syncKey'       => (int)$airSyncValues->SyncKey,
                 'collectionId'  => (string) $xmlCollection->CollectionId,
                 'class'         => isset($xmlCollection->Class) ? (string) $xmlCollection->Class : null,
                 'filterType'    => isset($airSyncValues->Options) && isset($airSyncValues->Options->FilterType) ? (int)$airSyncValues->Options->FilterType : 0
-            );
+            ];
             
             if ($this->_logger instanceof Zend_Log) 
                 $this->_logger->info(__METHOD__ . '::' . __LINE__ . " synckey is {$collectionData['syncKey']} class: {$collectionData['class']} collectionid: {$collectionData['collectionId']} filtertype: {$collectionData['filterType']}");
@@ -59,12 +59,12 @@ class Syncroton_Command_GetItemEstimate extends Syncroton_Command_Wbxml
                 $collectionData['folder']->lastfiltertype = $collectionData['filterType'];
                 
                 if($collectionData['syncKey'] === 0) {
-                    $collectionData['syncState'] = new Syncroton_Model_SyncState(array(
+                    $collectionData['syncState'] = new Syncroton_Model_SyncState([
                         'device_id' => $this->_device,
                         'counter'   => 0,
                         'type'      => $collectionData['folder'],
                         'lastsync'  => $this->_syncTimeStamp
-                    ));
+                    ]);
                     
                     // reset sync state for this folder
                     $this->_syncStateBackend->resetState($this->_device, $collectionData['folder']);

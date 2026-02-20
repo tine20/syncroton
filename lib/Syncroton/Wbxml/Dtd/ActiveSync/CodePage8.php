@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage8 extends Syncroton_Wbxml_Dtd_Activ
     
     protected $_codePageName    = 'MeetingResponse';
         
-    protected $_tags = array(     
+    protected $_tags = [     
         'CalendarId'              => 0x05,
         'CollectionId'            => 0x06,
         'MeetingResponse'         => 0x07,
@@ -33,5 +33,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage8 extends Syncroton_Wbxml_Dtd_Activ
         'UserResponse'            => 0x0c,
         'Version'                 => 0x0d, // not used anymore
         'InstanceId'              => 0x0e
-    );
+    ];
 }

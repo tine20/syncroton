@@ -17,9 +17,9 @@
  */
 class Syncroton_Data_Tasks extends Syncroton_Data_AData
 {
-    protected $_supportedFolderTypes = array(
+    protected $_supportedFolderTypes = [
         Syncroton_Command_FolderSync::FOLDERTYPE_TASK,
         Syncroton_Command_FolderSync::FOLDERTYPE_TASK_USER_CREATED
-    );
+    ];
 }
 

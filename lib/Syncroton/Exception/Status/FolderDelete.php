@@ -31,12 +31,12 @@ class Syncroton_Exception_Status_FolderDelete extends Syncroton_Exception_Status
      *
      * @var array
      */
-    protected $_errorMessages = array(
+    protected $_errorMessages = [
         self::SPECIAL_FOLDER      => "The specified folder is a special system folder",
         self::FOLDER_NOT_FOUND    => "The specified folder doesn't exist",
         self::FOLDER_SERVER_ERROR => "An error occurred on the server",
         self::INVALID_SYNCKEY     => "Synchronization key mismatch or invalid synchronization key",
         self::INVALID_REQUEST     => "Malformed request",
         self::UNKNOWN_ERROR       => "An unknown error occurred",
-    );
+    ];
 }

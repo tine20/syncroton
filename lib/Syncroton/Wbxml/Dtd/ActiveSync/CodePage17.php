@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage17 extends Syncroton_Wbxml_Dtd_Acti
     
     protected $_codePageName    = 'AirSyncBase';
     
-    protected $_tags = array(
+    protected $_tags = [
         'BodyPreference'    => 0x05,
         'Type'              => 0x06,
         'TruncationSize'    => 0x07,
@@ -45,5 +45,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage17 extends Syncroton_Wbxml_Dtd_Acti
         'BodyPartReference' => 0x19,
         'BodyPart'          => 0x1a,
         'Status'            => 0x1b,
-    );
+    ];
 }

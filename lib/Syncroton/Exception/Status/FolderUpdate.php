@@ -33,7 +33,7 @@ class Syncroton_Exception_Status_FolderUpdate extends Syncroton_Exception_Status
      *
      * @var array
      */
-    protected $_errorMessages = array(
+    protected $_errorMessages = [
         self::FOLDER_EXISTS       => "A folder that has this name already exists or is a special folder",
         self::SPECIAL_FOLDER      => "The specified folder is the Recipient information folder which cannot be updated",
         self::FOLDER_NOT_FOUND    => "The specified folder doesn't exist",
@@ -42,5 +42,5 @@ class Syncroton_Exception_Status_FolderUpdate extends Syncroton_Exception_Status
         self::INVALID_SYNCKEY     => "Synchronization key mismatch or invalid synchronization key",
         self::INVALID_REQUEST     => "Malformed request",
         self::UNKNOWN_ERROR       => "An unknown error occurred",
-    );
+    ];
 }

@@ -22,12 +22,12 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage11 extends Syncroton_Wbxml_Dtd_Acti
     
     protected $_codePageName    = 'ValidateCert';
         
-    protected $_tags = array(     
+    protected $_tags = [     
         'ValidateCert'            => 0x05,
         'Certificates'            => 0x06,
         'Certificate'             => 0x07,
         'CertificateChain'        => 0x08,
         'CheckCRL'                => 0x09,
         'Status'                  => 0x0a
-    );
+    ];
 }

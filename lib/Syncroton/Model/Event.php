@@ -39,38 +39,38 @@ class Syncroton_Model_Event extends Syncroton_Model_AXMLEntry
     
     protected $_xmlBaseElement = 'ApplicationData';
     
-    protected $_properties = array(
-        'AirSyncBase' => array(
-            'body'                      => array('type' => 'container', 'class' => 'Syncroton_Model_EmailBody')
-        ),
-        'Calendar' => array(
-            'allDayEvent'               => array('type' => 'number'),
-            'appointmentReplyTime'      => array('type' => 'datetime'),
-            'attendees'                 => array('type' => 'container', 'childElement' => 'attendee', 'class' => 'Syncroton_Model_EventAttendee'),
-            'busyStatus'                => array('type' => 'number'),
-            'categories'                => array('type' => 'container', 'childElement' => 'category'),
-            'disallowNewTimeProposal'   => array('type' => 'number'),
-            'dtStamp'                   => array('type' => 'datetime'),
-            'endTime'                   => array('type' => 'datetime'),
-            'exceptions'                => array('type' => 'container', 'childElement' => 'exception', 'class' => 'Syncroton_Model_EventException'),
-            'location'                  => array('type' => 'string'),
-            'meetingStatus'             => array('type' => 'number'),
-            'onlineMeetingConfLink'     => array('type' => 'string'),
-            'onlineMeetingExternalLink' => array('type' => 'string'),
-            'organizerEmail'            => array('type' => 'string'),
-            'organizerName'             => array('type' => 'string'),
-            'recurrence'                => array('type' => 'container'),
-            'reminder'                  => array('type' => 'number'),
-            'responseRequested'         => array('type' => 'boolean'),
-            'responseType'              => array('type' => 'number'),
-            'sensitivity'               => array('type' => 'number'),
-            'startTime'                 => array('type' => 'datetime'),
-            'subject'                   => array('type' => 'string'),
-            'timezone'                  => array('type' => 'timezone'),
-            'uID'                       => array('type' => 'string'),
-            'appointmentReplyTime'      => array('type' => 'datetime'),
-        )
-    );
+    protected $_properties = [
+        'AirSyncBase' => [
+            'body'                      => ['type' => 'container', 'class' => 'Syncroton_Model_EmailBody']
+        ],
+        'Calendar' => [
+            'allDayEvent'               => ['type' => 'number'],
+            'appointmentReplyTime'      => ['type' => 'datetime'],
+            'attendees'                 => ['type' => 'container', 'childElement' => 'attendee', 'class' => 'Syncroton_Model_EventAttendee'],
+            'busyStatus'                => ['type' => 'number'],
+            'categories'                => ['type' => 'container', 'childElement' => 'category'],
+            'disallowNewTimeProposal'   => ['type' => 'number'],
+            'dtStamp'                   => ['type' => 'datetime'],
+            'endTime'                   => ['type' => 'datetime'],
+            'exceptions'                => ['type' => 'container', 'childElement' => 'exception', 'class' => 'Syncroton_Model_EventException'],
+            'location'                  => ['type' => 'string'],
+            'meetingStatus'             => ['type' => 'number'],
+            'onlineMeetingConfLink'     => ['type' => 'string'],
+            'onlineMeetingExternalLink' => ['type' => 'string'],
+            'organizerEmail'            => ['type' => 'string'],
+            'organizerName'             => ['type' => 'string'],
+            'recurrence'                => ['type' => 'container'],
+            'reminder'                  => ['type' => 'number'],
+            'responseRequested'         => ['type' => 'boolean'],
+            'responseType'              => ['type' => 'number'],
+            'sensitivity'               => ['type' => 'number'],
+            'startTime'                 => ['type' => 'datetime'],
+            'subject'                   => ['type' => 'string'],
+            'timezone'                  => ['type' => 'timezone'],
+            'uID'                       => ['type' => 'string'],
+            'appointmentReplyTime'      => ['type' => 'datetime'],
+        ]
+    ];
     
     /**
      * (non-PHPdoc)
@@ -82,7 +82,7 @@ class Syncroton_Model_Event extends Syncroton_Model_AXMLEntry
         parent::appendXML($domParrent, $device);
 
         $exceptionElements = $domParrent->getElementsByTagName('Exception');
-        $parentFields      = array('AllDayEvent'/*, 'Attendees'*/, 'Body', 'BusyStatus'/*, 'Categories'*/, 'DtStamp', 'EndTime', 'Location', 'MeetingStatus', 'Reminder', 'ResponseType', 'Sensitivity', 'StartTime', 'Subject');
+        $parentFields      = ['AllDayEvent'/*, 'Attendees'*/, 'Body', 'BusyStatus'/*, 'Categories'*/, 'DtStamp', 'EndTime', 'Location', 'MeetingStatus', 'Reminder', 'ResponseType', 'Sensitivity', 'StartTime', 'Subject'];
 
         if ($exceptionElements->length > 0) {
             $mainEventElement = $exceptionElements->item(0)->parentNode->parentNode;
@@ -119,7 +119,7 @@ class Syncroton_Model_Event extends Syncroton_Model_AXMLEntry
                     continue;
                 }
         
-                $parentFields = array('allDayEvent', 'attendees', 'body', 'busyStatus', 'categories', 'dtStamp', 'endTime', 'location', 'meetingStatus', 'reminder', 'responseType', 'sensitivity', 'startTime', 'subject');
+                $parentFields = ['allDayEvent', 'attendees', 'body', 'busyStatus', 'categories', 'dtStamp', 'endTime', 'location', 'meetingStatus', 'reminder', 'responseType', 'sensitivity', 'startTime', 'subject'];
         
                 foreach ($parentFields as $field) {
                     if (!isset($exception->$field) && isset($this->_elements[$field])) {

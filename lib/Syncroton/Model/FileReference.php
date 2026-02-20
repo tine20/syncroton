@@ -22,15 +22,15 @@ class Syncroton_Model_FileReference extends Syncroton_Model_AXMLEntry
 {
     protected $_xmlBaseElement = 'ApplicationData';
     
-    protected $_properties = array(
-        'AirSyncBase' => array(
-            'contentType' => array('type' => 'string'),
-        ),
-        'ItemOperations' => array(
-            'data'        => array('type' => 'string', 'encoding' => 'base64'),
-            'part'        => array('type' => 'number')
-        )
-    );
+    protected $_properties = [
+        'AirSyncBase' => [
+            'contentType' => ['type' => 'string'],
+        ],
+        'ItemOperations' => [
+            'data'        => ['type' => 'string', 'encoding' => 'base64'],
+            'part'        => ['type' => 'number']
+        ]
+    ];
         
     /**
      * 

@@ -17,14 +17,14 @@
  */
 class Syncroton_Data_Email extends Syncroton_Data_AData implements Syncroton_Data_IDataEmail
 {
-    protected $_supportedFolderTypes = array(
+    protected $_supportedFolderTypes = [
         Syncroton_Command_FolderSync::FOLDERTYPE_DELETEDITEMS,
         Syncroton_Command_FolderSync::FOLDERTYPE_DRAFTS,
         Syncroton_Command_FolderSync::FOLDERTYPE_INBOX,
         Syncroton_Command_FolderSync::FOLDERTYPE_MAIL_USER_CREATED,
         Syncroton_Command_FolderSync::FOLDERTYPE_OUTBOX,
         Syncroton_Command_FolderSync::FOLDERTYPE_SENTMAIL
-    );
+    ];
     
     /**
      * (non-PHPdoc)
@@ -35,7 +35,7 @@ class Syncroton_Data_Email extends Syncroton_Data_AData implements Syncroton_Dat
         if ($inputStream == 'triggerException') {
             throw new Syncroton_Exception_Status(Syncroton_Exception_Status::MAILBOX_SERVER_OFFLINE);
         }
-        
+
         // forward email
     }
     
@@ -45,13 +45,13 @@ class Syncroton_Data_Email extends Syncroton_Data_AData implements Syncroton_Dat
      */
     public function getFileReference($fileReference)
     {
-        list($messageId, $partId) = explode(Syncroton_Data_AData::LONGID_DELIMITER, $fileReference, 2);
+        [$messageId, $partId] = explode(Syncroton_Data_AData::LONGID_DELIMITER, $fileReference, 2);
     
         // example code
-        return new Syncroton_Model_FileReference(array(
+        return new Syncroton_Model_FileReference([
             'contentType' => 'text/plain',
             'data'        => 'Lars'
-        ));
+        ]);
     }
     
     /**

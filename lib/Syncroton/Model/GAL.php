@@ -33,19 +33,19 @@ class Syncroton_Model_GAL extends Syncroton_Model_AXMLEntry
 {
     protected $_xmlBaseElement = 'ApplicationData';
 
-    protected $_properties = array(
-        'GAL' => array(
-            'alias'         => array('type' => 'string', 'supportedSince' => '2.5'),
-            'company'       => array('type' => 'string', 'supportedSince' => '2.5'),
-            'displayName'   => array('type' => 'string', 'supportedSince' => '2.5'),
-            'emailAddress'  => array('type' => 'string', 'supportedSince' => '2.5'),
-            'firstName'     => array('type' => 'string', 'supportedSince' => '2.5'),
-            'lastName'      => array('type' => 'string', 'supportedSince' => '2.5'),
-            'mobilePhone'   => array('type' => 'string', 'supportedSince' => '2.5'),
-            'office'        => array('type' => 'string', 'supportedSince' => '2.5'),
-            'phone'         => array('type' => 'string', 'supportedSince' => '2.5'),
-            'picture'       => array('type' => 'container', 'supportedSince' => '14.0'),
-            'title'         => array('type' => 'string', 'supportedSince' => '2.5'),
-        )
-    );
+    protected $_properties = [
+        'GAL' => [
+            'alias'         => ['type' => 'string', 'supportedSince' => '2.5'],
+            'company'       => ['type' => 'string', 'supportedSince' => '2.5'],
+            'displayName'   => ['type' => 'string', 'supportedSince' => '2.5'],
+            'emailAddress'  => ['type' => 'string', 'supportedSince' => '2.5'],
+            'firstName'     => ['type' => 'string', 'supportedSince' => '2.5'],
+            'lastName'      => ['type' => 'string', 'supportedSince' => '2.5'],
+            'mobilePhone'   => ['type' => 'string', 'supportedSince' => '2.5'],
+            'office'        => ['type' => 'string', 'supportedSince' => '2.5'],
+            'phone'         => ['type' => 'string', 'supportedSince' => '2.5'],
+            'picture'       => ['type' => 'container', 'supportedSince' => '14.0'],
+            'title'         => ['type' => 'string', 'supportedSince' => '2.5'],
+        ]
+    ];
 }

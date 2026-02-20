@@ -17,7 +17,7 @@
  */
 class Syncroton_Command_MeetingResponse extends Syncroton_Command_Wbxml
 {
-    protected $_results = array();
+    protected $_results = [];
     
     protected $_defaultNameSpace = 'uri:MeetingResponse';
     protected $_documentElement  = 'MeetingResponse';
@@ -37,17 +37,17 @@ class Syncroton_Command_MeetingResponse extends Syncroton_Command_Wbxml
             try {
                 $calendarId = $dataController->setAttendeeStatus($request);
                 
-                $this->_results[] = array(
+                $this->_results[] = [
                     'calendarId' => $calendarId,
                     'request'    => $request,
                     'status'     => 1
-                );
+                ];
                 
             } catch (Syncroton_Exception_Status_MeetingResponse $sesmr) {
-                $this->_results[] = array(
+                $this->_results[] = [
                     'request' => $request,
                     'status'  => $sesmr->getCode()
-                );
+                ];
             }
         }
 

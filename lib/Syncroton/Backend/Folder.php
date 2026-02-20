@@ -60,7 +60,7 @@ class Syncroton_Backend_Folder extends Syncroton_Backend_ABackend implements Syn
             ->where($this->_db->quoteIdentifier('device_id') . ' = ?', $deviceId)
             ->where($this->_db->quoteIdentifier('class')     . ' = ?', $class);
         
-        $result = array();
+        $result = [];
         
         $stmt = $this->_db->query($select);
         while ($data = $stmt->fetch()) {
@@ -78,9 +78,9 @@ class Syncroton_Backend_Folder extends Syncroton_Backend_ABackend implements Syn
     {
         $deviceId = $deviceId instanceof Syncroton_Model_IDevice ? $deviceId->id : $deviceId;
          
-        $where = array(
+        $where = [
             $this->_db->quoteInto($this->_db->quoteIdentifier('device_id') . ' = ?', $deviceId)
-        );
+        ];
         
         $this->_db->delete($this->_tablePrefix . $this->_tableName, $where);
     }
@@ -100,21 +100,11 @@ class Syncroton_Backend_Folder extends Syncroton_Backend_ABackend implements Syn
      */
     protected function _fromCamelCase($string)
     {
-        switch ($string) {
-            case 'displayName':
-            case 'parentId':
-                return strtolower($string);
-                break;
-                
-            case 'serverId':
-                return 'folderid';
-                break;
-                
-            default:
-                return parent::_fromCamelCase($string);
-                
-                break;
-        }
+        return match ($string) {
+            'displayName', 'parentId' => strtolower($string),
+            'serverId' => 'folderid',
+            default => parent::_fromCamelCase($string),
+        };
     }
     
     /**
@@ -123,23 +113,11 @@ class Syncroton_Backend_Folder extends Syncroton_Backend_ABackend implements Syn
      */
     protected function _toCamelCase($string, $ucFirst = true)
     {
-        switch ($string) {
-            case 'displayname':
-                return 'displayName';
-                break;
-                
-            case 'parentid':
-                return 'parentId';
-                break;
-                
-            case 'folderid':
-                return 'serverId';
-                break;
-            
-            default:
-                return parent::_toCamelCase($string, $ucFirst);
-                
-                break;
-        }
+        return match ($string) {
+            'displayname' => 'displayName',
+            'parentid' => 'parentId',
+            'folderid' => 'serverId',
+            default => parent::_toCamelCase($string, $ucFirst),
+        };
     }
 }

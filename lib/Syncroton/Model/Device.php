@@ -34,24 +34,24 @@ class Syncroton_Model_Device extends Syncroton_Model_AEntry implements Syncroton
         switch (strtolower($this->devicetype)) {
             case Syncroton_Model_Device::TYPE_BLACKBERRY:
                 if (preg_match('/(.+)\/(.+)/', $this->useragent, $matches)) {
-                    list(, $name, $version) = $matches;
+                    [, , $version] = $matches;
                     return $version;
                 }
                 break;
                 
             case Syncroton_Model_Device::TYPE_IPHONE:
                 if (preg_match('/(.+)\/(\d+)\.(\d+)/', $this->useragent, $matches)) {
-                    list(, $name, $majorVersion, $minorVersion) = $matches;
+                    [, , $majorVersion] = $matches;
                     return $majorVersion;
                 }
                 break;
 
             case Syncroton_Model_Device::TYPE_ANDROID:
                 if (preg_match('/Android\/(\d+)\.(\d+)/', $this->useragent, $matches)) {
-                    list(, $majorVersion, $minorVersion) = $matches;
+                    [, $majorVersion] = $matches;
                     return $majorVersion;
                 } else if (! empty($this->os) && preg_match('/Android (\d+)\.(\d+)/', $this->os, $matches)) {
-                    list(, $majorVersion, $minorVersion) = $matches;
+                    [, $majorVersion] = $matches;
                     return $majorVersion;
                 }
                 break;

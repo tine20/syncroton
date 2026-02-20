@@ -22,11 +22,11 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage23 extends Syncroton_Wbxml_Dtd_Acti
     
     protected $_codePageName    = 'Notes';
         
-    protected $_tags = array(     
+    protected $_tags = [     
         'Subject'          => 0x05,
         'MessageClass'     => 0x06,
         'LastModifiedDate' => 0x07,
         'Categories'       => 0x08,
         'Category'         => 0x09,
-    );
+    ];
 }

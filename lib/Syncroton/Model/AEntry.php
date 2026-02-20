@@ -18,7 +18,7 @@
 
 abstract class Syncroton_Model_AEntry implements Syncroton_Model_IEntry, IteratorAggregate, Countable
 {
-    protected $_elements = array();
+    protected $_elements = [];
     
     protected $_isDirty;
     
@@ -72,7 +72,7 @@ abstract class Syncroton_Model_AEntry implements Syncroton_Model_IEntry, Iterato
         foreach($properties as $key => $value) {
             try {
                 $this->$key = $value; //echo __LINE__ . PHP_EOL;
-            } catch (InvalidArgumentException $iae) {
+            } catch (InvalidArgumentException) {
                 //ignore invalid properties
                 //echo __LINE__ . PHP_EOL; echo $iae->getMessage(); echo $iae->getTraceAsString();
             }

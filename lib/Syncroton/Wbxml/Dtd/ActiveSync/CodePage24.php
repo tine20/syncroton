@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage24 extends Syncroton_Wbxml_Dtd_Acti
     
     protected $_codePageName    = 'RightsManagement';
         
-    protected $_tags = array(     
+    protected $_tags = [     
         'RightsManagementSupport'            => 0x05,
         'RightsManagementTemplates'          => 0x06,
         'RightsManagementTemplate'           => 0x07,
@@ -43,6 +43,6 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage24 extends Syncroton_Wbxml_Dtd_Acti
         'TemplateDescription'                => 0x16,
         'ContentOwner'                       => 0x17,
         'RemoveRightsManagementDistribution' => 0x18
-    );
+    ];
     
 }

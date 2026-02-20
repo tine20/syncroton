@@ -28,12 +28,12 @@ class Syncroton_TransactionManager implements Syncroton_TransactionManagerInterf
     /**
      * @var array holds all transactionables with open transactions
      */
-    protected $_openTransactionables = array();
+    protected $_openTransactionables = [];
     
     /**
      * @var array list of all open (not commited) transactions
      */
-    protected $_openTransactions = array();
+    protected $_openTransactions = [];
     /**
      * @var Syncroton_TransactionManager
      */
@@ -137,8 +137,8 @@ class Syncroton_TransactionManager implements Syncroton_TransactionManagerInterf
                     #Tinebase_Backend_Sql_Command::setAutocommit($transactionable,true);
                 }
             }
-            $this->_openTransactionables = array();
-            $this->_openTransactions = array();
+            $this->_openTransactionables = [];
+            $this->_openTransactions = [];
         } else {
             if ($this->_logger instanceof Zend_Log) 
                 $this->_logger->debug(__METHOD__ . '::' . __LINE__ . "  commiting defered, as there are still $numOpenTransactions in the queue");
@@ -162,7 +162,7 @@ class Syncroton_TransactionManager implements Syncroton_TransactionManagerInterf
             }
         }
         
-        $this->_openTransactionables = array();
-        $this->_openTransactions = array();
+        $this->_openTransactionables = [];
+        $this->_openTransactions = [];
     }
 }

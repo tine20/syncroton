@@ -20,7 +20,7 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
 {
     protected $_xmlBaseElement;
     
-    protected $_properties = array();
+    protected $_properties = [];
     
     protected $_dateTimeFormat = "Y-m-d\TH:i:s.000\Z";
     
@@ -53,13 +53,13 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
                 continue;
             }
             
-            list ($nameSpace, $elementProperties) = $this->_getElementProperties($elementName);
+            [$nameSpace, $elementProperties] = $this->_getElementProperties($elementName);
             
             if ($nameSpace === 'Internal') {
                 continue;
             }
             
-            $elementVersion = isset($elementProperties['supportedSince']) ? $elementProperties['supportedSince'] : '12.0';
+            $elementVersion = $elementProperties['supportedSince'] ?? '12.0';
             
             if (version_compare($device->acsversion, $elementVersion, '<')) {
                 continue;
@@ -103,7 +103,7 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
      */
     public function getProperties($selectedNamespace = null)
     {
-        $properties = array();
+        $properties = [];
         
         foreach($this->_properties as $namespace => $namespaceProperties) {
             if ($selectedNamespace !== null && $namespace != $selectedNamespace) {
@@ -196,7 +196,7 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
     {
         // Replace non-character UTF-8 sequences that cause XML Parser to fail
         // https://git.kolab.org/T1311
-        $dirty = str_replace(array("\xEF\xBF\xBE", "\xEF\xBF\xBF"), '', $dirty);
+        $dirty = str_replace(["\xEF\xBF\xBE", "\xEF\xBF\xBF"], '', $dirty);
 
         // Replace ASCII control-characters
         return preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F]/', '', $dirty);
@@ -235,11 +235,11 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
     {
         foreach($this->_properties as $namespace => $namespaceProperties) {
             if (array_key_exists($element, $namespaceProperties)) {
-                return array($namespace, $namespaceProperties[$element]);
+                return [$namespace, $namespaceProperties[$element]];
             }
         }
         
-        throw new InvalidArgumentException("$element is no valid property of " . get_class($this));
+        throw new InvalidArgumentException("$element is no valid property of " . static::class);
     }
     
     protected function _parseNamespace($nameSpace, SimpleXMLElement $properties)
@@ -254,7 +254,7 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
                 continue;
             }
             
-            list (, $elementProperties) = $this->_getElementProperties($elementName);
+            [, $elementProperties] = $this->_getElementProperties($elementName);
             
             switch ($elementProperties['type']) {
                 case 'container':
@@ -267,7 +267,7 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
                             $property[] = (string) $xmlElement;
                         }
                     } else if (isset($elementProperties['childElement'])) {
-                        $property = array();
+                        $property = [];
                         
                         $childElement = ucfirst($elementProperties['childElement']);
                         
@@ -279,7 +279,7 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
                             }
                         }
                     } else {
-                        $subClassName = isset($elementProperties['class']) ? $elementProperties['class'] : get_class($this) . ucfirst($elementName);
+                        $subClassName = $elementProperties['class'] ?? $this::class . ucfirst($elementName);
                         
                         $property = new $subClassName($xmlElement);
                     }
@@ -320,7 +320,7 @@ abstract class Syncroton_Model_AXMLEntry extends Syncroton_Model_AEntry implemen
     
     public function __set($name, $value)
     {
-        list ($nameSpace, $properties) = $this->_getElementProperties($name);
+        [$nameSpace, $properties] = $this->_getElementProperties($name);
         
         if ($properties['type'] == 'datetime' && !$value instanceof DateTime) {
             throw new InvalidArgumentException("value for $name must be an instance of DateTime");

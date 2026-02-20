@@ -27,16 +27,16 @@ class Syncroton_Model_DeviceInformation extends Syncroton_Model_AXMLEntry
 {
     protected $_xmlBaseElement = 'Set';
     
-    protected $_properties = array(
-        'Settings' => array(
-            'enableOutboundSMS' => array('type' => 'number'),
-            'friendlyName'      => array('type' => 'string'),
-            'iMEI'              => array('type' => 'string'),
-            'mobileOperator'    => array('type' => 'string'),
-            'model'             => array('type' => 'string'),
-            'oS'                => array('type' => 'string'),
-            'oSLanguage'        => array('type' => 'string'),
-            'phoneNumber'       => array('type' => 'string')
-        ),
-    );
+    protected $_properties = [
+        'Settings' => [
+            'enableOutboundSMS' => ['type' => 'number'],
+            'friendlyName'      => ['type' => 'string'],
+            'iMEI'              => ['type' => 'string'],
+            'mobileOperator'    => ['type' => 'string'],
+            'model'             => ['type' => 'string'],
+            'oS'                => ['type' => 'string'],
+            'oSLanguage'        => ['type' => 'string'],
+            'phoneNumber'       => ['type' => 'string']
+        ],
+    ];
 }

@@ -22,7 +22,7 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage4 extends Syncroton_Wbxml_Dtd_Activ
     
     protected $_codePageName    = 'Calendar';
         
-    protected $_tags = array(
+    protected $_tags = [
         'Timezone'                => 0x05,
         'AllDayEvent'             => 0x06,
         'Attendees'               => 0x07,
@@ -70,5 +70,5 @@ class Syncroton_Wbxml_Dtd_ActiveSync_CodePage4 extends Syncroton_Wbxml_Dtd_Activ
         'FirstDayOfWeek'          => 0x39,
         'OnlineMeetingConfLink'   => 0x3a,
         'OnlineMeetingExternalLink' => 0x3b
-    );
+    ];
 }

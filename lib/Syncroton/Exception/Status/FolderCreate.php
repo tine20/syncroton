@@ -33,7 +33,7 @@ class Syncroton_Exception_Status_FolderCreate extends Syncroton_Exception_Status
      *
      * @var array
      */
-    protected $_errorMessages = array(
+    protected $_errorMessages = [
         self::FOLDER_EXISTS       => "A folder that has this name already exists",
         self::SPECIAL_FOLDER      => "The specified folder is a special system folder",
         self::PARENT_NOT_FOUND    => "The specified parent folder was not found",
@@ -42,5 +42,5 @@ class Syncroton_Exception_Status_FolderCreate extends Syncroton_Exception_Status
         self::INVALID_REQUEST     => "Malformed request",
         self::UNKNOWN_ERROR       => "An unknown error occurred",
         self::UNKNOWN_CODE        => "Unusual back-end issue",
-    );
+    ];
 }
