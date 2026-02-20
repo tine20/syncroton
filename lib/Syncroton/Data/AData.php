@@ -186,7 +186,7 @@ abstract class Syncroton_Data_AData implements Syncroton_Data_IData
      * (non-PHPdoc)
      * @see Syncroton_Data_IData::getChangedEntries()
      */
-    public function getChangedEntries($_folderId, DateTime $_startTimeStamp, DateTime $_endTimeStamp = NULL, $filterType = NULL)
+    public function getChangedEntries($_folderId, DateTime $_startTimeStamp, ?DateTime $_endTimeStamp = null, $filterType = null)
     {
         $folderId = $_folderId instanceof Syncroton_Model_IFolder ? $_folderId->id : $_folderId;
     
