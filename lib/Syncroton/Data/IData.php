@@ -64,7 +64,7 @@ interface Syncroton_Data_IData
      */
     public function getAllFolders();
     
-    public function getChangedEntries($folderId, DateTime $startTimeStamp, DateTime $endTimeStamp = NULL, $filterType = NULL);
+    public function getChangedEntries($folderId, DateTime $startTimeStamp, ?DateTime $endTimeStamp = null, $filterType = null);
     
     /**
      * retrieve folders which were modified since last sync
