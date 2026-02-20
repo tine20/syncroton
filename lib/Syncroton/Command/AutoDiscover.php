@@ -36,7 +36,7 @@ class Syncroton_Command_AutoDiscover implements Syncroton_Command_ICommand
          * the domDocucment containing the xml request from the client
          */
         protected $requestBody,
-        Syncroton_Model_IDevice $device = null,
+        ?Syncroton_Model_IDevice $device = null,
         $policyKey = null
     )
     {

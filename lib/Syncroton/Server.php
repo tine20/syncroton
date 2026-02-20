@@ -40,7 +40,7 @@ class Syncroton_Server
      */
     protected $_request;
     
-    public function __construct(protected $_userId, Zend_Controller_Request_Http $request = null, $body = null)
+    public function __construct(protected $_userId, ?Zend_Controller_Request_Http $request = null, $body = null)
     {
         if (Syncroton_Registry::isRegistered('loggerBackend')) {
             $this->_logger = Syncroton_Registry::get('loggerBackend');

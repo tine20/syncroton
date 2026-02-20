@@ -12,9 +12,6 @@ return RectorConfig::configure()
         __DIR__ . '/lib',
     ])
     ->withRules([
-        CodeQuality\Class_\CompleteDynamicPropertiesRector::class
+        Rector\Php84\Rector\Param\ExplicitNullableParamTypeRector::class,
     ])
-    ->withSets([
-        LevelSetList::UP_TO_PHP_85
-    ])
-    ->withPhpVersion(PhpVersion::PHP_80);
+    ->withPhpVersion(PhpVersion::PHP_84);
