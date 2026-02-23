@@ -14,6 +14,7 @@
     "require": {
         "php": ">=8.0",
         "ext-ctype": "*",
+        "ext-xml": "*",
         "zendframework/zendframework1": "1.12.20.*"
     },
     "require-dev": {

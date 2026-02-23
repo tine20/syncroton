@@ -155,9 +155,8 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
         $this->_initialize($_dom);
         
         $parser = xml_parser_create_ns($this->_charSet, ';');
-        xml_set_object($parser, $this);
-        xml_set_element_handler($parser, '_handleStartTag', '_handleEndTag');
-        xml_set_character_data_handler($parser, '_handleCharacters');
+        xml_set_element_handler($parser, [$this, '_handleStartTag'], [$this, '_handleEndTag']);
+        xml_set_character_data_handler($parser, [$this, '_handleCharacters']);
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
         
         while (!feof($tempStream)) {
@@ -180,12 +179,8 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
 
     /**
      * get's called by xml parser when tag starts
-     *
-     * @param resource $_parser
-     * @param string $_tag current tag prefixed with namespace
-     * @param array $_attributes list of tag attributes
      */
-    protected function _handleStartTag($_parser, $_tag, $_attributes)
+    protected function _handleStartTag(XMLParser $_parser, string $_tag, array $_attributes): void
     {
         $this->_level++;
         $this->_currentTagData = null;
@@ -217,11 +212,8 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
     
     /**
      * get's called by xml parser when tag ends
-     *
-     * @param resource $_parser
-     * @param string $_tag current tag prefixed with namespace
      */
-    protected function _handleEndTag($_parser, $_tag)
+    protected function _handleEndTag(XMLParser $_parser, string $_tag): void
     {
         #echo "$_tag Level: $this->_level == $this->_nextStackPop \n";
         
@@ -273,11 +265,8 @@ class Syncroton_Wbxml_Encoder extends Syncroton_Wbxml_Abstract
     /**
      * collects data(value) of tag
      * can be called multiple lines if the value contains linebreaks
-     *
-     * @param resource $_parser the xml parser
-     * @param string $_data the data(value) of the tag
      */
-    protected function _handleCharacters($_parser, $_data)
+    protected function _handleCharacters(XMLParser $parser, string $_data): void
     {
         $this->_currentTagData .= $_data;
     }
