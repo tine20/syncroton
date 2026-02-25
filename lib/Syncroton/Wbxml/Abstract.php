@@ -142,11 +142,11 @@ abstract class Syncroton_Wbxml_Abstract
     {
         $byte = fread($this->_stream, 1);
         
-        if($byte === false) {
+        if ($byte === false) {
             throw new Syncroton_Wbxml_Exception("failed reading one byte");
         }
         
-        return ord($byte);
+        return '' === $byte ? 0 : ord($byte);
     }
     
     protected function _getOpaque($_length)
